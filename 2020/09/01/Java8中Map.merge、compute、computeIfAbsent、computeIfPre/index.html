@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="Java8中Map.merge、compute、computeIfAbsent、computeIfPresent方法 mergejava8中Map类添加了merge、compute、computeIfAbsent、computeIfPresent的缺省方法，下面给出的源码都是Map类中的，Map的实现类在实现这些方法上会有不同方法解释12345678910111213141516171819202">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hexo">
+<meta property="og:url" content="http://yoursite.com/2020/09/01/Java8%E4%B8%ADMap.merge%E3%80%81compute%E3%80%81computeIfAbsent%E3%80%81computeIfPre/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="Java8中Map.merge、compute、computeIfAbsent、computeIfPresent方法 mergejava8中Map类添加了merge、compute、computeIfAbsent、computeIfPresent的缺省方法，下面给出的源码都是Map类中的，Map的实现类在实现这些方法上会有不同方法解释12345678910111213141516171819202">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2020-08-31T16:00:00.000Z">
+<meta property="article:modified_time" content="2020-09-01T12:04:32.979Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 5.1.1"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-Java8中Map.merge、compute、computeIfAbsent、computeIfPre" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/09/01/Java8%E4%B8%ADMap.merge%E3%80%81compute%E3%80%81computeIfAbsent%E3%80%81computeIfPre/" class="article-date">
+  <time datetime="2020-08-31T16:00:00.000Z" itemprop="datePublished">2020-09-01</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Java8/">Java8</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="Java8中Map-merge、compute、computeIfAbsent、computeIfPresent方法"><a href="#Java8中Map-merge、compute、computeIfAbsent、computeIfPresent方法" class="headerlink" title="Java8中Map.merge、compute、computeIfAbsent、computeIfPresent方法"></a>Java8中Map.merge、compute、computeIfAbsent、computeIfPresent方法</h1><ul>
+<li><strong>merge</strong><br>java8中Map类添加了merge、compute、computeIfAbsent、computeIfPresent的缺省方法，下面给出的源码都是Map类中的，Map的实现类在实现这些方法上会有不同<br><code>方法解释</code><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">* If the specified key is not already associated with a value or is</span><br><span class="line">* associated with <span class="keyword">null</span>, associates it with the given non-<span class="keyword">null</span> value.</span><br><span class="line">* Otherwise, replaces the associated value with the results of the given</span><br><span class="line">* remapping function, or removes <span class="keyword">if</span> the result is &#123;<span class="meta">@code</span> <span class="keyword">null</span>&#125;. This</span><br><span class="line">* method may be of use when combining multiple mapped values <span class="keyword">for</span> a key.</span><br><span class="line"><span class="comment">// 如果一个指定的key其关联的值是空或者该key不存在，将会给他一个非空的值，除此之外，用所给的BiFunction方法的结果来替换关联的值，如果方法计算结果是null就删除该key</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">default</span> V <span class="title">merge</span><span class="params">(K key, V value,</span></span></span><br><span class="line"><span class="function"><span class="params">        BiFunction&lt;? <span class="keyword">super</span> V, ? <span class="keyword">super</span> V, ? extends V&gt; remappingFunction)</span> </span>&#123;</span><br><span class="line">    Objects.requireNonNull(remappingFunction);①</span><br><span class="line">    Objects.requireNonNull(value);②</span><br><span class="line">    V oldValue = get(key);③</span><br><span class="line">    V newValue = (oldValue == <span class="keyword">null</span>) ? value :</span><br><span class="line">               remappingFunction.apply(oldValue, value);④</span><br><span class="line">    <span class="keyword">if</span>(newValue == <span class="keyword">null</span>) &#123;⑤</span><br><span class="line">        remove(key);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        put(key, newValue);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> newValue;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+①、②判断BiFunction以及默认值是否为空<br>③获取指定key的值赋予oldValue<br>④判断oldValue是否为空，如果是空newValue = 默认值，不为空newValue = BiFunction.apply(oldValue,value)<br>⑤判断newValue是否为空，为空就直接删除key，不为空更新key-value<br><code>如何使用</code><br>arrayList.forEach(a -&gt; map.merge(a,1,(prev,one)-&gt;prev+one));<br>用处：循环遍历arrayList，使用map存储arrayList中值出现的次数,(prev,one)-&gt;prev+one 该函数的作用是，当有指定的key时用旧值加1作为新值更新key</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 用户账号操作类</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Operation</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> String name;</span><br><span class="line">    <span class="keyword">private</span> BigDecimal bigDecimal;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Operation</span><span class="params">(String name, BigDecimal bigDecimal)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.name = name;</span><br><span class="line">        <span class="keyword">this</span>.bigDecimal = bigDecimal;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getName</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> name;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setName</span><span class="params">(String name)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.name = name;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> BigDecimal <span class="title">getBigDecimal</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> bigDecimal;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setBigDecimal</span><span class="params">(BigDecimal bigDecimal)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.bigDecimal = bigDecimal;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MapMergeTest</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        List&lt;Operation&gt; operations = Arrays.asList(<span class="keyword">new</span> Operation(<span class="string">&quot;123&quot;</span>,<span class="keyword">new</span> BigDecimal(<span class="string">&quot;10&quot;</span>)),<span class="keyword">new</span> Operation(<span class="string">&quot;123&quot;</span>,<span class="keyword">new</span> BigDecimal(<span class="string">&quot;-20&quot;</span>)));</span><br><span class="line">        HashMap&lt;String, BigDecimal&gt; stringBigDecimalHashMap = <span class="keyword">new</span> HashMap&lt;&gt;();</span><br><span class="line">        operations.forEach(operation -&gt; stringBigDecimalHashMap.merge(operation.getName(),operation.getBigDecimal(),BigDecimal::add));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>用户账号操作类是用来记录用户们每次操作的用户名和操作账户数值<br>最后stringBigDecimalHashMap用来保存每个用户以及其账户最终数值，用BigDecimal::add方法引用来替换之前的lamdba表达式</p>
+<ul>
+<li><p><strong>compute</strong><br><code>方法解释</code></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">* Attempts to compute a mapping <span class="keyword">for</span> the specified key and its current</span><br><span class="line">* <span class="function">mapped <span class="title">value</span> <span class="params">(or &#123;<span class="meta">@code</span> <span class="keyword">null</span>&#125; <span class="keyword">if</span> there is no current mapping)</span>.</span></span><br><span class="line"><span class="function"><span class="comment">// 试着去指定一个值给给定的key</span></span></span><br><span class="line"><span class="function"><span class="keyword">default</span> V <span class="title">compute</span><span class="params">(K key,</span></span></span><br><span class="line"><span class="function"><span class="params">        BiFunction&lt;? <span class="keyword">super</span> K, ? <span class="keyword">super</span> V, ? extends V&gt; remappingFunction)</span> </span>&#123;</span><br><span class="line">    Objects.requireNonNull(remappingFunction);①判断空</span><br><span class="line">    V oldValue = get(key);</span><br><span class="line"></span><br><span class="line">    V newValue = remappingFunction.apply(key, oldValue);<span class="comment">// 注意这里的apply中的第一个参数是对应的key，第二个参数是取出的默认值</span></span><br><span class="line">    <span class="keyword">if</span> (newValue == <span class="keyword">null</span>) &#123;②如果计算出的新值是<span class="keyword">null</span>，就保证将key删除</span><br><span class="line">        <span class="comment">// delete mapping</span></span><br><span class="line">        <span class="keyword">if</span> (oldValue != <span class="keyword">null</span> || containsKey(key)) &#123;</span><br><span class="line">            <span class="comment">// something to remove</span></span><br><span class="line">            remove(key);</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="comment">// nothing to do. Leave things as they were.</span></span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;③非<span class="keyword">null</span>就设置该key为newValue，不管其是否存在</span><br><span class="line">        <span class="comment">// add or replace old mapping</span></span><br><span class="line">        put(key, newValue);</span><br><span class="line">        <span class="keyword">return</span> newValue;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p> <code>如何使用</code></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.example.eurekaserverdemo;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.math.BigDecimal;</span><br><span class="line"><span class="keyword">import</span> java.time.LocalDateTime;</span><br><span class="line"><span class="keyword">import</span> java.util.*;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MapMergeTest</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        HashMap&lt;String, Integer&gt; stringIntegerHashMap = <span class="keyword">new</span> HashMap&lt;&gt;();</span><br><span class="line">        stringIntegerHashMap.put(<span class="string">&quot;1&quot;</span>,<span class="number">1</span>);</span><br><span class="line">        stringIntegerHashMap.put(<span class="string">&quot;2&quot;</span>,<span class="number">2</span>);</span><br><span class="line">        stringIntegerHashMap.put(<span class="string">&quot;3&quot;</span>,<span class="number">3</span>);</span><br><span class="line"></span><br><span class="line">        stringIntegerHashMap.compute(<span class="string">&quot;1&quot;</span>, (k,v)-&gt;v+<span class="number">1</span>);①返回取出的旧值加一再设置给key</span><br><span class="line">        stringIntegerHashMap.compute(<span class="string">&quot;4&quot;</span>,(k,v)-&gt;&#123;</span><br><span class="line">            <span class="keyword">if</span> (map.containsKey(k)) <span class="keyword">return</span> v+<span class="number">1</span>;②判断是否包含当前key，如果包含就返回oldValue+<span class="number">1</span></span><br><span class="line">            <span class="keyword">return</span> <span class="number">4</span>;③如果没有key就设置一个默认值</span><br><span class="line">        &#125;);</span><br><span class="line">        System.out.println(stringIntegerHashMap.get(<span class="string">&quot;1&quot;</span>));</span><br><span class="line">        System.out.println(stringIntegerHashMap.get(<span class="string">&quot;4&quot;</span>));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>compute方法可以做到和merge方法类似的事情，给map中不存在的key设置一个默认值，存在的key使用BiFunction来进行操作，但是compute方法没有merge方法在这方面好扩展因为它没办法指定BiFunction中的全部参数<br>compute优点是初始化数据的时候可以处理快一些，不论是否存在都给定一个初始值</p>
+</li>
+<li><p><strong>computeIfAbsent</strong><br><code>方法解释</code><br>见名知意，该方法compute方法只用于key不存在的时候，如果key存在直接返回值</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">default</span> V <span class="title">computeIfAbsent</span><span class="params">(K key,</span></span></span><br><span class="line"><span class="function"><span class="params">        Function&lt;? <span class="keyword">super</span> K, ? extends V&gt; mappingFunction)</span> </span>&#123;①注意这里传入的是一个Function，只有一个参数值，这点与compute不同</span><br><span class="line">    Objects.requireNonNull(mappingFunction);</span><br><span class="line">    V v;</span><br><span class="line">    <span class="keyword">if</span> ((v = get(key)) == <span class="keyword">null</span>) &#123;②判断该key不存在才执行</span><br><span class="line">        V newValue;</span><br><span class="line">        <span class="keyword">if</span> ((newValue = mappingFunction.apply(key)) != <span class="keyword">null</span>) &#123;③使用传入的key值作为参数来执行传入的lambda</span><br><span class="line">            put(key, newValue);</span><br><span class="line">            <span class="keyword">return</span> newValue;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> v;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>computeIfPresent</strong><br><code>方法解释</code><br>该方法compute方法只用于key存在的时候，如果key不存在返回null</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">default</span> V <span class="title">computeIfPresent</span><span class="params">(K key,</span></span></span><br><span class="line"><span class="function"><span class="params">        BiFunction&lt;? <span class="keyword">super</span> K, ? <span class="keyword">super</span> V, ? extends V&gt; remappingFunction)</span> </span>&#123;①传入两个参数</span><br><span class="line">    Objects.requireNonNull(remappingFunction);</span><br><span class="line">    V oldValue;</span><br><span class="line">    <span class="keyword">if</span> ((oldValue = get(key)) != <span class="keyword">null</span>) &#123;②如果存在key就设置newValue</span><br><span class="line">        V newValue = remappingFunction.apply(key, oldValue);</span><br><span class="line">        <span class="keyword">if</span> (newValue != <span class="keyword">null</span>) &#123;</span><br><span class="line">            put(key, newValue);</span><br><span class="line">            <span class="keyword">return</span> newValue;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            remove(key);</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2020/09/01/Java8%E4%B8%ADMap.merge%E3%80%81compute%E3%80%81computeIfAbsent%E3%80%81computeIfPre/" data-id="ckejvvygm0002mjzx6muz0qqe" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2020/09/01/FeginClient%E5%8F%82%E6%95%B0%E9%97%AE%E9%A2%98/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          (no title)
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2020/09/01/Java8%E6%96%B0%E7%89%B9%E6%80%A7%E5%AD%A6%E4%B9%A0/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title"></div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Java8/">Java8</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java%E8%BF%9B%E9%98%B6/">Java进阶</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Redis%E5%AD%A6%E4%B9%A0/">Redis学习</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/SpringBoot/">SpringBoot</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/SpringCloud/">SpringCloud</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/java8/">java8</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/java%E5%B7%A5%E5%85%B7%E7%B1%BB/">java工具类</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%91%BD%E4%BB%A4%E8%A1%8C/">命令行</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%98%BF%E9%87%8C%E5%B7%B4%E5%B7%B4%E4%BB%A3%E7%A0%81%E8%A7%84%E8%8C%83/">阿里巴巴代码规范</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/09/">September 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">June 2020</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2020/09/01/hello-world/">Hello World</a>
+          </li>
+        
+          <li>
+            <a href="/2020/09/01/java8%E4%B8%AD%E7%9A%84%E6%B5%81%E5%BC%8F%E5%86%99%E6%B3%95%E7%9A%84%E4%B8%80%E7%82%B9%E6%80%9D%E8%80%83/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2020/09/01/2020-08-24/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2020/09/01/FeginClient%E5%8F%82%E6%95%B0%E9%97%AE%E9%A2%98/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2020/09/01/Java8%E4%B8%ADMap.merge%E3%80%81compute%E3%80%81computeIfAbsent%E3%80%81computeIfPre/">(no title)</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2020 John Doe<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>

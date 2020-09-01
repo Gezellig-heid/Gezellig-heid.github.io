@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="SpringCloud主要包括什么EurekaEureka是Netfix中的一个提供服务注册和发现的产品。用大白话讲，Eureka 就是一个服务中心，将所有的可以提供的服务都注册到它这里来管理，其它各调用者需要的时候去注册中心获取，然后再进行调用，避免了服务之间的直接调用，方便后续的水平扩展、故障转移等。当然服务中心这么重要的组件一但挂掉将会影响全部服务，因此需要搭建 Eureka 集群来保持高可">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hexo">
+<meta property="og:url" content="http://yoursite.com/2020/09/01/SpringCloud%E4%B8%BB%E8%A6%81%E5%8C%85%E6%8B%AC%E4%BB%80%E4%B9%88/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="SpringCloud主要包括什么EurekaEureka是Netfix中的一个提供服务注册和发现的产品。用大白话讲，Eureka 就是一个服务中心，将所有的可以提供的服务都注册到它这里来管理，其它各调用者需要的时候去注册中心获取，然后再进行调用，避免了服务之间的直接调用，方便后续的水平扩展、故障转移等。当然服务中心这么重要的组件一但挂掉将会影响全部服务，因此需要搭建 Eureka 集群来保持高可">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://yoursite.com/2020/09/01/SpringCloud%E4%B8%BB%E8%A6%81%E5%8C%85%E6%8B%AC%E4%BB%80%E4%B9%88/SpringCloud%E4%B8%BB%E8%A6%81%E5%8C%85%E6%8B%AC%E4%BB%80%E4%B9%88/006tNc79ly1fqdrhznd6yj30ak0cyaep.jpg">
+<meta property="article:published_time" content="2020-08-31T16:00:00.000Z">
+<meta property="article:modified_time" content="2020-09-01T12:06:41.581Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://yoursite.com/2020/09/01/SpringCloud%E4%B8%BB%E8%A6%81%E5%8C%85%E6%8B%AC%E4%BB%80%E4%B9%88/SpringCloud%E4%B8%BB%E8%A6%81%E5%8C%85%E6%8B%AC%E4%BB%80%E4%B9%88/006tNc79ly1fqdrhznd6yj30ak0cyaep.jpg">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 5.1.1"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-SpringCloud主要包括什么" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/09/01/SpringCloud%E4%B8%BB%E8%A6%81%E5%8C%85%E6%8B%AC%E4%BB%80%E4%B9%88/" class="article-date">
+  <time datetime="2020-08-31T16:00:00.000Z" itemprop="datePublished">2020-09-01</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/SpringCloud/">SpringCloud</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="SpringCloud主要包括什么"><a href="#SpringCloud主要包括什么" class="headerlink" title="SpringCloud主要包括什么"></a>SpringCloud主要包括什么</h1><h2 id="Eureka"><a href="#Eureka" class="headerlink" title="Eureka"></a>Eureka</h2><p>Eureka是Netfix中的一个提供服务注册和发现的产品。<br>用大白话讲，Eureka 就是一个服务中心，将所有的可以提供的服务都注册到它这里来管理，其它各调用者需要的时候去注册中心获取，然后再进行调用，避免了服务之间的直接调用，方便后续的水平扩展、故障转移等。<br>当然服务中心这么重要的组件一但挂掉将会影响全部服务，因此需要搭建 Eureka 集群来保持高可用性，生产中建议最少两台。随着系统的流量不断增加，需要根据情况来扩展某个服务，Eureka 内部已经提供均衡负载的功能，只需要增加相应的服务端实例既可。那么在系统的运行期间某个实例挂了怎么办？Eureka 内容有一个心跳检测机制，如果某个实例在规定的时间内没有进行通讯则会自动被剔除掉，避免了某个实例挂掉而影响服务。<br>因此使用了 Eureka 就自动具有了注册中心、负载均衡、故障转移的功能。</p>
+<h2 id="Hystrix"><a href="#Hystrix" class="headerlink" title="Hystrix"></a>Hystrix</h2><p>在微服务架构中通常存在多个服务层进行调用，当一个服务挂了以后容易导致整个系统都不可用，这也叫做服务器雪崩。<br>这种情况下需要有故障隔离功能，避免上面的问题发生，Hystrix 会在某个服务连续调用 N 次不响应的情况下，立即通知调用端调用失败，避免调用端持续等待而影响了整体服务。Hystrix 间隔时间会再次检查此服务，如果服务恢复将继续提供服务。</p>
+<hr>
+<p>服务容错保护Hystrix    中文含义是豪猪，寓意着保护自己不受天敌的伤害，代表一种防御机制<br>服务雪崩效应：<br>服务雪崩效应是一种因 服务提供者 的不可用导致 服务调用者 的不可用，并将不可用 逐渐放大 的过程<br><img src="SpringCloud%E4%B8%BB%E8%A6%81%E5%8C%85%E6%8B%AC%E4%BB%80%E4%B9%88/006tNc79ly1fqdrhznd6yj30ak0cyaep.jpg"><br>如上图所示：先是A服务不可用，而后调用A服务的B服务也不可用，最后是调用B服务的C/D服务也不可用，形成服务雪崩<br>服务雪崩主要有三个阶段：</p>
+<ol>
+<li>服务提供者不可用</li>
+<li>重试加大流量</li>
+<li>服务调用者不可用<h2 id="Hystrix-Dashboard-和-Turbine"><a href="#Hystrix-Dashboard-和-Turbine" class="headerlink" title="Hystrix Dashboard 和 Turbine"></a>Hystrix Dashboard 和 Turbine</h2>Hystrix Dashboard是一个针对Hystrix进行实时监控的工具，但是使用Hystrix Dashboard只能看到单个应用内的服务信息，我们需要一个汇总多个服务的数据显示的Hystrix Dashboard，这个工具就是Turbine<h2 id="Spring-Cloud-Config"><a href="#Spring-Cloud-Config" class="headerlink" title="Spring Cloud Config"></a>Spring Cloud Config</h2>随着服务的不断增多，每个微服务都应该对应着自己的配置文件。<br>Spring Cloud Config 是一个解决分布式系统的配置管理方案。它包含了 Client 和 Server 两个部分，Server 提供配置文件的存储、以接口的形式将配置文件的内容提供出去，Client 通过接口获取数据、并依据此数据初始化自己的应用。<h2 id="Spring-Cloud-Bus"><a href="#Spring-Cloud-Bus" class="headerlink" title="Spring Cloud Bus"></a>Spring Cloud Bus</h2>Spring Cloud Config是单个项目的配置中心，而bus则是将多个Config统一管理</li>
+</ol>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2020/09/01/SpringCloud%E4%B8%BB%E8%A6%81%E5%8C%85%E6%8B%AC%E4%BB%80%E4%B9%88/" data-id="ckejvvygs0008mjzxhwu23rrk" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2020/09/01/Redis%E4%BA%8B%E5%8A%A1%E4%B8%8E%E5%9F%BA%E6%9C%AC%E5%AE%9E%E7%8E%B0%E4%BB%A3%E7%A0%81/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          (no title)
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2020/09/01/Spring%E4%BA%8B%E5%8A%A1%E5%AD%A6%E4%B9%A0/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title"></div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Java8/">Java8</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java%E8%BF%9B%E9%98%B6/">Java进阶</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Redis%E5%AD%A6%E4%B9%A0/">Redis学习</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/SpringBoot/">SpringBoot</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/SpringCloud/">SpringCloud</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/java8/">java8</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/java%E5%B7%A5%E5%85%B7%E7%B1%BB/">java工具类</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%91%BD%E4%BB%A4%E8%A1%8C/">命令行</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%98%BF%E9%87%8C%E5%B7%B4%E5%B7%B4%E4%BB%A3%E7%A0%81%E8%A7%84%E8%8C%83/">阿里巴巴代码规范</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/09/">September 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">June 2020</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2020/09/01/hello-world/">Hello World</a>
+          </li>
+        
+          <li>
+            <a href="/2020/09/01/java8%E4%B8%AD%E7%9A%84%E6%B5%81%E5%BC%8F%E5%86%99%E6%B3%95%E7%9A%84%E4%B8%80%E7%82%B9%E6%80%9D%E8%80%83/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2020/09/01/2020-08-24/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2020/09/01/FeginClient%E5%8F%82%E6%95%B0%E9%97%AE%E9%A2%98/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2020/09/01/Java8%E4%B8%ADMap.merge%E3%80%81compute%E3%80%81computeIfAbsent%E3%80%81computeIfPre/">(no title)</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2020 John Doe<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>

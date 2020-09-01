@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="java8中的流式写法的一点思考最近学习了java8实战和effective java这两本书关于流式写法的知识，在看完java8之后就在想流式写法肯定也会有它的缺点，它优化了外部迭代就肯定舍弃了什么，当学习到effective java 的时候我知道了它的缺点到底是什么。Stream流式表达的优缺点是什么  优点 简洁容易进行并行计算，添加一个parallel就行有可能是未来编程的趋势递归运行非">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hexo">
+<meta property="og:url" content="http://yoursite.com/2020/09/01/java8%E4%B8%AD%E7%9A%84%E6%B5%81%E5%BC%8F%E5%86%99%E6%B3%95%E7%9A%84%E4%B8%80%E7%82%B9%E6%80%9D%E8%80%83/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="java8中的流式写法的一点思考最近学习了java8实战和effective java这两本书关于流式写法的知识，在看完java8之后就在想流式写法肯定也会有它的缺点，它优化了外部迭代就肯定舍弃了什么，当学习到effective java 的时候我知道了它的缺点到底是什么。Stream流式表达的优缺点是什么  优点 简洁容易进行并行计算，添加一个parallel就行有可能是未来编程的趋势递归运行非">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2020-08-31T16:00:00.000Z">
+<meta property="article:modified_time" content="2020-09-01T12:04:18.662Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 5.1.1"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-java8中的流式写法的一点思考" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/09/01/java8%E4%B8%AD%E7%9A%84%E6%B5%81%E5%BC%8F%E5%86%99%E6%B3%95%E7%9A%84%E4%B8%80%E7%82%B9%E6%80%9D%E8%80%83/" class="article-date">
+  <time datetime="2020-08-31T16:00:00.000Z" itemprop="datePublished">2020-09-01</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Java8/">Java8</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="java8中的流式写法的一点思考"><a href="#java8中的流式写法的一点思考" class="headerlink" title="java8中的流式写法的一点思考"></a>java8中的流式写法的一点思考</h1><p>最近学习了java8实战和effective java这两本书关于流式写法的知识，在看完java8之后就在想流式写法肯定也会有它的缺点，它优化了外部迭代就肯定舍弃了什么，当学习到effective java 的时候我知道了它的缺点到底是什么。<br><code>Stream流式表达的优缺点是什么</code></p>
+<ul>
+<li>优点<blockquote>
+<p>简洁<br>容易进行并行计算，添加一个parallel就行<br>有可能是未来编程的趋势<br>递归运行非常快，对其有专门的优化  </p>
+</blockquote>
+</li>
+<li>缺点<blockquote>
+<p>如果不使用并行计算，代码的效率并没有普通迭代的快（大多数情况）<br>没有办法进行return、continue、break、对异常进行处理等操作<br>不容易调试  </p>
+</blockquote>
+</li>
+<li>相较于普通迭代的优点<blockquote>
+<p>无存储<br>函数式风格，不会修改数据源<br>惰性执行<br>代码简洁<br>::Stream和iterator迭代的效率比较::<br>这里给出两篇博客，其中测试了Stream、parallel stream、iterator的执行效率<br><a target="_blank" rel="noopener" href="https://segmentfault.com/a/1190000004171551">Java 8 Stream的性能到底如何？ - 某熊的全栈之路 - SegmentFault 思否</a><br><a target="_blank" rel="noopener" href="https://blog.csdn.net/Al_assad/article/details/82356606">JDK8 Stream 数据流效率分析_Al_assad的博客-CSDN博客_stream 效率</a><br>在这里直接给出相应的结论：</p>
+</blockquote>
+</li>
+<li>数据量小的时候（size&lt;=1000）的时候iterator效率要比Stream高，不过都低于毫秒所以可以牺牲这一部分性能来追求Stream的可读性。</li>
+<li>在大数据量（szie&gt;10000）时，Stream的处理效率要高一些，如果并行流使用得当效率还能更高。</li>
+<li>并行流使用的时候受cpu的影响大，当没分配到多个cpu核心时，加上引用 forkJoinPool 的开销，运行效率可能还不如普通的 Stream。<br><code>如何用好Stream表达式</code></li>
+</ul>
+<ol>
+<li><p><strong>注意装箱拆箱</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">ArrayList&lt;Integer&gt; list = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span> ;i&lt;<span class="number">10000</span> ;i++)&#123;</span><br><span class="line">    list.add(i);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">long</span> s = System.currentTimeMillis();</span><br><span class="line">List&lt;Integer&gt; collect = list.stream().map(x -&gt; ++x).collect(Collectors.toList());</span><br><span class="line"><span class="keyword">long</span> es = System.currentTimeMillis();</span><br><span class="line">System.out.println(es - s);</span><br><span class="line"></span><br><span class="line"><span class="keyword">long</span> l = System.currentTimeMillis();</span><br><span class="line">List&lt;Integer&gt; result = list.stream()</span><br><span class="line">        .mapToInt(x -&gt; ++x)</span><br><span class="line">        .boxed()</span><br><span class="line">        .collect(Collectors.toList());</span><br><span class="line"><span class="keyword">long</span> el = System.currentTimeMillis();</span><br><span class="line">System.out.println(el-l);</span><br></pre></td></tr></table></figure>
+<p>我将10000个数值放入list中，以引用的形式来存储，在第一段代码中直接使用map进行操作自加1，最后又装箱成为List<Integer>，这里隐含了一个拆箱和装箱的步骤。<br>第二段代码中我将原始类型特化，将Stream<Integer> 特化为IntStream省去拆箱的时间，再使用boxed方法将流转化为Stream<Integer>最后使用收集为一个list，boxed函数的作用是将IntStream转化为Stream<Integer>，使流可以被收集为一个List<Integer>。<br>数据量10000级别的大小，上面两段代码在我的机器上执行速度分别为70和7毫秒左右，比值大约是10:1。</p>
+</li>
+<li><p><strong>不要因为强行使用Stream表达式，而抛弃了之前的迭代方法，这样可能更难理解，有效的结合起来使用更好</strong><br>首先是effective java中第7章中第45条谨慎使用Stream中它给出了一个例子<br>从词典文件中读取单词，并打印出单词数量大于用户指定的最低值的所有换位词，包含相同字母、字母顺序不同的两个词被称为换位词。比如”staple”和”petals”键都是”aelpst”,它们就是换位词。</p>
+</li>
+</ol>
+<ul>
+<li>不用Stream的代码：<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> IOException </span>&#123;</span><br><span class="line">    File dictionary = <span class="keyword">new</span> File(args[<span class="number">0</span>]);</span><br><span class="line">    <span class="keyword">int</span> minGroupSize = Integer.parseInt(args[<span class="number">1</span>]);</span><br><span class="line"></span><br><span class="line">    Map&lt;String, Set&lt;String&gt;&gt; groups = <span class="keyword">new</span> HashMap&lt;&gt;();</span><br><span class="line">    <span class="keyword">try</span> (Scanner s = <span class="keyword">new</span> Scanner(dictionary)) &#123;</span><br><span class="line">        <span class="keyword">while</span> (s.hasNext()) &#123;</span><br><span class="line">            String word = s.next();</span><br><span class="line">            groups.computeIfAbsent(alphabetize(word),(unused) -&gt; <span class="keyword">new</span> TreeSet&lt;&gt;()).add(word);</span><br><span class="line">				① computeIfAbsent是java8中map的新方法，当一个key不存在就设置一个值并返回值，如果存在就直接返回值</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (Set&lt;String&gt; group : groups.values())</span><br><span class="line">        <span class="keyword">if</span> (group.size() &gt;= minGroupSize)</span><br><span class="line">            System.out.println(group.size() + <span class="string">&quot;: &quot;</span> + group);②循环打印</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">static</span> String <span class="title">alphabetize</span><span class="params">(String s)</span> </span>&#123;③分割字符串，将其组成的字母进行排序，这样就能找到两个词的共同键</span><br><span class="line">    <span class="keyword">char</span>[] a = s.toCharArray();</span><br><span class="line">    Arrays.sort(a);</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> String(a);</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+代码很长，但是仔细看能看懂，这时候就会想能不能用Stream进行优化</li>
+<li>大量使用Stream的代码<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> IOException </span>&#123;</span><br><span class="line">    Path dictionary = Paths.get(args[<span class="number">0</span>]);</span><br><span class="line">    <span class="keyword">int</span> minGroupSize = Integer.parseInt(args[<span class="number">1</span>]);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">try</span> (Stream&lt;String&gt; words = Files.lines(dictionary)) &#123;</span><br><span class="line">        words.collect(</span><br><span class="line">                groupingBy(word -&gt; word.chars().sorted()</span><br><span class="line">                        .collect(StringBuilder::<span class="keyword">new</span>,</span><br><span class="line">                                (sb, c) -&gt; sb.append((<span class="keyword">char</span>) c),</span><br><span class="line">                                StringBuilder::append).toString()))</span><br><span class="line">                .values().stream()</span><br><span class="line">                .filter(group -&gt; group.size() &gt;= minGroupSize)</span><br><span class="line">                .map(group -&gt; group.size() + <span class="string">&quot;: &quot;</span> + group)</span><br><span class="line">                .forEach(System.out::println);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+很多难懂，根本没有流失表达式的简洁和易读的特性</li>
+<li>少量使用Stream的版本<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> IOException </span>&#123;</span><br><span class="line">    Path dictionary = Paths.get(args[<span class="number">0</span>]);</span><br><span class="line">    <span class="keyword">int</span> minGroupSize = Integer.parseInt(args[<span class="number">1</span>]);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">try</span> (Stream&lt;String&gt; words = Files.lines(dictionary)) &#123;</span><br><span class="line">        words.collect(groupingBy(word -&gt; alphabetize(word)))</span><br><span class="line">                .values().stream()</span><br><span class="line">                .filter(group -&gt; group.size() &gt;= minGroupSize)</span><br><span class="line">                .forEach(g -&gt; System.out.println(g.size() + <span class="string">&quot;: &quot;</span> + g));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">static</span> String <span class="title">alphabetize</span><span class="params">(String s)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">char</span>[] a = s.toCharArray();</span><br><span class="line">    Arrays.sort(a);</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> String(a);</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+这样就舒服了很多，使用的alphabetize的方法是和第一个图中一样的方法，正因为这个方法让Stream变的比上面的代码易读很多<br>①按照word的字母组成进行分组,获取映射值的流<br>②进行过滤，按照最小分组长度筛选出比其长的分组<br>③打印</li>
+</ul>
+<ol start="3">
+<li><p><strong>其次lambda表达式中的foreach不要随意使用</strong><br>下面来看effective java中第7章第46条中的一个例子</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="keyword">static</span> java.util.stream.Collectors.*;</span><br><span class="line">Map&lt;String, Long&gt; freq = <span class="keyword">new</span> HashMap&lt;&gt;();</span><br><span class="line">ArrayList&lt;String&gt; words = <span class="keyword">new</span> ArrayList&lt;String&gt;();</span><br><span class="line">words.forEach(word -&gt; &#123;</span><br><span class="line">        freq.merge(word.toLowerCase(), <span class="number">1L</span>, Long::sum);</span><br><span class="line"> &#125;);</span><br></pre></td></tr></table></figure>
+<p>这段代码是用来统计单词出现的次数，产生一个单词和频率的映射。看上去这么写也没问题，但是这段代码它对比普通迭代没有任何优势，它还是显式迭代，可读性反而变差了，而且比普通迭代更难维护。<br>我试了一下迭代版本和流式表达版本的效率差别，随机生成5000000条数据，执行代码，流式表达式Stream.foreach的执行时间是300以上，普通迭代是200以上不到300。<br>虽然这个测试不标准、正常情况下不会有这么大的数据量，当数据量不多的时候两者性能差别也不大，但是能看出来Stream.foreach和正常迭代相比在这种情况下没有执行速度上的优势。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="keyword">static</span> java.util.stream.Collectors.*;</span><br><span class="line">Map&lt;String, Long&gt; freq = <span class="keyword">new</span> HashMap&lt;&gt;();</span><br><span class="line">ArrayList&lt;String&gt; words = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">int</span> i=<span class="number">1</span>;i&lt;<span class="number">5000000</span>;i++)&#123;</span><br><span class="line">    <span class="keyword">int</span> random = (<span class="keyword">int</span>)Math.random()*<span class="number">100</span>;</span><br><span class="line">    words.add(String.valueOf(random));</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">long</span> st = System.currentTimeMillis();</span><br><span class="line">words.forEach(word -&gt; &#123;</span><br><span class="line">    freq.merge(word.toLowerCase(), <span class="number">1L</span>, Long::sum);</span><br><span class="line">&#125;);</span><br><span class="line"><span class="keyword">long</span> et = System.currentTimeMillis();</span><br><span class="line">System.out.println(et-st);</span><br><span class="line"><span class="keyword">long</span> st1 = System.currentTimeMillis();</span><br><span class="line"><span class="keyword">for</span> (String word : words) &#123;</span><br><span class="line">    freq.merge(word.toLowerCase(),<span class="number">1L</span>,Long::sum);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">long</span> et1 = System.currentTimeMillis();</span><br><span class="line">System.out.println(et1-st1);</span><br></pre></td></tr></table></figure>
+<p>effective java中给出了另外一种流式写法来执行相应的功能</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="keyword">static</span> java.util.stream.Collectors.*;</span><br><span class="line">Map&lt;String, Long&gt; freq = <span class="keyword">new</span> HashMap&lt;&gt;();</span><br><span class="line">ArrayList&lt;String&gt; words = <span class="keyword">new</span> ArrayList&lt;String&gt;();</span><br><span class="line">freq = words</span><br><span class="line">        .collect(groupingBy(String::toLowerCase, counting()));</span><br></pre></td></tr></table></figure>
+<p>这种写法是隐式迭代，正确的使用了lambda表达式。foreach操作应该只用于打印结果，而不是执行计算，有时候也可以将Stream计算的结果添加到之前已经存在的集合中。如果想要使用foreach循环进行操作，首先看是否可以转为Collection中的方法，Collection比foreach对流式表达更加友好，如果不行看看是否可以直接使用普通的迭代进行操作。</p>
+</li>
+<li><p><strong>谨慎使用Stream并行操作</strong><br>使用并行化的流式操作的时候一定要进行完善的测试，能确保其性能比串行要好，如果对Stream进行不恰当的并行操作，一定要确保代码正确，不会产生没有预料到的问题。</p>
+</li>
+</ol>
+<ol start="5">
+<li><strong>Collection中方法小技巧</strong><br>Collection中有很多方法，可以用其来简化很多之前的代码</li>
+</ol>
+<ul>
+<li>toMap方法<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Map&lt;String, String&gt; collect = testList.stream().collect(toMap(Object::toString, t -&gt; t));</span><br></pre></td></tr></table></figure>
+toMap中的两个参数第一个是映射的键，第二个是映射的值，但是如果多个Stream映射了同一个键就会报错。<br>解决方法：<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Map&lt;String, String&gt; collect = testList.stream().collect(toMap(Object::toString, t -&gt; t,(old,newVal)-&gt; old+newVal));</span><br></pre></td></tr></table></figure>
+使用三个参数的toMap方法，前两个参数与上面的toMap方法相同，第三个参数是如果产生键冲突如何处理，这里的处理方式是使用旧的值和新的值相加添加到映射值上。你也可以自定义，让其使用新的值进行更新或者乘除某个值等等。</li>
+<li>groupingBy方法<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">freq = words.stream()</span><br><span class="line">        .collect(groupingBy(String::toLowerCase, counting()));</span><br></pre></td></tr></table></figure>
+这样生成的Map的值是该元素出现的次数。<br>正确的使用Stream必须要了解收集器，最重要的收集器就是toList，toMap，toSet，groupingBy，joining等。<br>::总结::</li>
+</ul>
+<ol>
+<li>普通迭代和流式表达式要结合起来使用，有更好的可读性，使用普通迭代也不会让你的性能下降。</li>
+<li>写一个好的流操作很重要，其中涉及到装箱拆箱以及收集器的使用，如果使用不好性能会大大降低。</li>
+<li>谨慎使用并行流。</li>
+</ol>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2020/09/01/java8%E4%B8%AD%E7%9A%84%E6%B5%81%E5%BC%8F%E5%86%99%E6%B3%95%E7%9A%84%E4%B8%80%E7%82%B9%E6%80%9D%E8%80%83/" data-id="ckejq82q40000nszxekwncvo6" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2020/09/01/hello-world/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Hello World
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2020/09/01/2020-08-24/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title"></div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Java8/">Java8</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java%E8%BF%9B%E9%98%B6/">Java进阶</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Redis%E5%AD%A6%E4%B9%A0/">Redis学习</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/SpringBoot/">SpringBoot</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/SpringCloud/">SpringCloud</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/java8/">java8</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/java%E5%B7%A5%E5%85%B7%E7%B1%BB/">java工具类</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%91%BD%E4%BB%A4%E8%A1%8C/">命令行</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%98%BF%E9%87%8C%E5%B7%B4%E5%B7%B4%E4%BB%A3%E7%A0%81%E8%A7%84%E8%8C%83/">阿里巴巴代码规范</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/09/">September 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">June 2020</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2020/09/01/hello-world/">Hello World</a>
+          </li>
+        
+          <li>
+            <a href="/2020/09/01/java8%E4%B8%AD%E7%9A%84%E6%B5%81%E5%BC%8F%E5%86%99%E6%B3%95%E7%9A%84%E4%B8%80%E7%82%B9%E6%80%9D%E8%80%83/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2020/09/01/2020-08-24/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2020/09/01/FeginClient%E5%8F%82%E6%95%B0%E9%97%AE%E9%A2%98/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2020/09/01/Java8%E4%B8%ADMap.merge%E3%80%81compute%E3%80%81computeIfAbsent%E3%80%81computeIfPre/">(no title)</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2020 John Doe<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>

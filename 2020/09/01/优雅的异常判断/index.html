@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="优雅的异常判断#Java&#x2F;基础学习优雅的处理异常，多么优雅的主题。事实上异常机制的处理有太多争论了，就像开头说的我们都在有意无意的去逃避异常。这一节，我总结了书上的理论，和编程中的一点体验去说一下关于异常的处理。  1.异常处理不能代替逻辑判断1234567891011121314&#x2F;&#x2F;逻辑判断String param &#x3D; ....;if(param !&#x3D; null)System.out.print">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hexo">
+<meta property="og:url" content="http://yoursite.com/2020/09/01/%E4%BC%98%E9%9B%85%E7%9A%84%E5%BC%82%E5%B8%B8%E5%88%A4%E6%96%AD/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="优雅的异常判断#Java&#x2F;基础学习优雅的处理异常，多么优雅的主题。事实上异常机制的处理有太多争论了，就像开头说的我们都在有意无意的去逃避异常。这一节，我总结了书上的理论，和编程中的一点体验去说一下关于异常的处理。  1.异常处理不能代替逻辑判断1234567891011121314&#x2F;&#x2F;逻辑判断String param &#x3D; ....;if(param !&#x3D; null)System.out.print">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2020-08-31T16:00:00.000Z">
+<meta property="article:modified_time" content="2020-09-01T12:03:51.379Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 5.1.1"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-优雅的异常判断" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/09/01/%E4%BC%98%E9%9B%85%E7%9A%84%E5%BC%82%E5%B8%B8%E5%88%A4%E6%96%AD/" class="article-date">
+  <time datetime="2020-08-31T16:00:00.000Z" itemprop="datePublished">2020-09-01</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Java%E8%BF%9B%E9%98%B6/">Java进阶</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="优雅的异常判断"><a href="#优雅的异常判断" class="headerlink" title="优雅的异常判断"></a>优雅的异常判断</h1><p>#Java/基础学习<br>优雅的处理异常，多么优雅的主题。事实上异常机制的处理有太多争论了，就像开头说的我们都在有意无意的去逃避异常。这一节，我总结了书上的理论，和编程中的一点体验去说一下关于异常的处理。</p>
+<ul>
+<li>1.异常处理不能代替逻辑判断<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//逻辑判断</span></span><br><span class="line">String param = ....;</span><br><span class="line"><span class="keyword">if</span>(param != <span class="keyword">null</span>)</span><br><span class="line">System.out.print(param);</span><br><span class="line"></span><br><span class="line"><span class="comment">//错误示范</span></span><br><span class="line"><span class="keyword">try</span>&#123;</span><br><span class="line"></span><br><span class="line">	String param = ....;</span><br><span class="line">	System.out.print(param);</span><br><span class="line"></span><br><span class="line">&#125;<span class="keyword">catch</span>(Exception e)&#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+或许你会说，直接用 try…catch 去捕获这个空指针异常省的自己去判断，大错特错！《Java核心技术Ｉ》里面写的清楚明白，相比于简单的测试，异常处理会消耗大量的时间。我们只在异常的情况下使用异常!</li>
+<li>2.不要过分细化异常<br>不要将每一条语句分别装在一个独立的 try 语句块中。使用多个 catch 去捕获一个 try 块中的异常。例子就不举了。</li>
+<li>3.利用异常的层次结构<br>跟我读三遍，Java异常是对象X3！异常和其他 Java对象一样，也有自己的方法，自己的爸爸和儿子，所以在捕获异常时不要用一个 Exception 或者 Throwable 一夫当关万夫莫开。选择使用哪种正确类型异常对程序的可读性很有必要。</li>
+<li>4.不要放任异常<br>如果你捕获异常，那请你在 catch 块中做点什么吧！</li>
+<li>5.不要羞于异常的传递<br>我记得在我刚开始编程时，我认为那些看到异常就往外抛的行为真的是不负责任，你有错误都不改正！实际上，当然还是我天真！我记得我说过，所谓的架构师就是把问题甩给别人…我们在底层（这里指被调用层）编写出来带异常的的方法，往往不知道该如何正确处理，过早的处理调用者就无法把错误消息传给更高级，所以，异常该抛就抛吧！</li>
+<li>6.不要不捕获异常（注意是个双重否定）<br>第5点说让我们放下顾虑，勇敢的抛出异常，那是不是一直抛到最上层的调用者，然后最上层也把它抛出去？当然不是！要找到最恰当的时机去捕获，去做一些处理。</li>
+<li>7.捕获异常的时机<br>什么时机才是捕获异常的大好时机？要看你的具体需求，如果你想在出现异常时给用户一些提示信息，那就要在最上层或者次上层捕获。如果你在测试阶段，想做一个判断，在异常出现时打印一句话，那就直接在异常出现的地方捕获。</li>
+<li>8.出现异常时对用户要友好<br>当程序出现异常，在测试阶段会导致程序不能正常运行。已发布的项目，要是也按照这个套路来，程序终止了，留在用户在那里一脸懵逼，这就是程序员的噩梦，说明你没有考虑到异常出现时要怎样给用户一个交代！</li>
+<li>9.配合日志<br>如果项目（JavaWeb）发布到了tomcat上面，那tomcat上的log日志会记录这个程序的运行状态，出现异常可以日志上面的记录的信息去查看哪里出了问题。如果项目没有发布在 tomcat ，可以使用一些日志框架如 log4j ，将每次出现异常的情况打印在上面。</li>
+<li>补充：对于非受查异常使用逻辑判断去代替异常的捕获<br>在网上经常看到一些讲解异常的博客，出现用 try…catch 去捕获非受查异常这种奇葩例子（比如不会空指针，数组越界），看的我很难受！不要让程序的性能为你的逻辑错误而买单获取参数时先判断是否为空，遍历数组时考虑一下数组下标！</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2020/09/01/%E4%BC%98%E9%9B%85%E7%9A%84%E5%BC%82%E5%B8%B8%E5%88%A4%E6%96%AD/" data-id="ckejvvygw000bmjzx1ea67q7f" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2020/09/01/Spring%E4%BA%8B%E5%8A%A1%E5%AD%A6%E4%B9%A0/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          (no title)
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2020/09/01/%E5%88%9D%E8%AF%86SpringCloud/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title"></div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Java8/">Java8</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Java%E8%BF%9B%E9%98%B6/">Java进阶</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Redis%E5%AD%A6%E4%B9%A0/">Redis学习</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/SpringBoot/">SpringBoot</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/SpringCloud/">SpringCloud</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/java8/">java8</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/java%E5%B7%A5%E5%85%B7%E7%B1%BB/">java工具类</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%91%BD%E4%BB%A4%E8%A1%8C/">命令行</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%98%BF%E9%87%8C%E5%B7%B4%E5%B7%B4%E4%BB%A3%E7%A0%81%E8%A7%84%E8%8C%83/">阿里巴巴代码规范</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/09/">September 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">June 2020</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2020/09/01/hello-world/">Hello World</a>
+          </li>
+        
+          <li>
+            <a href="/2020/09/01/java8%E4%B8%AD%E7%9A%84%E6%B5%81%E5%BC%8F%E5%86%99%E6%B3%95%E7%9A%84%E4%B8%80%E7%82%B9%E6%80%9D%E8%80%83/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2020/09/01/2020-08-24/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2020/09/01/FeginClient%E5%8F%82%E6%95%B0%E9%97%AE%E9%A2%98/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2020/09/01/Java8%E4%B8%ADMap.merge%E3%80%81compute%E3%80%81computeIfAbsent%E3%80%81computeIfPre/">(no title)</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2020 John Doe<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>
