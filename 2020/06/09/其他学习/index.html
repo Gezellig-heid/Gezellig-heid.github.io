@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="其他学习#Java&#x2F;基础学习 JoinPoint用法JoinPoint接口封装了SpringAop中的信息，可以在切面中使用该类，这样就可以获取到封装该执行方法的JoinPoint对象其中主要包括下面这些方法ProceedingJoinPoint对象ProceedingJoinPoint是JoinPoint的子类，该对象只能用在@Around中，其中多了两个方法  proceed() 执行目标方法">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hexo">
+<meta property="og:url" content="http://yoursite.com/2020/06/09/%E5%85%B6%E4%BB%96%E5%AD%A6%E4%B9%A0/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="其他学习#Java&#x2F;基础学习 JoinPoint用法JoinPoint接口封装了SpringAop中的信息，可以在切面中使用该类，这样就可以获取到封装该执行方法的JoinPoint对象其中主要包括下面这些方法ProceedingJoinPoint对象ProceedingJoinPoint是JoinPoint的子类，该对象只能用在@Around中，其中多了两个方法  proceed() 执行目标方法">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://yoursite.com/2020/06/09/%E5%85%B6%E4%BB%96%E5%AD%A6%E4%B9%A0/%E5%85%B6%E4%BB%96%E5%AD%A6%E4%B9%A0/FE734778-45DB-4FDF-8824-9EB824FDEFD4.png">
+<meta property="article:published_time" content="2020-06-09T13:07:37.310Z">
+<meta property="article:modified_time" content="2020-08-14T03:45:27.052Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://yoursite.com/2020/06/09/%E5%85%B6%E4%BB%96%E5%AD%A6%E4%B9%A0/%E5%85%B6%E4%BB%96%E5%AD%A6%E4%B9%A0/FE734778-45DB-4FDF-8824-9EB824FDEFD4.png">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 5.1.1"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-其他学习" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/06/09/%E5%85%B6%E4%BB%96%E5%AD%A6%E4%B9%A0/" class="article-date">
+  <time datetime="2020-06-09T13:07:37.310Z" itemprop="datePublished">2020-06-09</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="其他学习"><a href="#其他学习" class="headerlink" title="其他学习"></a>其他学习</h1><p>#Java/基础学习</p>
+<h2 id="JoinPoint用法"><a href="#JoinPoint用法" class="headerlink" title="JoinPoint用法"></a>JoinPoint用法</h2><p>JoinPoint接口封装了SpringAop中的信息，可以在切面中使用该类，这样就可以获取到封装该执行方法的JoinPoint对象<br>其中主要包括下面这些方法<br><img src="%E5%85%B6%E4%BB%96%E5%AD%A6%E4%B9%A0/FE734778-45DB-4FDF-8824-9EB824FDEFD4.png"><br>ProceedingJoinPoint对象<br>ProceedingJoinPoint是JoinPoint的子类，该对象只能用在@Around中，其中多了两个方法</p>
+<ul>
+<li>proceed() 执行目标方法</li>
+<li>proceed(Object[] args) 传入新的参数执行目标方法</li>
+</ul>
+<hr>
+<h2 id="instanceof与isAssignableFrom的区别"><a href="#instanceof与isAssignableFrom的区别" class="headerlink" title="instanceof与isAssignableFrom的区别"></a>instanceof与isAssignableFrom的区别</h2><p>instanceof是用来判断一个对象实例是否是另一个类或接口的实例<br>用法：</p>
+<blockquote>
+<p>obj instanceof ClassName   第一个参数时对象实例，第二个参数是类名<br>比较的是对象和类之间的关系</p>
+</blockquote>
+<hr>
+<p>isAssignableFrom 是用来判断一个类Class1是否和另一个类Class2相同，或者Class1是否是Class2的超类或接口<br>用法：</p>
+<blockquote>
+<p>Class1. isAssignableFrom(Class2) 第一个参数是类对象，第二个也是类对象<br>eg：</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Class parent = java.io.InputStream.class;</span><br><span class="line">Class child = java.io.FileInputStream.class;</span><br><span class="line">System.out.println(parent.isAssignableFrom(child));</span><br><span class="line">System.out.println(child.isAssignableFrom(parent));</span><br><span class="line">输出结果是：</span><br><span class="line"><span class="keyword">true</span></span><br><span class="line"><span class="keyword">false</span></span><br></pre></td></tr></table></figure>
+<p>从上面的结果可以看出<br>instanceof  是用来判断一个对象是否是另一个类的子类或接口实现<br>isAssignableFrom 用来判断一个类是否是另一个类的  接口和父类 </p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2020/06/09/%E5%85%B6%E4%BB%96%E5%AD%A6%E4%B9%A0/" data-id="ckejvvygx000cmjzxbveqez5x" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2020/06/17/Redis%E4%B8%AD%E7%9A%84%E7%89%B9%E6%AE%8A%E7%B1%BB%E5%9E%8B/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          (no title)
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2020/06/09/%E4%BC%98%E9%9B%85%E7%9A%84%E5%BC%82%E5%B8%B8%E5%88%A4%E6%96%AD/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title"></div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/java8/">java8</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/09/">September 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/08/">August 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/">July 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">June 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">May 2020</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2020/09/01/hello-world/">Hello World</a>
+          </li>
+        
+          <li>
+            <a href="/2020/09/01/Java8%E6%96%B0%E7%89%B9%E6%80%A7%E5%AD%A6%E4%B9%A0/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2020/08/17/java8%E4%B8%AD%E7%9A%84%E6%B5%81%E5%BC%8F%E5%86%99%E6%B3%95%E7%9A%84%E4%B8%80%E7%82%B9%E6%80%9D%E8%80%83/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2020/08/14/Java8%E4%B8%ADMap.merge%E3%80%81compute%E3%80%81computeIfAbsent%E3%80%81computeIfPre/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2020/07/30/2020-08-24/">(no title)</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2020 John Doe<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>

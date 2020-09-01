@@ -113,9 +113,9 @@
 
 
   
-    <article id="post-java8中的流式写法的一点思考" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-Java8新特性学习" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2020/09/01/java8%E4%B8%AD%E7%9A%84%E6%B5%81%E5%BC%8F%E5%86%99%E6%B3%95%E7%9A%84%E4%B8%80%E7%82%B9%E6%80%9D%E8%80%83/" class="article-date">
+    <a href="/2020/09/01/Java8%E6%96%B0%E7%89%B9%E6%80%A7%E5%AD%A6%E4%B9%A0/" class="article-date">
   <time datetime="2020-08-31T16:00:00.000Z" itemprop="datePublished">2020-09-01</time>
 </a>
     
@@ -129,30 +129,140 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="java8中的流式写法的一点思考"><a href="#java8中的流式写法的一点思考" class="headerlink" title="java8中的流式写法的一点思考"></a>java8中的流式写法的一点思考</h1><p>最近学习了java8实战和effective java这两本书关于流式写法的知识，在看完java8之后就在想流式写法肯定也会有它的缺点，它优化了外部迭代就肯定舍弃了什么，当学习到effective java 的时候我知道了它的缺点到底是什么。<br>   <code>Stream流式表达的优缺点是什么</code></p>
-<ul>
-<li><p>优点</p>
+        <h1 id="Java8新特性学习"><a href="#Java8新特性学习" class="headerlink" title="Java8新特性学习"></a>Java8新特性学习</h1><h2 id="1、lambda表达式"><a href="#1、lambda表达式" class="headerlink" title="1、lambda表达式"></a>1、lambda表达式</h2><p>Lambda允许将函数作为参数传递到方法中，可以使代码变得更加紧凑</p>
+<p>使用lambda可以对某些接口进行简单的实现，不过不是所有接口都可以使用lambda来实现</p>
+<p>Lambda规定接口中只能有一个需要被实现的方法（不是说接口中只能有一个方法）</p>
 <blockquote>
+<p>Java8中被default修饰的方法会有默认实现，不是必须被实现的方法，这样不影响lambda的使用<br>语法形式是：()-&gt; {} ,()是参数列表，{}是描述方法体</p>
+</blockquote>
+<p>简单的lambda实现：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Java8Tester</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String args[])</span></span>&#123;</span><br><span class="line">            <span class="comment">// 不用括号</span></span><br><span class="line">            GreetingService greetService1 = message -&gt;</span><br><span class="line">                    System.out.println(<span class="string">&quot;Hello &quot;</span> + message);</span><br><span class="line"></span><br><span class="line">            GreetingService greetingService = <span class="keyword">new</span> GreetingService() &#123;</span><br><span class="line">                <span class="meta">@Override</span></span><br><span class="line">                <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">sayMessage</span><span class="params">(String message)</span> </span>&#123;</span><br><span class="line">                    System.out.println(<span class="string">&quot;Hello &quot;</span> + message);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;;</span><br><span class="line">            greetService1.sayMessage(<span class="string">&quot;Runoob&quot;</span>);</span><br><span class="line">            greetingService.sayMessage(<span class="string">&quot;Baidu&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="class"><span class="keyword">interface</span> <span class="title">GreetingService</span> </span>&#123;</span><br><span class="line">        <span class="function"><span class="keyword">void</span> <span class="title">sayMessage</span><span class="params">(String message)</span></span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>我们可以把上面的lambda看成下面的匿名内部类的实现方法</p>
+<p>GreetingService greetService1 = message -&gt;<br>System.out.println(“Hello “ + message);</p>
+<p>意思是实现GreetingService的接口方法，其中message是参数，方法体是 System.out.println(“Hello “ + message);</p>
+<p>故可以通过greetService1.sayMessage(“Runoob”);直接调用</p>
+<ul>
+<li>可以直接省略参数类型，编译器自动识别参数</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(<span class="keyword">int</span> a,<span class="keyword">int</span> b) --&gt; (a,b)</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>如果只有一个参数可以不加(),多个需要加</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(<span class="keyword">int</span> a) --&gt; a</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>方法体中只有一个语句，可以省略{}</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;System.out.println(<span class="string">&quot;Hello &quot;</span> + message);&#125; --&gt; System.out.println(<span class="string">&quot;Hello &quot;</span> + message); </span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>方法体中只有一个表达式返回值，编译器会自动返回值，大括号需要指定明表达式返回了一个数值</li>
+</ul>
+<p>lambda表达式只能访问标记了final的外部变量，或者是局部变量但是该变量后面必须不能被修改（具有隐式的final属性）</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Java8Tester</span> </span>&#123;</span><br><span class="line">    <span class="keyword">final</span> <span class="keyword">static</span> String FINAL_1 = <span class="string">&quot;1&quot;</span>;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String args[])</span></span>&#123;</span><br><span class="line">        <span class="keyword">final</span> String FINAL_2 = <span class="string">&quot;2&quot;</span>;</span><br><span class="line">            <span class="comment">// 不用括号</span></span><br><span class="line">        String final_3 = <span class="string">&quot;3&quot;</span>;</span><br><span class="line">            GreetingService greetService1 = message -&gt; System.out.println(<span class="string">&quot;Hello &quot;</span> + message + FINAL_1 + FINAL_2 + final_3);</span><br><span class="line"></span><br><span class="line">            <span class="comment">//final_3 = &quot;4&quot;;</span></span><br><span class="line">            GreetingService greetingService = <span class="keyword">new</span> GreetingService() &#123;</span><br><span class="line">                <span class="meta">@Override</span></span><br><span class="line">                <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">sayMessage</span><span class="params">(String message)</span> </span>&#123;</span><br><span class="line">                    System.out.println(<span class="string">&quot;Hello &quot;</span> + message);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;;</span><br><span class="line">            greetService1.sayMessage(<span class="string">&quot;Runoob&quot;</span>);</span><br><span class="line">            greetingService.sayMessage(<span class="string">&quot;Baidu&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="class"><span class="keyword">interface</span> <span class="title">GreetingService</span> </span>&#123;</span><br><span class="line">        <span class="function"><span class="keyword">void</span> <span class="title">sayMessage</span><span class="params">(String message)</span></span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>如果上面的代码把final_3 = “4” 取消注释则会报错</p>
+<h2 id="2、方法引用"><a href="#2、方法引用" class="headerlink" title="2、方法引用"></a>2、方法引用</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Java8Tester</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String args[])</span> </span>&#123;</span><br><span class="line">        GreetingService greetingService2 = Java8Tester::setMessage;</span><br><span class="line"></span><br><span class="line">        Java8Tester java8Tester = <span class="keyword">new</span> Java8Tester();</span><br><span class="line">        GreetingService greetingService3 = java8Tester::setMessage_2;</span><br><span class="line">        </span><br><span class="line">        greetingService2.sayMessage(<span class="string">&quot;kuake&quot;</span>);</span><br><span class="line">        greetingService3.sayMessage(<span class="string">&quot;360&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="class"><span class="keyword">interface</span> <span class="title">GreetingService</span> </span>&#123;</span><br><span class="line">        <span class="function"><span class="keyword">void</span> <span class="title">sayMessage</span><span class="params">(String message)</span></span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">setMessage</span><span class="params">(String str)</span> </span>&#123;</span><br><span class="line">        System.out.println(str + <span class="string">&quot;这是静态方法实现&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setMessage_2</span><span class="params">(String str)</span></span>&#123;</span><br><span class="line">        System.out.println(str + <span class="string">&quot;非静态方法实现&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>我们有时候想要调用其他方法来快速实现接口方法时，就可以通过方法引用的形式：</p>
+<p>如果是静态方法</p>
+<ul>
+<li>类名::方法名</li>
+</ul>
+<p>如果是普通方法</p>
+<ul>
+<li>对象名::方法名</li>
+</ul>
+<p>上面的代码就是使用setMessage和setMessag_2来实现了sayMessage接口方法</p>
+<p>使用引用方法来遍历集合：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">ArrayList&lt;Integer&gt; list = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line"></span><br><span class="line">Collections.addAll(list, <span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>);</span><br><span class="line"><span class="comment">//方法引用来输出集合</span></span><br><span class="line">list.forEach(System.out::println);</span><br><span class="line"><span class="comment">//使用lambda来遍历输出集合</span></span><br><span class="line">list.forEach(element -&gt; &#123;</span><br><span class="line">        <span class="keyword">if</span> (element % <span class="number">2</span> == <span class="number">0</span>) &#123;</span><br><span class="line">          System.out.println(element);</span><br><span class="line">        &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<h2 id="3、流式操作"><a href="#3、流式操作" class="headerlink" title="3、流式操作"></a>3、流式操作</h2><p>stream是一个来自于数据源的元素队列，它支持聚合操作</p>
+<p>就好像是一个迭代器，单向、不可往复，数据只能遍历一次，遍历后就用尽了</p>
+<p>数据源可以是集合、IO对象、数组等</p>
+<p>聚合操作：</p>
+<ul>
+<li>map</li>
+</ul>
+<p>map是映射每个元素对应的结果</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">List&lt;Integer&gt; list = Arrays.asList(<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">7</span>,<span class="number">4</span>,<span class="number">3</span>);</span><br><span class="line">List&lt;Integer&gt; collect = list.stream().map(i -&gt; i * <span class="number">2</span>).collect(Collectors.toList());</span><br><span class="line">collect.forEach(System.out::print);</span><br></pre></td></tr></table></figure>
+
+<p>这里的map(i -&gt; i*2)就是把list中所有元素乘2后再通过collect来组成一个集合</p>
+<ul>
+<li>filter</li>
+</ul>
+<p>filter通过设置条件过滤出元素</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">List&lt;String&gt; strings = Arrays.asList(<span class="string">&quot;abc&quot;</span>, <span class="string">&quot;&quot;</span>, <span class="string">&quot;bc&quot;</span>, <span class="string">&quot;efg&quot;</span>, <span class="string">&quot;abcd&quot;</span>,<span class="string">&quot;&quot;</span>, <span class="string">&quot;jkl&quot;</span>);</span><br><span class="line">List&lt;String&gt; filtered = strings.stream().filter(string -&gt;    !string.isEmpty()).collect(Collectors.toList());</span><br></pre></td></tr></table></figure>
+
+<p>过滤出strings为空的元素</p>
+<ul>
+<li>limit</li>
+</ul>
+<p>limit获取指定数量的数据</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">List&lt;Integer&gt; list = Arrays.asList(<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">7</span>,<span class="number">4</span>,<span class="number">3</span>);</span><br><span class="line">list.stream().limit(<span class="number">3</span>).forEach(System.out::print);</span><br></pre></td></tr></table></figure>
+
+<p>获取前三个数据，但是该方法无法指定两个参数，就像sql中limit(1,3)取出两个数据</p>
+<ul>
+<li>sorted</li>
+</ul>
+<p>用于排序操作</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">List&lt;Integer&gt; list = Arrays.asList(<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">7</span>,<span class="number">4</span>,<span class="number">3</span>);</span><br><span class="line">list.stream().sorted().forEach(System.out::print);</span><br></pre></td></tr></table></figure>
+
+<p>将1,2,3,7,4,3排序输出</p>
+<p>Collectors</p>
+<p>实现归约操作，将流转化成集合，Collectors可用于返回列表和字符串</p>
+<p>在上面的聚合操作后均可以将其转化为对应的列表如map操作所示</p>
+<p>Stream的优点：</p>
+<ul>
+<li>无储存，stream不是一种数据结构，而是某个数据源的视图，数据源可以使集合、数组、IO流</li>
+<li>对stream的任何操作都不会影响到背后的数据源</li>
+<li>惰性执行，只有等到用户真的需要结果才运行</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2020/09/01/Java8%E6%96%B0%E7%89%B9%E6%80%A7%E5%AD%A6%E4%B9%A0/" data-id="ckejvvygo0003mjzx2fyp4tfm" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-java8中的流式写法的一点思考" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/08/17/java8%E4%B8%AD%E7%9A%84%E6%B5%81%E5%BC%8F%E5%86%99%E6%B3%95%E7%9A%84%E4%B8%80%E7%82%B9%E6%80%9D%E8%80%83/" class="article-date">
+  <time datetime="2020-08-17T12:51:48.462Z" itemprop="datePublished">2020-08-17</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="java8中的流式写法的一点思考"><a href="#java8中的流式写法的一点思考" class="headerlink" title="java8中的流式写法的一点思考"></a>java8中的流式写法的一点思考</h1><p>最近学习了java8实战和effective java这两本书关于流式写法的知识，在看完java8之后就在想流式写法肯定也会有它的缺点，它优化了外部迭代就肯定舍弃了什么，当学习到effective java 的时候我知道了它的缺点到底是什么。<br><code>Stream流式表达的优缺点是什么</code></p>
+<ul>
+<li>优点<blockquote>
 <p>简洁<br>容易进行并行计算，添加一个parallel就行<br>有可能是未来编程的趋势<br>递归运行非常快，对其有专门的优化  </p>
 </blockquote>
 </li>
-<li><p>缺点</p>
-<blockquote>
+<li>缺点<blockquote>
 <p>如果不使用并行计算，代码的效率并没有普通迭代的快（大多数情况）<br>没有办法进行return、continue、break、对异常进行处理等操作<br>不容易调试  </p>
 </blockquote>
 </li>
-<li><p>相较于普通迭代的优点</p>
-<blockquote>
+<li>相较于普通迭代的优点<blockquote>
 <p>无存储<br>函数式风格，不会修改数据源<br>惰性执行<br>代码简洁<br>::Stream和iterator迭代的效率比较::<br>这里给出两篇博客，其中测试了Stream、parallel stream、iterator的执行效率<br><a target="_blank" rel="noopener" href="https://segmentfault.com/a/1190000004171551">Java 8 Stream的性能到底如何？ - 某熊的全栈之路 - SegmentFault 思否</a><br><a target="_blank" rel="noopener" href="https://blog.csdn.net/Al_assad/article/details/82356606">JDK8 Stream 数据流效率分析_Al_assad的博客-CSDN博客_stream 效率</a><br>在这里直接给出相应的结论：</p>
 </blockquote>
 </li>
-<li><p>数据量小的时候（size&lt;=1000）的时候iterator效率要比Stream高，不过都低于毫秒所以可以牺牲这一部分性能来追求Stream的可读性。</p>
-</li>
-<li><p>在大数据量（szie&gt;10000）时，Stream的处理效率要高一些，如果并行流使用得当效率还能更高。</p>
-</li>
-<li><p>并行流使用的时候受cpu的影响大，当没分配到多个cpu核心时，加上引用 forkJoinPool 的开销，运行效率可能还不如普通的 Stream。</p>
-<p><code>如何用好Stream表达式</code></p>
-</li>
+<li>数据量小的时候（size&lt;=1000）的时候iterator效率要比Stream高，不过都低于毫秒所以可以牺牲这一部分性能来追求Stream的可读性。</li>
+<li>在大数据量（szie&gt;10000）时，Stream的处理效率要高一些，如果并行流使用得当效率还能更高。</li>
+<li>并行流使用的时候受cpu的影响大，当没分配到多个cpu核心时，加上引用 forkJoinPool 的开销，运行效率可能还不如普通的 Stream。<br><code>如何用好Stream表达式</code></li>
 </ul>
 <ol>
 <li><p><strong>注意装箱拆箱</strong></p>
@@ -201,7 +311,359 @@ toMap中的两个参数第一个是映射的键，第二个是映射的值，但
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/09/01/java8%E4%B8%AD%E7%9A%84%E6%B5%81%E5%BC%8F%E5%86%99%E6%B3%95%E7%9A%84%E4%B8%80%E7%82%B9%E6%80%9D%E8%80%83/" data-id="ckejq82q40000nszxekwncvo6" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2020/08/17/java8%E4%B8%AD%E7%9A%84%E6%B5%81%E5%BC%8F%E5%86%99%E6%B3%95%E7%9A%84%E4%B8%80%E7%82%B9%E6%80%9D%E8%80%83/" data-id="ckejq82q40000nszxekwncvo6" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-Java8中Map.merge、compute、computeIfAbsent、computeIfPre" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/08/14/Java8%E4%B8%ADMap.merge%E3%80%81compute%E3%80%81computeIfAbsent%E3%80%81computeIfPre/" class="article-date">
+  <time datetime="2020-08-14T03:44:39.355Z" itemprop="datePublished">2020-08-14</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="Java8中Map-merge、compute、computeIfAbsent、computeIfPresent方法"><a href="#Java8中Map-merge、compute、computeIfAbsent、computeIfPresent方法" class="headerlink" title="Java8中Map.merge、compute、computeIfAbsent、computeIfPresent方法"></a>Java8中Map.merge、compute、computeIfAbsent、computeIfPresent方法</h1><ul>
+<li><strong>merge</strong><br>java8中Map类添加了merge、compute、computeIfAbsent、computeIfPresent的缺省方法，下面给出的源码都是Map类中的，Map的实现类在实现这些方法上会有不同<br>::方法解释::<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">* If the specified key is not already associated with a value or is</span><br><span class="line">* associated with <span class="keyword">null</span>, associates it with the given non-<span class="keyword">null</span> value.</span><br><span class="line">* Otherwise, replaces the associated value with the results of the given</span><br><span class="line">* remapping function, or removes <span class="keyword">if</span> the result is &#123;<span class="meta">@code</span> <span class="keyword">null</span>&#125;. This</span><br><span class="line">* method may be of use when combining multiple mapped values <span class="keyword">for</span> a key.</span><br><span class="line"><span class="comment">// 如果一个指定的key其关联的值是空或者该key不存在，将会给他一个非空的值，除此之外，用所给的BiFunction方法的结果来替换关联的值，如果方法计算结果是null就删除该key</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">default</span> V <span class="title">merge</span><span class="params">(K key, V value,</span></span></span><br><span class="line"><span class="function"><span class="params">        BiFunction&lt;? <span class="keyword">super</span> V, ? <span class="keyword">super</span> V, ? extends V&gt; remappingFunction)</span> </span>&#123;</span><br><span class="line">    Objects.requireNonNull(remappingFunction);①</span><br><span class="line">    Objects.requireNonNull(value);②</span><br><span class="line">    V oldValue = get(key);③</span><br><span class="line">    V newValue = (oldValue == <span class="keyword">null</span>) ? value :</span><br><span class="line">               remappingFunction.apply(oldValue, value);④</span><br><span class="line">    <span class="keyword">if</span>(newValue == <span class="keyword">null</span>) &#123;⑤</span><br><span class="line">        remove(key);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        put(key, newValue);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> newValue;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+①、②判断BiFunction以及默认值是否为空<br>③获取指定key的值赋予oldValue<br>④判断oldValue是否为空，如果是空newValue = 默认值，不为空newValue = BiFunction.apply(oldValue,value)<br>⑤判断newValue是否为空，为空就直接删除key，不为空更新key-value<br>::如何使用::<br><code>arrayList.forEach(a -&gt; map.merge(a,1,(prev,one)-&gt;prev+one));</code><br>用处：循环遍历arrayList，使用map存储arrayList中值出现的次数,(prev,one)-&gt;prev+one 该函数的作用是，当有指定的key时用旧值加1作为新值更新key</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 用户账号操作类</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Operation</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> String name;</span><br><span class="line">    <span class="keyword">private</span> BigDecimal bigDecimal;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Operation</span><span class="params">(String name, BigDecimal bigDecimal)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.name = name;</span><br><span class="line">        <span class="keyword">this</span>.bigDecimal = bigDecimal;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getName</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> name;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setName</span><span class="params">(String name)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.name = name;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> BigDecimal <span class="title">getBigDecimal</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> bigDecimal;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setBigDecimal</span><span class="params">(BigDecimal bigDecimal)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.bigDecimal = bigDecimal;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MapMergeTest</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        List&lt;Operation&gt; operations = Arrays.asList(<span class="keyword">new</span> Operation(<span class="string">&quot;123&quot;</span>,<span class="keyword">new</span> BigDecimal(<span class="string">&quot;10&quot;</span>)),<span class="keyword">new</span> Operation(<span class="string">&quot;123&quot;</span>,<span class="keyword">new</span> BigDecimal(<span class="string">&quot;-20&quot;</span>)));</span><br><span class="line">        HashMap&lt;String, BigDecimal&gt; stringBigDecimalHashMap = <span class="keyword">new</span> HashMap&lt;&gt;();</span><br><span class="line">        operations.forEach(operation -&gt; stringBigDecimalHashMap.merge(operation.getName(),operation.getBigDecimal(),BigDecimal::add));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>用户账号操作类是用来记录用户们每次操作的用户名和操作账户数值<br>最后stringBigDecimalHashMap用来保存每个用户以及其账户最终数值，用BigDecimal::add方法引用来替换之前的lamdba表达式</p>
+<ul>
+<li><p><strong>compute</strong><br>::方法解释::</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">* Attempts to compute a mapping <span class="keyword">for</span> the specified key and its current</span><br><span class="line">* <span class="function">mapped <span class="title">value</span> <span class="params">(or &#123;<span class="meta">@code</span> <span class="keyword">null</span>&#125; <span class="keyword">if</span> there is no current mapping)</span>.</span></span><br><span class="line"><span class="function"><span class="comment">// 试着去指定一个值给给定的key</span></span></span><br><span class="line"><span class="function"><span class="keyword">default</span> V <span class="title">compute</span><span class="params">(K key,</span></span></span><br><span class="line"><span class="function"><span class="params">        BiFunction&lt;? <span class="keyword">super</span> K, ? <span class="keyword">super</span> V, ? extends V&gt; remappingFunction)</span> </span>&#123;</span><br><span class="line">    Objects.requireNonNull(remappingFunction);①判断空</span><br><span class="line">    V oldValue = get(key);</span><br><span class="line"></span><br><span class="line">    V newValue = remappingFunction.apply(key, oldValue);<span class="comment">// 注意这里的apply中的第一个参数是对应的key，第二个参数是取出的默认值</span></span><br><span class="line">    <span class="keyword">if</span> (newValue == <span class="keyword">null</span>) &#123;②如果计算出的新值是<span class="keyword">null</span>，就保证将key删除</span><br><span class="line">        <span class="comment">// delete mapping</span></span><br><span class="line">        <span class="keyword">if</span> (oldValue != <span class="keyword">null</span> || containsKey(key)) &#123;</span><br><span class="line">            <span class="comment">// something to remove</span></span><br><span class="line">            remove(key);</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="comment">// nothing to do. Leave things as they were.</span></span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;③非<span class="keyword">null</span>就设置该key为newValue，不管其是否存在</span><br><span class="line">        <span class="comment">// add or replace old mapping</span></span><br><span class="line">        put(key, newValue);</span><br><span class="line">        <span class="keyword">return</span> newValue;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>::如何使用::</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.example.eurekaserverdemo;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.math.BigDecimal;</span><br><span class="line"><span class="keyword">import</span> java.time.LocalDateTime;</span><br><span class="line"><span class="keyword">import</span> java.util.*;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MapMergeTest</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        HashMap&lt;String, Integer&gt; stringIntegerHashMap = <span class="keyword">new</span> HashMap&lt;&gt;();</span><br><span class="line">        stringIntegerHashMap.put(<span class="string">&quot;1&quot;</span>,<span class="number">1</span>);</span><br><span class="line">        stringIntegerHashMap.put(<span class="string">&quot;2&quot;</span>,<span class="number">2</span>);</span><br><span class="line">        stringIntegerHashMap.put(<span class="string">&quot;3&quot;</span>,<span class="number">3</span>);</span><br><span class="line"></span><br><span class="line">        stringIntegerHashMap.compute(<span class="string">&quot;1&quot;</span>, (k,v)-&gt;v+<span class="number">1</span>);①返回取出的旧值加一再设置给key</span><br><span class="line">        stringIntegerHashMap.compute(<span class="string">&quot;4&quot;</span>,(k,v)-&gt;&#123;</span><br><span class="line">            <span class="keyword">if</span> (map.containsKey(k)) <span class="keyword">return</span> v+<span class="number">1</span>;②判断是否包含当前key，如果包含就返回oldValue+<span class="number">1</span></span><br><span class="line">            <span class="keyword">return</span> <span class="number">4</span>;③如果没有key就设置一个默认值</span><br><span class="line">        &#125;);</span><br><span class="line">        System.out.println(stringIntegerHashMap.get(<span class="string">&quot;1&quot;</span>));</span><br><span class="line">        System.out.println(stringIntegerHashMap.get(<span class="string">&quot;4&quot;</span>));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>compute方法可以做到和merge方法类似的事情，给map中不存在的key设置一个默认值，存在的key使用BiFunction来进行操作，但是compute方法没有merge方法在这方面好扩展因为它没办法指定BiFunction中的全部参数<br>compute优点是初始化数据的时候可以处理快一些，不论是否存在都给定一个初始值</p>
+</li>
+<li><p><strong>computeIfAbsent</strong><br>::方法解释::<br>见名知意，该方法compute方法只用于key不存在的时候，如果key存在直接返回值</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">default</span> V <span class="title">computeIfAbsent</span><span class="params">(K key,</span></span></span><br><span class="line"><span class="function"><span class="params">        Function&lt;? <span class="keyword">super</span> K, ? extends V&gt; mappingFunction)</span> </span>&#123;①注意这里传入的是一个Function，只有一个参数值，这点与compute不同</span><br><span class="line">    Objects.requireNonNull(mappingFunction);</span><br><span class="line">    V v;</span><br><span class="line">    <span class="keyword">if</span> ((v = get(key)) == <span class="keyword">null</span>) &#123;②判断该key不存在才执行</span><br><span class="line">        V newValue;</span><br><span class="line">        <span class="keyword">if</span> ((newValue = mappingFunction.apply(key)) != <span class="keyword">null</span>) &#123;③使用传入的key值作为参数来执行传入的lambda</span><br><span class="line">            put(key, newValue);</span><br><span class="line">            <span class="keyword">return</span> newValue;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> v;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>computeIfPresent</strong><br>::方法解释::<br>该方法compute方法只用于key存在的时候，如果key不存在返回null</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">default</span> V <span class="title">computeIfPresent</span><span class="params">(K key,</span></span></span><br><span class="line"><span class="function"><span class="params">        BiFunction&lt;? <span class="keyword">super</span> K, ? <span class="keyword">super</span> V, ? extends V&gt; remappingFunction)</span> </span>&#123;①传入两个参数</span><br><span class="line">    Objects.requireNonNull(remappingFunction);</span><br><span class="line">    V oldValue;</span><br><span class="line">    <span class="keyword">if</span> ((oldValue = get(key)) != <span class="keyword">null</span>) &#123;②如果存在key就设置newValue</span><br><span class="line">        V newValue = remappingFunction.apply(key, oldValue);</span><br><span class="line">        <span class="keyword">if</span> (newValue != <span class="keyword">null</span>) &#123;</span><br><span class="line">            put(key, newValue);</span><br><span class="line">            <span class="keyword">return</span> newValue;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            remove(key);</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2020/08/14/Java8%E4%B8%ADMap.merge%E3%80%81compute%E3%80%81computeIfAbsent%E3%80%81computeIfPre/" data-id="ckejvvygm0002mjzx6muz0qqe" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-2020-08-24" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/07/30/2020-08-24/" class="article-date">
+  <time datetime="2020-07-30T12:23:44.650Z" itemprop="datePublished">2020-07-30</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="Java阿里巴巴规范提示：方法【edit】需要在Transactional注解指定rollbackFor或者在方法中显示的rollback。"><a href="#Java阿里巴巴规范提示：方法【edit】需要在Transactional注解指定rollbackFor或者在方法中显示的rollback。" class="headerlink" title="Java阿里巴巴规范提示：方法【edit】需要在Transactional注解指定rollbackFor或者在方法中显示的rollback。"></a>Java阿里巴巴规范提示：方法【edit】需要在Transactional注解指定rollbackFor或者在方法中显示的rollback。</h1><p>#java/SpringBoot<br>先来看看异常的分类<br><img src="2020-08-24/_640.jpeg"><br>error是一定会回滚的。<br>这里Exception是异常，他又分为运行时异常RuntimeException和非运行时异常<br><img src="2020-08-24/__640.jpeg"></p>
+<ol>
+<li>可查的异常（checked exceptions）:Exception下除了RuntimeException外的异常</li>
+<li>不可查的异常（unchecked exceptions）:RuntimeException及其子类和错误（Error）<br>如果不对运行时异常进行处理，那么出现运行时异常之后，要么是线程中止，要么是主程序终止。<br>如果不想终止，则必须捕获所有的运行时异常，决不让这个处理线程退出。队列里面出现异常数据了，正常的处理应该是把异常数据舍弃，然后记录日志。不应该由于异常数据而影响下面对正常数据的处理。<br>非运行时异常是RuntimeException以外的异常，类型上都属于Exception类及其子类。如IOException、SQLException等以及用户自定义的Exception异常。<br>对于这种异常，JAVA编译器强制要求我们必需对出现的这些异常进行catch并处理，否则程序就不能编译通过。所以，面对这种异常不管我们是否愿意，只能自己去写一大堆catch块去处理可能的异常。</li>
+</ol>
+<ul>
+<li>@Transactional 的写法<br>开始主题@Transactional如果只这样写，<br>Spring框架的事务基础架构代码将默认地 只在抛出运行时和unchecked exceptions时才标识事务回滚。<br>也就是说，当抛出个RuntimeException 或其子类例的实例时。（Errors 也一样 - 默认地 - 标识事务回滚。）从事务方法中抛出的Checked exceptions将不被标识进行事务回滚。<br>1 让checked之外的异常也回滚：</li>
+</ul>
+<p>在整个方法前加上 @Transactional(rollbackFor=Exception.class)</p>
+<p>2 让unchecked之外的异常不回滚：</p>
+<p>@Transactional(notRollbackFor=RunTimeException.class)</p>
+<p>3 不需要事务管理的(只查询的)方法：</p>
+<p>@Transactional(propagation=Propagation.NOT_SUPPORTED)</p>
+<p>注意：如果异常被try｛｝catch｛｝了，事务就不回滚了，如果想让事务回滚必须再往外抛try｛｝catch｛throw Exception｝。</p>
+<h1 id="注意："><a href="#注意：" class="headerlink" title="注意："></a>注意：</h1><p>Spring团队的建议是你在具体的类（或类的方法）上使用@Transactional 注解，而不要使用在类所要实现的任何接口上。</p>
+<p>你当然可以在接口上使用 @Transactional 注解，但是这将只能当你设置了基于接口的代理时它才生效。因为注解是不能继承的，这就意味着如果你正在使用基于类的代理时，那么事务的设置将不能被基于类的代理所识别，而且对象也将不会被事务代理所包装（将被确认为严重的）。因此，请接受Spring团队的建议并且在具体的类上使用 @Transactional 注解。</p>
+<p>@Transactional 注解标识的方法，处理过程尽量的简单。尤其是带锁的事务方法，能不放在事务里面的最好不要放在事务里面。可以将常规的数据库查询操作放在事务前面进行，而事务内进行增、删、改、加锁查询等操作。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2020/07/30/2020-08-24/" data-id="ckejvvygf0000mjzxa0t05ril" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-FeginClient参数问题" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/06/23/FeginClient%E5%8F%82%E6%95%B0%E9%97%AE%E9%A2%98/" class="article-date">
+  <time datetime="2020-06-23T03:03:58.904Z" itemprop="datePublished">2020-06-23</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="FeginClient参数问题"><a href="#FeginClient参数问题" class="headerlink" title="FeginClient参数问题"></a>FeginClient参数问题</h1><p>#Java/SpringCloud</p>
+<h2 id="使用Get方式调用服务提供者"><a href="#使用Get方式调用服务提供者" class="headerlink" title="使用Get方式调用服务提供者"></a>使用Get方式调用服务提供者</h2><ol>
+<li>服务消费者，需要在所有参数前加上@RequestParam注解</li>
+<li>服务消费者，指明是Get方式，如果不指明那么在满足条件1 的情况下默认使用get方式<br>1和2都满足才使用Get方式<h2 id="使用Post方式调用服务提供者"><a href="#使用Post方式调用服务提供者" class="headerlink" title="使用Post方式调用服务提供者"></a>使用Post方式调用服务提供者</h2></li>
+<li>在所有参数前面加上@RequestParam注解，并且指明使用的Post方式</li>
+<li>在参数前面加上@RequestBody注解（有且只有一个@ RequestBody）或者什么也没有（有多个参数其余参数前面都要加上@RequestParam）<br>1和2满足一个就使用Post方式<h2 id="三种情况（无参、单参、多参）"><a href="#三种情况（无参、单参、多参）" class="headerlink" title="三种情况（无参、单参、多参）"></a>三种情况（无参、单参、多参）</h2><h3 id="无参Get"><a href="#无参Get" class="headerlink" title="无参Get"></a>无参Get</h3>如果发送无参的Get请求，可以不指定method，默认就是Get请求<h3 id="无参Post"><a href="#无参Post" class="headerlink" title="无参Post"></a>无参Post</h3>指定method是Post方式，否则就是Get请求<h3 id="单参Get"><a href="#单参Get" class="headerlink" title="单参Get"></a>单参Get</h3>指定该参数是@RequestParam修饰，这时候method默认是Get，也可以自己指定Get方式<h3 id="单参Post"><a href="#单参Post" class="headerlink" title="单参Post"></a>单参Post</h3>该参数前面加@RequestParam修饰，并且使用Post方式<br>或者<br>使用@RequestBody修饰该参数，或者没使用@RequestParam和@RequestBody修饰该参数，再这个使用不论指定Post还是Get都会使用Post进行请求</li>
+</ol>
+<p><strong>注意：</strong><br>在使用fegin消费服务的时候，如果参数前面什么也没写，默认是@RequestBody来修饰的<br>@RequestBody修饰的参数需要以Post方式来传递</p>
+<blockquote>
+<p>在服务提供者的Controller中：<br>1.如果要接收@RequestBody指明的参数，那么对应方法的对应参数前一定要有@RequestBody；(如果没有的话，收到的参数值就为null;如果写成@RequestParam的话，那么feign调用会失败)<br>2.如果接收@ RequestParam指明的参数，那么可以写@ RequestParam也可以不写，如果参数名称一致不用，不一致需要写  </p>
+</blockquote>
+<h3 id="多参Get"><a href="#多参Get" class="headerlink" title="多参Get"></a>多参Get</h3><p>需要在所有参数前面添加@ RequestParam注解，这时候可以加Get也可以不加Get</p>
+<h3 id="多参Post"><a href="#多参Post" class="headerlink" title="多参Post"></a>多参Post</h3><p>服务消费者中，最多只能有一个参数是@RequestBody指明的，其余的参数必须使用@RequestParam指明<br>也可以在第一个参数前面什么也不写（默认使用@RequestBody修饰）其余的参数都需要加@RequestParam<br>如果所有参数都是以@RequestParam修饰，并且使用的是Post方式，那么也是以Post方式来请求</p>
+<blockquote>
+<p>在服务提供者的Controller中：<br>1.如果服务消费者传过来参数时，全都用的是@RequestParam的话，那么服务提供者的Controller中对应参数前可以写@RequestParam,也可以不写(当两边参数名字一致时，可以省略不写)<br>2. 如果服务消费者传过来参数时，有@RequestBody的话，那么服务提供者的Controller中对应参数前必须要写@RequestBody(如果是多参数的话，其余参数前视情况可以写@RequestParam,也可以不写)  </p>
+</blockquote>
+<h2 id="RequestBody和-RequestParam的区别"><a href="#RequestBody和-RequestParam的区别" class="headerlink" title="@RequestBody和@RequestParam的区别"></a>@RequestBody和@RequestParam的区别</h2><p>@RequestParam用来处理Content-Type: 为 application_x-www-form-urlencoded编码的内容，在Http中如果不指定Content-Type则默认使用application_x-www-form-urlencoded类型<br>@ RequestBody，处理HttpEntity传递过来的数据，用来处理非Content-Type: application/x-www-form-urlencoded编码格式的数据<br>    * Get请求没有HttpEntity所以不用@ RequestBody<br>    * POST请求中，通过HttpEntity传递的参数，必须要在请求头中声明数据的类型Content-Type，SpringMVC通过使用HandlerAdapter 配置的HttpMessageConverters来解析HttpEntity中的数据，然后绑定到相应的bean上<br>总结：Get不能使用表单，只能在url中传参，传参方式只有这一种。 Post可以使用表单，也可以在url中传参。使用表单时有几种数据类型（表现为数据的存储位置不同）：1、 x-www-form-urlencoded 参数存储在query中 用@RequestParam接收。2、formdata 参数存储在body中，用@RequestBody接收，文件类型用@RequestPart接收。3、raw(josn,xml) 参数存储在body中 用@RequetBody接收。总结一下： 凡是放在body中的都可以用@RequestBody接收，文件类型的数据可以用@RequestPart接收。 凡是放在query中的都可以用@RequestParam接收，包括Get方式提交和Post(x-www-form-urlencoded)方式提交的</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2020/06/23/FeginClient%E5%8F%82%E6%95%B0%E9%97%AE%E9%A2%98/" data-id="ckejvvygk0001mjzxf0xf0acn" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-Redis事务与基本实现代码" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/06/18/Redis%E4%BA%8B%E5%8A%A1%E4%B8%8E%E5%9F%BA%E6%9C%AC%E5%AE%9E%E7%8E%B0%E4%BB%A3%E7%A0%81/" class="article-date">
+  <time datetime="2020-06-18T06:09:00.621Z" itemprop="datePublished">2020-06-18</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="Redis事务与基本实现代码"><a href="#Redis事务与基本实现代码" class="headerlink" title="Redis事务与基本实现代码"></a>Redis事务与基本实现代码</h1><p>#redis<br>redis事务的本质是：一组命令的集合，一个事务中所有命令都会被按顺序放在队列中，在发起执行命令的时候队列中的命令会被一一执行</p>
+<ul>
+<li>Redis事务没有隔离级别的概念</li>
+<li>Redis单条命令保证原子性，但是事务不保证原子性<br>redis事务：</li>
+</ul>
+<ol>
+<li>开启事务（multi）</li>
+<li>命令入队（…..）</li>
+<li>执行事务（exec）</li>
+</ol>
+<hr>
+<blockquote>
+<p>正常执行事务  </p>
+</blockquote>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6379&gt; <span class="built_in">set</span> k1 v1</span><br><span class="line">QUEUED</span><br><span class="line">127.0.0.1:6379&gt; <span class="built_in">set</span> k2 v2</span><br><span class="line">QUEUED</span><br><span class="line">127.0.0.1:6379&gt; <span class="built_in">set</span> k3 v3</span><br><span class="line">QUEUED</span><br><span class="line">127.0.0.1:6379&gt; get k3</span><br><span class="line">QUEUED</span><br><span class="line">127.0.0.1:6379&gt; <span class="built_in">exec</span>		<span class="comment">#执行事务</span></span><br><span class="line">1) OK</span><br><span class="line">2) OK</span><br><span class="line">3) OK</span><br><span class="line">4) <span class="string">&quot;v3&quot;</span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>放弃事务的执行  </p>
+</blockquote>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6379&gt; multi</span><br><span class="line">OK</span><br><span class="line">127.0.0.1:6379&gt; <span class="built_in">set</span> k1 v1</span><br><span class="line">QUEUED</span><br><span class="line">127.0.0.1:6379&gt; <span class="built_in">set</span> k2 v2</span><br><span class="line">QUEUED</span><br><span class="line">127.0.0.1:6379&gt; discard</span><br><span class="line">OK</span><br><span class="line">127.0.0.1:6379&gt; get k2</span><br><span class="line">(nil)</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>命令错误  所有的命令都不会被执行  </p>
+</blockquote>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6379&gt; multi</span><br><span class="line">OK</span><br><span class="line">127.0.0.1:6379&gt; <span class="built_in">set</span> k1 v1</span><br><span class="line">QUEUED</span><br><span class="line">127.0.0.1:6379&gt; sett k1 v2</span><br><span class="line">(error) ERR unknown <span class="built_in">command</span> `sett`, with args beginning with: `k1`, `v2`,</span><br><span class="line">127.0.0.1:6379&gt; <span class="built_in">exec</span></span><br><span class="line">(error) EXECABORT Transaction discarded because of previous errors.</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>运行时异常，队列中的命令存在语法性的错误，执行的时候其他命令是可以执行的，错误命令抛出异常  </p>
+</blockquote>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6379&gt; multi</span><br><span class="line">OK</span><br><span class="line">127.0.0.1:6379&gt; <span class="built_in">set</span> k1 <span class="string">&quot;v1&quot;</span></span><br><span class="line">QUEUED</span><br><span class="line">127.0.0.1:6379&gt; incr k1  		<span class="comment">#有语法错误，其作用是为k1上的值加1，如果k1的值不是数字就会报错</span></span><br><span class="line">QUEUED</span><br><span class="line">127.0.0.1:6379&gt; <span class="built_in">set</span> k2 v2</span><br><span class="line">QUEUED</span><br><span class="line">127.0.0.1:6379&gt; get k2</span><br><span class="line">QUEUED</span><br><span class="line">127.0.0.1:6379&gt; <span class="built_in">exec</span></span><br><span class="line">1) OK</span><br><span class="line">2) (error) ERR value is not an <span class="built_in">integer</span> or out of range</span><br><span class="line">3) OK</span><br><span class="line">4) <span class="string">&quot;v2&quot;</span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>监控命令<br>watch(乐观锁机制)  </p>
+</blockquote>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6379&gt; watch money		<span class="comment">#监控money</span></span><br><span class="line">OK</span><br><span class="line">127.0.0.1:6379&gt; multi</span><br><span class="line">OK</span><br><span class="line">127.0.0.1:6379&gt; decrby money 10  <span class="comment">#让money减10</span></span><br><span class="line">QUEUED</span><br><span class="line">127.0.0.1:6379&gt; <span class="built_in">exec</span>		<span class="comment">#在执行前开启另外一个客户端修改money的值，就会执行失败</span></span><br><span class="line">(nil)</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6379&gt; get money</span><br><span class="line">(nil)</span><br><span class="line">127.0.0.1:6379&gt; <span class="built_in">set</span> money 100</span><br><span class="line">OK</span><br></pre></td></tr></table></figure>
+<p>如果修改失败，我们将其解锁再重新监控就好</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6379&gt; Unwatch		<span class="comment">#解锁</span></span><br><span class="line">OK</span><br><span class="line">127.0.0.1:6379&gt; watch money	<span class="comment">#重新监控money</span></span><br><span class="line">OK</span><br><span class="line">127.0.0.1:6379&gt; multi		</span><br><span class="line">OK</span><br><span class="line">127.0.0.1:6379&gt; decrby money 10	<span class="comment">#让money减10</span></span><br><span class="line">QUEUED</span><br><span class="line">127.0.0.1:6379&gt; <span class="built_in">exec</span>			<span class="comment">#执行</span></span><br><span class="line">1) (<span class="built_in">integer</span>) 90</span><br></pre></td></tr></table></figure>
+<h2 id="代码中使用Redis"><a href="#代码中使用Redis" class="headerlink" title="代码中使用Redis"></a>代码中使用Redis</h2><p>Jedis是Redis官方推荐的Java连接Redis工具<br>导入包：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependencies</span>&gt;</span> </span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>redis.clients<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>jedis<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>3.2.0<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.alibaba<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>fastjson<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.2.62<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependencies</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>Jedis所有函数都与Redis中的命令行相同</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> redis.clients.jedis.Jedis;</span><br><span class="line"><span class="keyword">import</span> redis.clients.jedis.Transaction;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * redis测试</span></span><br><span class="line"><span class="comment"> * 测试redis的事务</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">RedisDemo</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        Jedis jedis = <span class="keyword">new</span> Jedis(<span class="string">&quot;127.0.0.1&quot;</span>,<span class="number">6379</span>);</span><br><span class="line"></span><br><span class="line">        jedis.flushDB();</span><br><span class="line"></span><br><span class="line">        Transaction multi = jedis.multi();</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            multi.set(<span class="string">&quot;user1&quot;</span>, <span class="string">&quot;张三&quot;</span>);</span><br><span class="line">            multi.set(<span class="string">&quot;user2&quot;</span>, <span class="string">&quot;李四&quot;</span>);</span><br><span class="line">            <span class="keyword">int</span> i = <span class="number">1</span>/<span class="number">0</span>;<span class="comment">// 报错放弃事务</span></span><br><span class="line">            multi.exec();</span><br><span class="line">        &#125; <span class="keyword">catch</span> (Exception e)&#123;</span><br><span class="line">            multi.discard();<span class="comment">// 放弃事务</span></span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;<span class="keyword">finally</span> &#123;</span><br><span class="line">            jedis.close();</span><br><span class="line">        &#125;</span><br><span class="line">        System.out.println(jedis.get(<span class="string">&quot;user1&quot;</span>));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>输出：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">java.lang.ArithmeticException: &#x2F; by zero</span><br><span class="line">	at RedisDemo.main(RedisDemo.java:17)</span><br><span class="line">null</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2020/06/18/Redis%E4%BA%8B%E5%8A%A1%E4%B8%8E%E5%9F%BA%E6%9C%AC%E5%AE%9E%E7%8E%B0%E4%BB%A3%E7%A0%81/" data-id="ckejvvygr0006mjzx4vbvcmpv" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-Redis中的特殊类型" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/06/17/Redis%E4%B8%AD%E7%9A%84%E7%89%B9%E6%AE%8A%E7%B1%BB%E5%9E%8B/" class="article-date">
+  <time datetime="2020-06-17T12:43:36.154Z" itemprop="datePublished">2020-06-17</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="Redis中的特殊类型"><a href="#Redis中的特殊类型" class="headerlink" title="Redis中的特殊类型"></a>Redis中的特殊类型</h1><p>#redis</p>
+<h2 id="Geospatial"><a href="#Geospatial" class="headerlink" title="Geospatial"></a>Geospatial</h2><p>是用来存储地理位置的一个数据结构<br>Geo是在Redis3.2版本中推出的，这个功能可以推算地理位置信息，两地的距离，方圆几里的人<br>下面涉及到经度纬度的存储，可以用<a target="_blank" rel="noopener" href="http://www.jsons.cn/lngcodeinfo/0706D99C19A781A3/">查询城市经度纬度</a>来查询测试数据</p>
+<ul>
+<li>命令使用 <blockquote>
+<p>geoadd 添加key以及对应的经度 纬度 名称  </p>
+</blockquote>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 经度在前纬度在后</span></span><br><span class="line"><span class="comment"># 有效的经度从-180度到180度。</span></span><br><span class="line"><span class="comment">#	有效的纬度从-85.05112878度到85.05112878度。</span></span><br><span class="line"><span class="comment"># 当坐标位置超出上述指定范围时，该命令将会返回一个错误。</span></span><br><span class="line">127.0.0.1:6379&gt; geoadd china:city 116 39 beijing   	<span class="comment">#向china:city key 中添加北京的经度纬度</span></span><br><span class="line">(<span class="built_in">integer</span>) 1</span><br><span class="line">127.0.0.1:6379&gt; geoadd china:city 121 31 shanghai</span><br><span class="line">(<span class="built_in">integer</span>) 1</span><br><span class="line">127.0.0.1:6379&gt; geoadd china:city 106.50 29.53 chongqi 114.05 22.52 shengzhen</span><br><span class="line">(<span class="built_in">integer</span>) 2</span><br><span class="line">127.0.0.1:6379&gt; geoadd china:city 120.16 30.24 hangzhou 108.96 34.26 xian</span><br><span class="line">(<span class="built_in">integer</span>) 2</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>getpos 显示key的经度纬度  </p>
+</blockquote>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6379&gt; geopos china:city beijing    <span class="comment">#显示北京的经度纬度，若没有则显示空</span></span><br><span class="line">1) 1) <span class="string">&quot;116.00000113248825073&quot;</span></span><br><span class="line">   2) <span class="string">&quot;38.99999918434559731&quot;</span></span><br><span class="line">127.0.0.1:6379&gt; geopos china:city guangzhou</span><br><span class="line">1) (nil)</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>geodist 显示两地的距离  （将地球作为一个完美球体进行计算，误差在0.5%以内）<br>如果两个位置之间的其中一个不存在， 那么命令返回空值。<br>指定单位的参数 unit 必须是以下单位的其中一个。<br><strong>m</strong> 表示单位为米。<br><strong>km</strong> 表示单位为千米。<br><strong>mi</strong> 表示单位为英里。<br><strong>ft</strong> 表示单位为英尺。<br>如果用户没有显式地指定单位参数， 那么 GEODIST 默认使用米作为单位  </p>
+</blockquote>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6379&gt; geodist china:city beijing shanghai km   <span class="comment">#以千米为单位显示北京到上海的距离</span></span><br><span class="line"><span class="string">&quot;999.2077&quot;</span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>georadius 以给定的经纬度为中心， 返回键包含的位置元素当中， 与中心的距离不超过给定最大距离的所有位置元素<br>范围可以是  m km mi ft<br>WITHDIST: 在返回位置元素的同时， 将位置元素与中心之间的距离也一并返回。 距离的单位和用户给定的范围单位保持一致。<br>WITHCOORD: 将位置元素的经度和维度也一并返回。  </p>
+</blockquote>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6379&gt; georadius china:city 110 30 1000 km   <span class="comment">#找经度110纬度30方圆1000km以内的元素</span></span><br><span class="line">1) <span class="string">&quot;chongqi&quot;</span></span><br><span class="line">2) <span class="string">&quot;xian&quot;</span></span><br><span class="line">3) <span class="string">&quot;shengzhen&quot;</span></span><br><span class="line">4) <span class="string">&quot;hangzhou&quot;</span></span><br><span class="line">127.0.0.1:6379&gt; georadius china:city 110 30 1000 km withcoord   <span class="comment">#显示元素的经度纬度</span></span><br><span class="line">1) 1) <span class="string">&quot;chongqi&quot;</span></span><br><span class="line">   2) 1) <span class="string">&quot;106.49999767541885376&quot;</span></span><br><span class="line">      2) <span class="string">&quot;29.52999957900659211&quot;</span></span><br><span class="line">2) 1) <span class="string">&quot;xian&quot;</span></span><br><span class="line">   2) 1) <span class="string">&quot;108.96000176668167114&quot;</span></span><br><span class="line">      2) <span class="string">&quot;34.25999964418929977&quot;</span></span><br><span class="line">3) 1) <span class="string">&quot;shengzhen&quot;</span></span><br><span class="line">   2) 1) <span class="string">&quot;114.04999762773513794&quot;</span></span><br><span class="line">      2) <span class="string">&quot;22.5200000879503861&quot;</span></span><br><span class="line">4) 1) <span class="string">&quot;hangzhou&quot;</span></span><br><span class="line">   2) 1) <span class="string">&quot;120.1600000262260437&quot;</span></span><br><span class="line">      2) <span class="string">&quot;30.2400003229490224&quot;</span></span><br><span class="line">127.0.0.1:6379&gt; georadius china:city 110 30 500 km withdist   <span class="comment">#显示到110 30 的具体距离</span></span><br><span class="line">1) 1) <span class="string">&quot;chongqi&quot;</span></span><br><span class="line">   2) <span class="string">&quot;341.9374&quot;</span></span><br><span class="line">2) 1) <span class="string">&quot;xian&quot;</span></span><br><span class="line">   2) <span class="string">&quot;483.8340&quot;</span></span><br><span class="line">127.0.0.1:6379&gt; georadius china:city 110 30 500 km count 1		<span class="comment">#筛选指定的结果</span></span><br><span class="line">1) <span class="string">&quot;chongqi&quot;</span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>georadiusbymember 找出位于指定元素周围的其他元素  </p>
+</blockquote>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6379&gt; GEORADIUSBYMEMBER china:city beijing 1000 km </span><br><span class="line">1) <span class="string">&quot;beijing&quot;</span></span><br><span class="line">2) <span class="string">&quot;xian&quot;</span> 127.0.0.1:6379&gt; GEORADIUSBYMEMBER china:city shanghai 400 km </span><br><span class="line">1) <span class="string">&quot;hangzhou&quot;</span></span><br><span class="line">2) <span class="string">&quot;shanghai&quot;</span> </span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>geohash  返回一个或多个位置元素的geohash表示<br>该命令返回一个11字符的字符串  </p>
+</blockquote>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#将经度纬度转换为一维字符串，如果两个字符串接近，那么距离越近，可以根据这个字符串去查找到对应位置</span></span><br><span class="line">127.0.0.1:6379&gt; geohash china:city beijing chongqi		</span><br><span class="line">1) <span class="string">&quot;wwfmzesx7y0&quot;</span></span><br><span class="line">2) <span class="string">&quot;wm5xzrybty0&quot;</span></span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h2 id="Hyperloglog"><a href="#Hyperloglog" class="headerlink" title="Hyperloglog"></a>Hyperloglog</h2><blockquote>
+<p>统计基数  </p>
+</blockquote>
+<ul>
+<li>什么是基数<br>有集合A{1、2、3、4、5} 和集合B{2、2、3、3、4、5、6}<br>基数用大白话讲就是一个集合中不重复的元素<br>所以A的基数就是5，B的基数也是5（除去重复的2和3）<br>在Redis统计基数中是有误差的</li>
+<li>Redis中的Hyperloglog<br>优点：占用内存是固定的，2^64次方个不同元素的基数，只需要12KB的内存<br>可以用来做什么？<br>存储网页的访问数（一个人访问一个网站多次，只算一次访问）<br>传统的方式中是使用set来存储，由于set是无序无重复的，多次插入一个用户ID也存储的是一个值，但是当数据量很大的时候就会很麻烦，我们要做的是计数而不是存储ID<br>那么就可以使用Hyperloglog，虽然有误差但是在网页的访问数中也可以忽略这些误差</li>
+<li>如何使用<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6379&gt; PFadd mykey a b c d e    <span class="comment">#创建第一组元素mykey</span></span><br><span class="line">(<span class="built_in">integer</span>) 1</span><br><span class="line">127.0.0.1:6379&gt; PFCOUNT mykey   <span class="comment">#统计mykey中的基数数量</span></span><br><span class="line">(<span class="built_in">integer</span>) 5</span><br><span class="line">127.0.0.1:6379&gt; PFADD mykey b c d e f   <span class="comment">#继续向mykey中添加元素</span></span><br><span class="line">(<span class="built_in">integer</span>) 1</span><br><span class="line">127.0.0.1:6379&gt; PFCOUNT mykey     <span class="comment">#统计mykey中的基数数量</span></span><br><span class="line">(<span class="built_in">integer</span>) 6</span><br><span class="line">127.0.0.1:6379&gt; PFADD mykey1 b c d e f g   <span class="comment">#创建第二组元素mykey1</span></span><br><span class="line">(<span class="built_in">integer</span>) 1</span><br><span class="line">127.0.0.1:6379&gt; PFCOUNT mykey1      <span class="comment">#统计mykey1中的基数数量</span></span><br><span class="line">(<span class="built_in">integer</span>) 6</span><br><span class="line">127.0.0.1:6379&gt; PFMERGE mykey2 mykey mykey1  <span class="comment">#合并两组元素</span></span><br><span class="line">OK</span><br><span class="line">127.0.0.1:6379&gt; PFCOUNT mykey2			<span class="comment">#统计合并后的基数数量</span></span><br><span class="line">(<span class="built_in">integer</span>) 7</span><br></pre></td></tr></table></figure>
+<h2 id="Bitmap"><a href="#Bitmap" class="headerlink" title="Bitmap"></a>Bitmap</h2><blockquote>
+<p>位存储<br>统计一个用户活跃、不活跃 登录、没登录 打卡、没打卡<br>位存储存储的就是01值，任何两个状态的事物都可以用01来存储</p>
+</blockquote>
+</li>
+<li>如何使用<br>这里使用其来存储一个人一周打卡的情况<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6379&gt; setbit sign 0 0   <span class="comment">#key是sign  第一个0代表周一  第二个0代表周二</span></span><br><span class="line">(<span class="built_in">integer</span>) 0</span><br><span class="line">127.0.0.1:6379&gt; setbit sign 1 0</span><br><span class="line">(<span class="built_in">integer</span>) 0</span><br><span class="line">127.0.0.1:6379&gt; setbit sign 2 1</span><br><span class="line">(<span class="built_in">integer</span>) 0</span><br><span class="line">127.0.0.1:6379&gt; setbit sign 3 1</span><br><span class="line">(<span class="built_in">integer</span>) 0</span><br><span class="line">127.0.0.1:6379&gt; setbit sign 4 1</span><br><span class="line">(<span class="built_in">integer</span>) 0</span><br><span class="line">127.0.0.1:6379&gt; setbit sign 5 0</span><br><span class="line">(<span class="built_in">integer</span>) 0</span><br><span class="line">127.0.0.1:6379&gt; setbit sign 6 1</span><br><span class="line">(<span class="built_in">integer</span>) 0</span><br><span class="line">127.0.0.1:6379&gt; GETBIT sign 1	<span class="comment">#获取signkey星期一的签到状态</span></span><br><span class="line">(<span class="built_in">integer</span>) 0</span><br><span class="line">127.0.0.1:6379&gt; bitcount sign	<span class="comment">#获取sign本周的签到天数</span></span><br><span class="line">(<span class="built_in">integer</span>) 4</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2020/06/17/Redis%E4%B8%AD%E7%9A%84%E7%89%B9%E6%AE%8A%E7%B1%BB%E5%9E%8B/" data-id="ckejvvygq0005mjzx88x9a4as" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-其他学习" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/06/09/%E5%85%B6%E4%BB%96%E5%AD%A6%E4%B9%A0/" class="article-date">
+  <time datetime="2020-06-09T13:07:37.310Z" itemprop="datePublished">2020-06-09</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="其他学习"><a href="#其他学习" class="headerlink" title="其他学习"></a>其他学习</h1><p>#Java/基础学习</p>
+<h2 id="JoinPoint用法"><a href="#JoinPoint用法" class="headerlink" title="JoinPoint用法"></a>JoinPoint用法</h2><p>JoinPoint接口封装了SpringAop中的信息，可以在切面中使用该类，这样就可以获取到封装该执行方法的JoinPoint对象<br>其中主要包括下面这些方法<br><img src="%E5%85%B6%E4%BB%96%E5%AD%A6%E4%B9%A0/FE734778-45DB-4FDF-8824-9EB824FDEFD4.png"><br>ProceedingJoinPoint对象<br>ProceedingJoinPoint是JoinPoint的子类，该对象只能用在@Around中，其中多了两个方法</p>
+<ul>
+<li>proceed() 执行目标方法</li>
+<li>proceed(Object[] args) 传入新的参数执行目标方法</li>
+</ul>
+<hr>
+<h2 id="instanceof与isAssignableFrom的区别"><a href="#instanceof与isAssignableFrom的区别" class="headerlink" title="instanceof与isAssignableFrom的区别"></a>instanceof与isAssignableFrom的区别</h2><p>instanceof是用来判断一个对象实例是否是另一个类或接口的实例<br>用法：</p>
+<blockquote>
+<p>obj instanceof ClassName   第一个参数时对象实例，第二个参数是类名<br>比较的是对象和类之间的关系</p>
+</blockquote>
+<hr>
+<p>isAssignableFrom 是用来判断一个类Class1是否和另一个类Class2相同，或者Class1是否是Class2的超类或接口<br>用法：</p>
+<blockquote>
+<p>Class1. isAssignableFrom(Class2) 第一个参数是类对象，第二个也是类对象<br>eg：</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Class parent = java.io.InputStream.class;</span><br><span class="line">Class child = java.io.FileInputStream.class;</span><br><span class="line">System.out.println(parent.isAssignableFrom(child));</span><br><span class="line">System.out.println(child.isAssignableFrom(parent));</span><br><span class="line">输出结果是：</span><br><span class="line"><span class="keyword">true</span></span><br><span class="line"><span class="keyword">false</span></span><br></pre></td></tr></table></figure>
+<p>从上面的结果可以看出<br>instanceof  是用来判断一个对象是否是另一个类的子类或接口实现<br>isAssignableFrom 用来判断一个类是否是另一个类的  接口和父类 </p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2020/06/09/%E5%85%B6%E4%BB%96%E5%AD%A6%E4%B9%A0/" data-id="ckejvvygx000cmjzxbveqez5x" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-优雅的异常判断" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/06/09/%E4%BC%98%E9%9B%85%E7%9A%84%E5%BC%82%E5%B8%B8%E5%88%A4%E6%96%AD/" class="article-date">
+  <time datetime="2020-06-09T11:18:53.507Z" itemprop="datePublished">2020-06-09</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="优雅的异常判断"><a href="#优雅的异常判断" class="headerlink" title="优雅的异常判断"></a>优雅的异常判断</h1><p>#Java/基础学习<br>优雅的处理异常，多么优雅的主题。事实上异常机制的处理有太多争论了，就像开头说的我们都在有意无意的去逃避异常。这一节，我总结了书上的理论，和编程中的一点体验去说一下关于异常的处理。</p>
+<ul>
+<li>1.异常处理不能代替逻辑判断<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//逻辑判断</span></span><br><span class="line">String param = ....;</span><br><span class="line"><span class="keyword">if</span>(param != <span class="keyword">null</span>)</span><br><span class="line">System.out.print(param);</span><br><span class="line"></span><br><span class="line"><span class="comment">//错误示范</span></span><br><span class="line"><span class="keyword">try</span>&#123;</span><br><span class="line"></span><br><span class="line">	String param = ....;</span><br><span class="line">	System.out.print(param);</span><br><span class="line"></span><br><span class="line">&#125;<span class="keyword">catch</span>(Exception e)&#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+或许你会说，直接用 try…catch 去捕获这个空指针异常省的自己去判断，大错特错！《Java核心技术Ｉ》里面写的清楚明白，相比于简单的测试，异常处理会消耗大量的时间。我们只在异常的情况下使用异常!</li>
+<li>2.不要过分细化异常<br>不要将每一条语句分别装在一个独立的 try 语句块中。使用多个 catch 去捕获一个 try 块中的异常。例子就不举了。</li>
+<li>3.利用异常的层次结构<br>跟我读三遍，Java异常是对象X3！异常和其他 Java对象一样，也有自己的方法，自己的爸爸和儿子，所以在捕获异常时不要用一个 Exception 或者 Throwable 一夫当关万夫莫开。选择使用哪种正确类型异常对程序的可读性很有必要。</li>
+<li>4.不要放任异常<br>如果你捕获异常，那请你在 catch 块中做点什么吧！</li>
+<li>5.不要羞于异常的传递<br>我记得在我刚开始编程时，我认为那些看到异常就往外抛的行为真的是不负责任，你有错误都不改正！实际上，当然还是我天真！我记得我说过，所谓的架构师就是把问题甩给别人…我们在底层（这里指被调用层）编写出来带异常的的方法，往往不知道该如何正确处理，过早的处理调用者就无法把错误消息传给更高级，所以，异常该抛就抛吧！</li>
+<li>6.不要不捕获异常（注意是个双重否定）<br>第5点说让我们放下顾虑，勇敢的抛出异常，那是不是一直抛到最上层的调用者，然后最上层也把它抛出去？当然不是！要找到最恰当的时机去捕获，去做一些处理。</li>
+<li>7.捕获异常的时机<br>什么时机才是捕获异常的大好时机？要看你的具体需求，如果你想在出现异常时给用户一些提示信息，那就要在最上层或者次上层捕获。如果你在测试阶段，想做一个判断，在异常出现时打印一句话，那就直接在异常出现的地方捕获。</li>
+<li>8.出现异常时对用户要友好<br>当程序出现异常，在测试阶段会导致程序不能正常运行。已发布的项目，要是也按照这个套路来，程序终止了，留在用户在那里一脸懵逼，这就是程序员的噩梦，说明你没有考虑到异常出现时要怎样给用户一个交代！</li>
+<li>9.配合日志<br>如果项目（JavaWeb）发布到了tomcat上面，那tomcat上的log日志会记录这个程序的运行状态，出现异常可以日志上面的记录的信息去查看哪里出了问题。如果项目没有发布在 tomcat ，可以使用一些日志框架如 log4j ，将每次出现异常的情况打印在上面。</li>
+<li>补充：对于非受查异常使用逻辑判断去代替异常的捕获<br>在网上经常看到一些讲解异常的博客，出现用 try…catch 去捕获非受查异常这种奇葩例子（比如不会空指针，数组越界），看的我很难受！不要让程序的性能为你的逻辑错误而买单获取参数时先判断是否为空，遍历数组时考虑一下数组下标！</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2020/06/09/%E4%BC%98%E9%9B%85%E7%9A%84%E5%BC%82%E5%B8%B8%E5%88%A4%E6%96%AD/" data-id="ckejvvygw000bmjzx1ea67q7f" class="article-share-link">Share</a>
       
       
     </footer>
@@ -212,6 +674,11 @@ toMap中的两个参数第一个是映射的键，第二个是映射的值，但
 
   
 
+
+  <nav id="page-nav">
+    
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/">Next &amp;raquo;</a>
+  </nav>
 
 </section>
         
@@ -236,7 +703,7 @@ toMap中的两个参数第一个是映射的键，第二个是映射的值，但
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/09/">September 2020</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/09/">September 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/08/">August 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/">July 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">June 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">May 2020</a></li></ul>
     </div>
   </div>
 
@@ -253,7 +720,19 @@ toMap中的两个参数第一个是映射的键，第二个是映射的值，但
           </li>
         
           <li>
-            <a href="/2020/09/01/java8%E4%B8%AD%E7%9A%84%E6%B5%81%E5%BC%8F%E5%86%99%E6%B3%95%E7%9A%84%E4%B8%80%E7%82%B9%E6%80%9D%E8%80%83/">(no title)</a>
+            <a href="/2020/09/01/Java8%E6%96%B0%E7%89%B9%E6%80%A7%E5%AD%A6%E4%B9%A0/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2020/08/17/java8%E4%B8%AD%E7%9A%84%E6%B5%81%E5%BC%8F%E5%86%99%E6%B3%95%E7%9A%84%E4%B8%80%E7%82%B9%E6%80%9D%E8%80%83/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2020/08/14/Java8%E4%B8%ADMap.merge%E3%80%81compute%E3%80%81computeIfAbsent%E3%80%81computeIfPre/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2020/07/30/2020-08-24/">(no title)</a>
           </li>
         
       </ul>

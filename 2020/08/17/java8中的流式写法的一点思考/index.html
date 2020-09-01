@@ -7,15 +7,15 @@
   
   <title>Hexo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="java8中的流式写法的一点思考最近学习了java8实战和effective java这两本书关于流式写法的知识，在看完java8之后就在想流式写法肯定也会有它的缺点，它优化了外部迭代就肯定舍弃了什么，当学习到effective java 的时候我知道了它的缺点到底是什么。   Stream流式表达的优缺点是什么  优点  简洁容易进行并行计算，添加一个parallel就行有可能是未来编程的趋势递">
+  <meta name="description" content="java8中的流式写法的一点思考最近学习了java8实战和effective java这两本书关于流式写法的知识，在看完java8之后就在想流式写法肯定也会有它的缺点，它优化了外部迭代就肯定舍弃了什么，当学习到effective java 的时候我知道了它的缺点到底是什么。Stream流式表达的优缺点是什么  优点 简洁容易进行并行计算，添加一个parallel就行有可能是未来编程的趋势递归运行非">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Hexo">
-<meta property="og:url" content="http://yoursite.com/2020/09/01/java8%E4%B8%AD%E7%9A%84%E6%B5%81%E5%BC%8F%E5%86%99%E6%B3%95%E7%9A%84%E4%B8%80%E7%82%B9%E6%80%9D%E8%80%83/index.html">
+<meta property="og:url" content="http://yoursite.com/2020/08/17/java8%E4%B8%AD%E7%9A%84%E6%B5%81%E5%BC%8F%E5%86%99%E6%B3%95%E7%9A%84%E4%B8%80%E7%82%B9%E6%80%9D%E8%80%83/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="java8中的流式写法的一点思考最近学习了java8实战和effective java这两本书关于流式写法的知识，在看完java8之后就在想流式写法肯定也会有它的缺点，它优化了外部迭代就肯定舍弃了什么，当学习到effective java 的时候我知道了它的缺点到底是什么。   Stream流式表达的优缺点是什么  优点  简洁容易进行并行计算，添加一个parallel就行有可能是未来编程的趋势递">
+<meta property="og:description" content="java8中的流式写法的一点思考最近学习了java8实战和effective java这两本书关于流式写法的知识，在看完java8之后就在想流式写法肯定也会有它的缺点，它优化了外部迭代就肯定舍弃了什么，当学习到effective java 的时候我知道了它的缺点到底是什么。Stream流式表达的优缺点是什么  优点 简洁容易进行并行计算，添加一个parallel就行有可能是未来编程的趋势递归运行非">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2020-08-31T16:00:00.000Z">
-<meta property="article:modified_time" content="2020-09-01T09:28:36.672Z">
+<meta property="article:published_time" content="2020-08-17T12:51:48.462Z">
+<meta property="article:modified_time" content="2020-09-01T11:42:37.324Z">
 <meta property="article:author" content="John Doe">
 <meta name="twitter:card" content="summary">
   
@@ -68,44 +68,33 @@
       <div class="outer">
         <section id="main"><article id="post-java8中的流式写法的一点思考" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2020/09/01/java8%E4%B8%AD%E7%9A%84%E6%B5%81%E5%BC%8F%E5%86%99%E6%B3%95%E7%9A%84%E4%B8%80%E7%82%B9%E6%80%9D%E8%80%83/" class="article-date">
-  <time datetime="2020-08-31T16:00:00.000Z" itemprop="datePublished">2020-09-01</time>
+    <a href="/2020/08/17/java8%E4%B8%AD%E7%9A%84%E6%B5%81%E5%BC%8F%E5%86%99%E6%B3%95%E7%9A%84%E4%B8%80%E7%82%B9%E6%80%9D%E8%80%83/" class="article-date">
+  <time datetime="2020-08-17T12:51:48.462Z" itemprop="datePublished">2020-08-17</time>
 </a>
     
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/java8/">java8</a>
-  </div>
-
   </div>
   <div class="article-inner">
     
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="java8中的流式写法的一点思考"><a href="#java8中的流式写法的一点思考" class="headerlink" title="java8中的流式写法的一点思考"></a>java8中的流式写法的一点思考</h1><p>最近学习了java8实战和effective java这两本书关于流式写法的知识，在看完java8之后就在想流式写法肯定也会有它的缺点，它优化了外部迭代就肯定舍弃了什么，当学习到effective java 的时候我知道了它的缺点到底是什么。<br>   <code>Stream流式表达的优缺点是什么</code></p>
+        <h1 id="java8中的流式写法的一点思考"><a href="#java8中的流式写法的一点思考" class="headerlink" title="java8中的流式写法的一点思考"></a>java8中的流式写法的一点思考</h1><p>最近学习了java8实战和effective java这两本书关于流式写法的知识，在看完java8之后就在想流式写法肯定也会有它的缺点，它优化了外部迭代就肯定舍弃了什么，当学习到effective java 的时候我知道了它的缺点到底是什么。<br><code>Stream流式表达的优缺点是什么</code></p>
 <ul>
-<li><p>优点</p>
-<blockquote>
+<li>优点<blockquote>
 <p>简洁<br>容易进行并行计算，添加一个parallel就行<br>有可能是未来编程的趋势<br>递归运行非常快，对其有专门的优化  </p>
 </blockquote>
 </li>
-<li><p>缺点</p>
-<blockquote>
+<li>缺点<blockquote>
 <p>如果不使用并行计算，代码的效率并没有普通迭代的快（大多数情况）<br>没有办法进行return、continue、break、对异常进行处理等操作<br>不容易调试  </p>
 </blockquote>
 </li>
-<li><p>相较于普通迭代的优点</p>
-<blockquote>
+<li>相较于普通迭代的优点<blockquote>
 <p>无存储<br>函数式风格，不会修改数据源<br>惰性执行<br>代码简洁<br>::Stream和iterator迭代的效率比较::<br>这里给出两篇博客，其中测试了Stream、parallel stream、iterator的执行效率<br><a target="_blank" rel="noopener" href="https://segmentfault.com/a/1190000004171551">Java 8 Stream的性能到底如何？ - 某熊的全栈之路 - SegmentFault 思否</a><br><a target="_blank" rel="noopener" href="https://blog.csdn.net/Al_assad/article/details/82356606">JDK8 Stream 数据流效率分析_Al_assad的博客-CSDN博客_stream 效率</a><br>在这里直接给出相应的结论：</p>
 </blockquote>
 </li>
-<li><p>数据量小的时候（size&lt;=1000）的时候iterator效率要比Stream高，不过都低于毫秒所以可以牺牲这一部分性能来追求Stream的可读性。</p>
-</li>
-<li><p>在大数据量（szie&gt;10000）时，Stream的处理效率要高一些，如果并行流使用得当效率还能更高。</p>
-</li>
-<li><p>并行流使用的时候受cpu的影响大，当没分配到多个cpu核心时，加上引用 forkJoinPool 的开销，运行效率可能还不如普通的 Stream。</p>
-<p><code>如何用好Stream表达式</code></p>
-</li>
+<li>数据量小的时候（size&lt;=1000）的时候iterator效率要比Stream高，不过都低于毫秒所以可以牺牲这一部分性能来追求Stream的可读性。</li>
+<li>在大数据量（szie&gt;10000）时，Stream的处理效率要高一些，如果并行流使用得当效率还能更高。</li>
+<li>并行流使用的时候受cpu的影响大，当没分配到多个cpu核心时，加上引用 forkJoinPool 的开销，运行效率可能还不如普通的 Stream。<br><code>如何用好Stream表达式</code></li>
 </ul>
 <ol>
 <li><p><strong>注意装箱拆箱</strong></p>
@@ -154,7 +143,7 @@ toMap中的两个参数第一个是映射的键，第二个是映射的值，但
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/09/01/java8%E4%B8%AD%E7%9A%84%E6%B5%81%E5%BC%8F%E5%86%99%E6%B3%95%E7%9A%84%E4%B8%80%E7%82%B9%E6%80%9D%E8%80%83/" data-id="ckejq82q40000nszxekwncvo6" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2020/08/17/java8%E4%B8%AD%E7%9A%84%E6%B5%81%E5%BC%8F%E5%86%99%E6%B3%95%E7%9A%84%E4%B8%80%E7%82%B9%E6%80%9D%E8%80%83/" data-id="ckejq82q40000nszxekwncvo6" class="article-share-link">Share</a>
       
       
     </footer>
@@ -163,15 +152,20 @@ toMap中的两个参数第一个是映射的键，第二个是映射的值，但
     
 <nav id="article-nav">
   
-    <a href="/2020/09/01/hello-world/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2020/09/01/Java8%E6%96%B0%E7%89%B9%E6%80%A7%E5%AD%A6%E4%B9%A0/" id="article-nav-newer" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Newer</strong>
       <div class="article-nav-title">
         
-          Hello World
+          (no title)
         
       </div>
     </a>
   
+  
+    <a href="/2020/08/14/Java8%E4%B8%ADMap.merge%E3%80%81compute%E3%80%81computeIfAbsent%E3%80%81computeIfPre/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title"></div>
+    </a>
   
 </nav>
 
@@ -201,7 +195,7 @@ toMap中的两个参数第一个是映射的键，第二个是映射的值，但
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/09/">September 2020</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/09/">September 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/08/">August 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/">July 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">June 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">May 2020</a></li></ul>
     </div>
   </div>
 
@@ -218,7 +212,19 @@ toMap中的两个参数第一个是映射的键，第二个是映射的值，但
           </li>
         
           <li>
-            <a href="/2020/09/01/java8%E4%B8%AD%E7%9A%84%E6%B5%81%E5%BC%8F%E5%86%99%E6%B3%95%E7%9A%84%E4%B8%80%E7%82%B9%E6%80%9D%E8%80%83/">(no title)</a>
+            <a href="/2020/09/01/Java8%E6%96%B0%E7%89%B9%E6%80%A7%E5%AD%A6%E4%B9%A0/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2020/08/17/java8%E4%B8%AD%E7%9A%84%E6%B5%81%E5%BC%8F%E5%86%99%E6%B3%95%E7%9A%84%E4%B8%80%E7%82%B9%E6%80%9D%E8%80%83/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2020/08/14/Java8%E4%B8%ADMap.merge%E3%80%81compute%E3%80%81computeIfAbsent%E3%80%81computeIfPre/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2020/07/30/2020-08-24/">(no title)</a>
           </li>
         
       </ul>

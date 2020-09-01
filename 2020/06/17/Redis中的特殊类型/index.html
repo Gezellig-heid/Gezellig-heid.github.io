@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="Redis中的特殊类型#redis Geospatial是用来存储地理位置的一个数据结构Geo是在Redis3.2版本中推出的，这个功能可以推算地理位置信息，两地的距离，方圆几里的人下面涉及到经度纬度的存储，可以用查询城市经度纬度来查询测试数据  命令使用  geoadd 添加key以及对应的经度 纬度 名称    123456789101112# 经度在前纬度在后# 有效的经度从-180度到18">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hexo">
+<meta property="og:url" content="http://yoursite.com/2020/06/17/Redis%E4%B8%AD%E7%9A%84%E7%89%B9%E6%AE%8A%E7%B1%BB%E5%9E%8B/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="Redis中的特殊类型#redis Geospatial是用来存储地理位置的一个数据结构Geo是在Redis3.2版本中推出的，这个功能可以推算地理位置信息，两地的距离，方圆几里的人下面涉及到经度纬度的存储，可以用查询城市经度纬度来查询测试数据  命令使用  geoadd 添加key以及对应的经度 纬度 名称    123456789101112# 经度在前纬度在后# 有效的经度从-180度到18">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2020-06-17T12:43:36.154Z">
+<meta property="article:modified_time" content="2020-06-18T06:07:20.357Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 5.1.1"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-Redis中的特殊类型" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/06/17/Redis%E4%B8%AD%E7%9A%84%E7%89%B9%E6%AE%8A%E7%B1%BB%E5%9E%8B/" class="article-date">
+  <time datetime="2020-06-17T12:43:36.154Z" itemprop="datePublished">2020-06-17</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="Redis中的特殊类型"><a href="#Redis中的特殊类型" class="headerlink" title="Redis中的特殊类型"></a>Redis中的特殊类型</h1><p>#redis</p>
+<h2 id="Geospatial"><a href="#Geospatial" class="headerlink" title="Geospatial"></a>Geospatial</h2><p>是用来存储地理位置的一个数据结构<br>Geo是在Redis3.2版本中推出的，这个功能可以推算地理位置信息，两地的距离，方圆几里的人<br>下面涉及到经度纬度的存储，可以用<a target="_blank" rel="noopener" href="http://www.jsons.cn/lngcodeinfo/0706D99C19A781A3/">查询城市经度纬度</a>来查询测试数据</p>
+<ul>
+<li>命令使用 <blockquote>
+<p>geoadd 添加key以及对应的经度 纬度 名称  </p>
+</blockquote>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 经度在前纬度在后</span></span><br><span class="line"><span class="comment"># 有效的经度从-180度到180度。</span></span><br><span class="line"><span class="comment">#	有效的纬度从-85.05112878度到85.05112878度。</span></span><br><span class="line"><span class="comment"># 当坐标位置超出上述指定范围时，该命令将会返回一个错误。</span></span><br><span class="line">127.0.0.1:6379&gt; geoadd china:city 116 39 beijing   	<span class="comment">#向china:city key 中添加北京的经度纬度</span></span><br><span class="line">(<span class="built_in">integer</span>) 1</span><br><span class="line">127.0.0.1:6379&gt; geoadd china:city 121 31 shanghai</span><br><span class="line">(<span class="built_in">integer</span>) 1</span><br><span class="line">127.0.0.1:6379&gt; geoadd china:city 106.50 29.53 chongqi 114.05 22.52 shengzhen</span><br><span class="line">(<span class="built_in">integer</span>) 2</span><br><span class="line">127.0.0.1:6379&gt; geoadd china:city 120.16 30.24 hangzhou 108.96 34.26 xian</span><br><span class="line">(<span class="built_in">integer</span>) 2</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>getpos 显示key的经度纬度  </p>
+</blockquote>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6379&gt; geopos china:city beijing    <span class="comment">#显示北京的经度纬度，若没有则显示空</span></span><br><span class="line">1) 1) <span class="string">&quot;116.00000113248825073&quot;</span></span><br><span class="line">   2) <span class="string">&quot;38.99999918434559731&quot;</span></span><br><span class="line">127.0.0.1:6379&gt; geopos china:city guangzhou</span><br><span class="line">1) (nil)</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>geodist 显示两地的距离  （将地球作为一个完美球体进行计算，误差在0.5%以内）<br>如果两个位置之间的其中一个不存在， 那么命令返回空值。<br>指定单位的参数 unit 必须是以下单位的其中一个。<br><strong>m</strong> 表示单位为米。<br><strong>km</strong> 表示单位为千米。<br><strong>mi</strong> 表示单位为英里。<br><strong>ft</strong> 表示单位为英尺。<br>如果用户没有显式地指定单位参数， 那么 GEODIST 默认使用米作为单位  </p>
+</blockquote>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6379&gt; geodist china:city beijing shanghai km   <span class="comment">#以千米为单位显示北京到上海的距离</span></span><br><span class="line"><span class="string">&quot;999.2077&quot;</span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>georadius 以给定的经纬度为中心， 返回键包含的位置元素当中， 与中心的距离不超过给定最大距离的所有位置元素<br>范围可以是  m km mi ft<br>WITHDIST: 在返回位置元素的同时， 将位置元素与中心之间的距离也一并返回。 距离的单位和用户给定的范围单位保持一致。<br>WITHCOORD: 将位置元素的经度和维度也一并返回。  </p>
+</blockquote>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6379&gt; georadius china:city 110 30 1000 km   <span class="comment">#找经度110纬度30方圆1000km以内的元素</span></span><br><span class="line">1) <span class="string">&quot;chongqi&quot;</span></span><br><span class="line">2) <span class="string">&quot;xian&quot;</span></span><br><span class="line">3) <span class="string">&quot;shengzhen&quot;</span></span><br><span class="line">4) <span class="string">&quot;hangzhou&quot;</span></span><br><span class="line">127.0.0.1:6379&gt; georadius china:city 110 30 1000 km withcoord   <span class="comment">#显示元素的经度纬度</span></span><br><span class="line">1) 1) <span class="string">&quot;chongqi&quot;</span></span><br><span class="line">   2) 1) <span class="string">&quot;106.49999767541885376&quot;</span></span><br><span class="line">      2) <span class="string">&quot;29.52999957900659211&quot;</span></span><br><span class="line">2) 1) <span class="string">&quot;xian&quot;</span></span><br><span class="line">   2) 1) <span class="string">&quot;108.96000176668167114&quot;</span></span><br><span class="line">      2) <span class="string">&quot;34.25999964418929977&quot;</span></span><br><span class="line">3) 1) <span class="string">&quot;shengzhen&quot;</span></span><br><span class="line">   2) 1) <span class="string">&quot;114.04999762773513794&quot;</span></span><br><span class="line">      2) <span class="string">&quot;22.5200000879503861&quot;</span></span><br><span class="line">4) 1) <span class="string">&quot;hangzhou&quot;</span></span><br><span class="line">   2) 1) <span class="string">&quot;120.1600000262260437&quot;</span></span><br><span class="line">      2) <span class="string">&quot;30.2400003229490224&quot;</span></span><br><span class="line">127.0.0.1:6379&gt; georadius china:city 110 30 500 km withdist   <span class="comment">#显示到110 30 的具体距离</span></span><br><span class="line">1) 1) <span class="string">&quot;chongqi&quot;</span></span><br><span class="line">   2) <span class="string">&quot;341.9374&quot;</span></span><br><span class="line">2) 1) <span class="string">&quot;xian&quot;</span></span><br><span class="line">   2) <span class="string">&quot;483.8340&quot;</span></span><br><span class="line">127.0.0.1:6379&gt; georadius china:city 110 30 500 km count 1		<span class="comment">#筛选指定的结果</span></span><br><span class="line">1) <span class="string">&quot;chongqi&quot;</span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>georadiusbymember 找出位于指定元素周围的其他元素  </p>
+</blockquote>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6379&gt; GEORADIUSBYMEMBER china:city beijing 1000 km </span><br><span class="line">1) <span class="string">&quot;beijing&quot;</span></span><br><span class="line">2) <span class="string">&quot;xian&quot;</span> 127.0.0.1:6379&gt; GEORADIUSBYMEMBER china:city shanghai 400 km </span><br><span class="line">1) <span class="string">&quot;hangzhou&quot;</span></span><br><span class="line">2) <span class="string">&quot;shanghai&quot;</span> </span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>geohash  返回一个或多个位置元素的geohash表示<br>该命令返回一个11字符的字符串  </p>
+</blockquote>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#将经度纬度转换为一维字符串，如果两个字符串接近，那么距离越近，可以根据这个字符串去查找到对应位置</span></span><br><span class="line">127.0.0.1:6379&gt; geohash china:city beijing chongqi		</span><br><span class="line">1) <span class="string">&quot;wwfmzesx7y0&quot;</span></span><br><span class="line">2) <span class="string">&quot;wm5xzrybty0&quot;</span></span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h2 id="Hyperloglog"><a href="#Hyperloglog" class="headerlink" title="Hyperloglog"></a>Hyperloglog</h2><blockquote>
+<p>统计基数  </p>
+</blockquote>
+<ul>
+<li>什么是基数<br>有集合A{1、2、3、4、5} 和集合B{2、2、3、3、4、5、6}<br>基数用大白话讲就是一个集合中不重复的元素<br>所以A的基数就是5，B的基数也是5（除去重复的2和3）<br>在Redis统计基数中是有误差的</li>
+<li>Redis中的Hyperloglog<br>优点：占用内存是固定的，2^64次方个不同元素的基数，只需要12KB的内存<br>可以用来做什么？<br>存储网页的访问数（一个人访问一个网站多次，只算一次访问）<br>传统的方式中是使用set来存储，由于set是无序无重复的，多次插入一个用户ID也存储的是一个值，但是当数据量很大的时候就会很麻烦，我们要做的是计数而不是存储ID<br>那么就可以使用Hyperloglog，虽然有误差但是在网页的访问数中也可以忽略这些误差</li>
+<li>如何使用<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6379&gt; PFadd mykey a b c d e    <span class="comment">#创建第一组元素mykey</span></span><br><span class="line">(<span class="built_in">integer</span>) 1</span><br><span class="line">127.0.0.1:6379&gt; PFCOUNT mykey   <span class="comment">#统计mykey中的基数数量</span></span><br><span class="line">(<span class="built_in">integer</span>) 5</span><br><span class="line">127.0.0.1:6379&gt; PFADD mykey b c d e f   <span class="comment">#继续向mykey中添加元素</span></span><br><span class="line">(<span class="built_in">integer</span>) 1</span><br><span class="line">127.0.0.1:6379&gt; PFCOUNT mykey     <span class="comment">#统计mykey中的基数数量</span></span><br><span class="line">(<span class="built_in">integer</span>) 6</span><br><span class="line">127.0.0.1:6379&gt; PFADD mykey1 b c d e f g   <span class="comment">#创建第二组元素mykey1</span></span><br><span class="line">(<span class="built_in">integer</span>) 1</span><br><span class="line">127.0.0.1:6379&gt; PFCOUNT mykey1      <span class="comment">#统计mykey1中的基数数量</span></span><br><span class="line">(<span class="built_in">integer</span>) 6</span><br><span class="line">127.0.0.1:6379&gt; PFMERGE mykey2 mykey mykey1  <span class="comment">#合并两组元素</span></span><br><span class="line">OK</span><br><span class="line">127.0.0.1:6379&gt; PFCOUNT mykey2			<span class="comment">#统计合并后的基数数量</span></span><br><span class="line">(<span class="built_in">integer</span>) 7</span><br></pre></td></tr></table></figure>
+<h2 id="Bitmap"><a href="#Bitmap" class="headerlink" title="Bitmap"></a>Bitmap</h2><blockquote>
+<p>位存储<br>统计一个用户活跃、不活跃 登录、没登录 打卡、没打卡<br>位存储存储的就是01值，任何两个状态的事物都可以用01来存储</p>
+</blockquote>
+</li>
+<li>如何使用<br>这里使用其来存储一个人一周打卡的情况<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6379&gt; setbit sign 0 0   <span class="comment">#key是sign  第一个0代表周一  第二个0代表周二</span></span><br><span class="line">(<span class="built_in">integer</span>) 0</span><br><span class="line">127.0.0.1:6379&gt; setbit sign 1 0</span><br><span class="line">(<span class="built_in">integer</span>) 0</span><br><span class="line">127.0.0.1:6379&gt; setbit sign 2 1</span><br><span class="line">(<span class="built_in">integer</span>) 0</span><br><span class="line">127.0.0.1:6379&gt; setbit sign 3 1</span><br><span class="line">(<span class="built_in">integer</span>) 0</span><br><span class="line">127.0.0.1:6379&gt; setbit sign 4 1</span><br><span class="line">(<span class="built_in">integer</span>) 0</span><br><span class="line">127.0.0.1:6379&gt; setbit sign 5 0</span><br><span class="line">(<span class="built_in">integer</span>) 0</span><br><span class="line">127.0.0.1:6379&gt; setbit sign 6 1</span><br><span class="line">(<span class="built_in">integer</span>) 0</span><br><span class="line">127.0.0.1:6379&gt; GETBIT sign 1	<span class="comment">#获取signkey星期一的签到状态</span></span><br><span class="line">(<span class="built_in">integer</span>) 0</span><br><span class="line">127.0.0.1:6379&gt; bitcount sign	<span class="comment">#获取sign本周的签到天数</span></span><br><span class="line">(<span class="built_in">integer</span>) 4</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2020/06/17/Redis%E4%B8%AD%E7%9A%84%E7%89%B9%E6%AE%8A%E7%B1%BB%E5%9E%8B/" data-id="ckejvvygq0005mjzx88x9a4as" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2020/06/18/Redis%E4%BA%8B%E5%8A%A1%E4%B8%8E%E5%9F%BA%E6%9C%AC%E5%AE%9E%E7%8E%B0%E4%BB%A3%E7%A0%81/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          (no title)
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2020/06/09/%E5%85%B6%E4%BB%96%E5%AD%A6%E4%B9%A0/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title"></div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/java8/">java8</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/09/">September 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/08/">August 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/">July 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">June 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">May 2020</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2020/09/01/hello-world/">Hello World</a>
+          </li>
+        
+          <li>
+            <a href="/2020/09/01/Java8%E6%96%B0%E7%89%B9%E6%80%A7%E5%AD%A6%E4%B9%A0/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2020/08/17/java8%E4%B8%AD%E7%9A%84%E6%B5%81%E5%BC%8F%E5%86%99%E6%B3%95%E7%9A%84%E4%B8%80%E7%82%B9%E6%80%9D%E8%80%83/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2020/08/14/Java8%E4%B8%ADMap.merge%E3%80%81compute%E3%80%81computeIfAbsent%E3%80%81computeIfPre/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2020/07/30/2020-08-24/">(no title)</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2020 John Doe<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>

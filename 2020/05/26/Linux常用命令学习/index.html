@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="Linux常用命令学习#Java&#x2F;基础学习 常用命令1、cd 格式：cd + &lt;路径&gt;  cd Documents 表示切换到当前目录下  cd _Documents_index 切换到Documents下的index文件夹下  cd ..回到上一级  cd &#x2F; 切换到根目录  cd ~ 进入home目录  cd - 进入上一次工作路径   2、ls 格式：ls + &lt;参数&amp;gt">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hexo">
+<meta property="og:url" content="http://yoursite.com/2020/05/26/Linux%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E5%AD%A6%E4%B9%A0/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="Linux常用命令学习#Java&#x2F;基础学习 常用命令1、cd 格式：cd + &lt;路径&gt;  cd Documents 表示切换到当前目录下  cd _Documents_index 切换到Documents下的index文件夹下  cd ..回到上一级  cd &#x2F; 切换到根目录  cd ~ 进入home目录  cd - 进入上一次工作路径   2、ls 格式：ls + &lt;参数&amp;gt">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2020-05-26T08:44:40.398Z">
+<meta property="article:modified_time" content="2020-08-14T03:46:23.849Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 5.1.1"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-Linux常用命令学习" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/05/26/Linux%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E5%AD%A6%E4%B9%A0/" class="article-date">
+  <time datetime="2020-05-26T08:44:40.398Z" itemprop="datePublished">2020-05-26</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="Linux常用命令学习"><a href="#Linux常用命令学习" class="headerlink" title="Linux常用命令学习"></a>Linux常用命令学习</h1><p>#Java/基础学习</p>
+<h2 id="常用命令"><a href="#常用命令" class="headerlink" title="常用命令"></a>常用命令</h2><p>1、cd</p>
+<p>格式：cd + &lt;路径&gt;</p>
+<ul>
+<li><p>cd Documents 表示切换到当前目录下</p>
+</li>
+<li><p>cd _Documents_index 切换到Documents下的index文件夹下</p>
+</li>
+<li><p>cd ..回到上一级</p>
+</li>
+<li><p>cd / 切换到根目录</p>
+</li>
+<li><p>cd ~ 进入home目录</p>
+</li>
+<li><p>cd - 进入上一次工作路径</p>
+</li>
+</ul>
+<p>2、ls</p>
+<p>格式：ls + &lt;参数&gt; + &lt;路径&gt;</p>
+<ul>
+<li><p>ls / 显示根目录下所有文件</p>
+</li>
+<li><p>ls 显示当前路径下的所有文件名</p>
+</li>
+<li><p>ls -l 显示当前路径下所有文件及其详细信息</p>
+</li>
+<li><p>ls -a 列出所有目录文件，包括以 . 开头的隐藏文件</p>
+</li>
+<li><p>ls -A 列出除了 . 和.. 的其他文件</p>
+</li>
+</ul>
+<p>3、cat</p>
+<p>格式：cat + &lt;参数&gt; + &lt;文件&gt;</p>
+<ul>
+<li>cat index.txt 读取当前路径下的index.txt内容并显示</li>
+<li>cat &gt; filename 从键盘创建一个文件</li>
+<li>cat file1 file2 &gt; file 几个文件合并为一个文件</li>
+</ul>
+<p>4、pwd</p>
+<p>用于查看当前的工作路径</p>
+<ul>
+<li>pwd 查看当前路径</li>
+</ul>
+<p>5、mkdir</p>
+<p>格式：mkdir + &lt;文件夹&gt; 用于创建文件夹</p>
+<ul>
+<li>mkdir  _Documents_index  在Documents里创建index文件夹</li>
+<li>mkdir -p a_b_c   -p用于创建多级文件夹，该命令表示在当前路径下，创建文件夹a，a文件夹包括b文件夹，b里包括c文件夹</li>
+</ul>
+<p>6、rm 删除目录或文件，不使用-r，可以删除目录</p>
+<p>格式：rm + &lt;参数&gt; + &lt;文件&gt;，用于删除文件或目录，删除文件要保证拥有修改权限</p>
+<ul>
+<li><p>rm -f index.txt 删除index.txt文件</p>
+</li>
+<li><p>rm -r index/index.txt  删除当前路径下的index目录或者index.txt 文件</p>
+</li>
+<li><p>rm index.txt 删除index.txt文件</p>
+</li>
+</ul>
+<p>7、cp</p>
+<p>格式：cp + &lt;文件&gt; + &lt;目标文件&gt; 或者cp -r &lt;文件夹&gt; &lt;目标文件夹&gt;</p>
+<ul>
+<li>cp index.txt file 将index.txt复制到file目录下</li>
+<li>cp -r 复制目录及目录内所有项目</li>
+</ul>
+<p>8、touch 命令用于修改文件或者目录的时间属性，包括存取时间和更改时间。若文件不存在，系统会建立一个新的文</p>
+<p>使用方法：touch + &lt;文件&gt;</p>
+<h2 id="vi-vim命令"><a href="#vi-vim命令" class="headerlink" title="vi/vim命令"></a>vi/vim命令</h2><p>vim是一个从vi发展出了的文本编辑器</p>
+<p>vi/vim分为3中模式：</p>
+<ul>
+<li>命令模式</li>
+<li>输入模式</li>
+<li>底线命令模式</li>
+</ul>
+<p>命令模式：</p>
+<p>当我们刚启动vi/vim，就会进入命令模式，现在我们在键盘上敲不会被认为是向文件中输入，而是被当做命令</p>
+<p>1、i 切换到输入模式</p>
+<p>2、：切换到底线命令模式</p>
+<p>输入模式：</p>
+<p>可以在其中正常键入数据，按ESC退回到命令模式</p>
+<p>底线命令模式：</p>
+<p>1、q退出程序</p>
+<p>2、w保存文件</p>
+<p>3、wq 存储后离开，若为:wq! 则为强制存储后离开</p>
+<p>ESC也可以随时退出底线命令模式</p>
+<p>关系转换图：</p>
+<p>image-20200424192414458</p>
+<p>下面给出在vim一般模式中常用的命令：</p>
+<ul>
+<li><p>0 移动到这一行最前面的字符处</p>
+</li>
+<li><p>$ 移动到这一行最后面字符处</p>
+</li>
+<li><p>G 移动到这个文件最后一行</p>
+</li>
+<li><p>gg 移动到这个文件第一行</p>
+</li>
+<li><p>n n是数字，光标向下移动n行</p>
+</li>
+</ul>
+<p>Git 放弃本地所有的修改：</p>
+<p>git checkout .</p>
+<p>git stash stash pophuif</p>
+<p>git clean -n</p>
+<p>git clean -f</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2020/05/26/Linux%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E5%AD%A6%E4%B9%A0/" data-id="ckejvvygp0004mjzxdyujg6bj" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2020/05/28/Spring%E4%BA%8B%E5%8A%A1%E5%AD%A6%E4%B9%A0/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          (no title)
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2020/05/26/%E5%B7%A5%E5%85%B7%E7%B1%BB%E6%98%AF%E4%BD%BF%E7%94%A8%E5%8D%95%E4%BE%8B%E5%A5%BD%E8%BF%98%E6%98%AF%E9%9D%99%E6%80%81%E6%96%B9%E6%B3%95%E5%A5%BD%EF%BC%9F/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title"></div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/java8/">java8</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/09/">September 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/08/">August 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/">July 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">June 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">May 2020</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2020/09/01/hello-world/">Hello World</a>
+          </li>
+        
+          <li>
+            <a href="/2020/09/01/Java8%E6%96%B0%E7%89%B9%E6%80%A7%E5%AD%A6%E4%B9%A0/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2020/08/17/java8%E4%B8%AD%E7%9A%84%E6%B5%81%E5%BC%8F%E5%86%99%E6%B3%95%E7%9A%84%E4%B8%80%E7%82%B9%E6%80%9D%E8%80%83/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2020/08/14/Java8%E4%B8%ADMap.merge%E3%80%81compute%E3%80%81computeIfAbsent%E3%80%81computeIfPre/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2020/07/30/2020-08-24/">(no title)</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2020 John Doe<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>

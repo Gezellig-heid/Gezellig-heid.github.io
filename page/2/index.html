@@ -1,0 +1,749 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta property="og:type" content="website">
+<meta property="og:title" content="Hexo">
+<meta property="og:url" content="http://yoursite.com/page/2/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:locale" content="en_US">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 5.1.1"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main">
+  
+    <article id="post-SpringCloud主要包括什么" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/06/06/SpringCloud%E4%B8%BB%E8%A6%81%E5%8C%85%E6%8B%AC%E4%BB%80%E4%B9%88/" class="article-date">
+  <time datetime="2020-06-06T12:28:21.398Z" itemprop="datePublished">2020-06-06</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="SpringCloud主要包括什么"><a href="#SpringCloud主要包括什么" class="headerlink" title="SpringCloud主要包括什么"></a>SpringCloud主要包括什么</h1><p>#Java/SpringCloud</p>
+<h2 id="Eureka"><a href="#Eureka" class="headerlink" title="Eureka"></a>Eureka</h2><p>Eureka是Netfix中的一个提供服务注册和发现的产品。<br>用大白话讲，Eureka 就是一个服务中心，将所有的可以提供的服务都注册到它这里来管理，其它各调用者需要的时候去注册中心获取，然后再进行调用，避免了服务之间的直接调用，方便后续的水平扩展、故障转移等。<br>当然服务中心这么重要的组件一但挂掉将会影响全部服务，因此需要搭建 Eureka 集群来保持高可用性，生产中建议最少两台。随着系统的流量不断增加，需要根据情况来扩展某个服务，Eureka 内部已经提供均衡负载的功能，只需要增加相应的服务端实例既可。那么在系统的运行期间某个实例挂了怎么办？Eureka 内容有一个心跳检测机制，如果某个实例在规定的时间内没有进行通讯则会自动被剔除掉，避免了某个实例挂掉而影响服务。<br>因此使用了 Eureka 就自动具有了注册中心、负载均衡、故障转移的功能。</p>
+<h2 id="Hystrix"><a href="#Hystrix" class="headerlink" title="Hystrix"></a>Hystrix</h2><p>在微服务架构中通常存在多个服务层进行调用，当一个服务挂了以后容易导致整个系统都不可用，这也叫做服务器雪崩。<br>这种情况下需要有故障隔离功能，避免上面的问题发生，Hystrix 会在某个服务连续调用 N 次不响应的情况下，立即通知调用端调用失败，避免调用端持续等待而影响了整体服务。Hystrix 间隔时间会再次检查此服务，如果服务恢复将继续提供服务。</p>
+<hr>
+<p>服务容错保护Hystrix    中文含义是豪猪，寓意着保护自己不受天敌的伤害，代表一种防御机制<br>服务雪崩效应：<br>服务雪崩效应是一种因 服务提供者 的不可用导致 服务调用者 的不可用，并将不可用 逐渐放大 的过程<br><img src="SpringCloud%E4%B8%BB%E8%A6%81%E5%8C%85%E6%8B%AC%E4%BB%80%E4%B9%88/006tNc79ly1fqdrhznd6yj30ak0cyaep.jpg"><br>如上图所示：先是A服务不可用，而后调用A服务的B服务也不可用，最后是调用B服务的C/D服务也不可用，形成服务雪崩<br>服务雪崩主要有三个阶段：</p>
+<ol>
+<li>服务提供者不可用</li>
+<li>重试加大流量</li>
+<li>服务调用者不可用<h2 id="Hystrix-Dashboard-和-Turbine"><a href="#Hystrix-Dashboard-和-Turbine" class="headerlink" title="Hystrix Dashboard 和 Turbine"></a>Hystrix Dashboard 和 Turbine</h2>Hystrix Dashboard是一个针对Hystrix进行实时监控的工具，但是使用Hystrix Dashboard只能看到单个应用内的服务信息，我们需要一个汇总多个服务的数据显示的Hystrix Dashboard，这个工具就是Turbine<h2 id="Spring-Cloud-Config"><a href="#Spring-Cloud-Config" class="headerlink" title="Spring Cloud Config"></a>Spring Cloud Config</h2>随着服务的不断增多，每个微服务都应该对应着自己的配置文件。<br>Spring Cloud Config 是一个解决分布式系统的配置管理方案。它包含了 Client 和 Server 两个部分，Server 提供配置文件的存储、以接口的形式将配置文件的内容提供出去，Client 通过接口获取数据、并依据此数据初始化自己的应用。<h2 id="Spring-Cloud-Bus"><a href="#Spring-Cloud-Bus" class="headerlink" title="Spring Cloud Bus"></a>Spring Cloud Bus</h2>Spring Cloud Config是单个项目的配置中心，而bus则是将多个Config统一管理</li>
+</ol>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2020/06/06/SpringCloud%E4%B8%BB%E8%A6%81%E5%8C%85%E6%8B%AC%E4%BB%80%E4%B9%88/" data-id="ckejvvygs0008mjzxhwu23rrk" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-初识SpringCloud" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/06/03/%E5%88%9D%E8%AF%86SpringCloud/" class="article-date">
+  <time datetime="2020-06-03T06:22:31.857Z" itemprop="datePublished">2020-06-03</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="初识SpringCloud"><a href="#初识SpringCloud" class="headerlink" title="初识SpringCloud"></a>初识SpringCloud</h1><p> Spring Cloud 是 Spring 为微服务架构思想做的一个一站式实现，可以简单的理解为微服务是一个概念、一个项目开发的架构思想，Spring Cloud 是微服务架构的一种 Java 实现。<br>#Java/SpringCloud</p>
+<h2 id="微服务是什么？"><a href="#微服务是什么？" class="headerlink" title="微服务是什么？"></a>微服务是什么？</h2><p>微服务是一个概念、项目开发的架构思想，引用一段话：微服务架构风格是一种将单个应用程序作为一套小型服务开发的方法，每种应用程序都在自己的进程中运行，并与轻量级机制（通常是HTTP资源API）进行通信。 这些服务是围绕业务功能构建的，可以通过全自动部署机制独立部署。 这些服务的集中管理最少，可以用不同的编程语言编写，并使用不同的数据存储技术。<br>为什么需要微服务?<br>由于单体架构有以下三种缺点所以就需要微服务来对项目进行拆分</p>
+<ul>
+<li>项目过于臃肿<br>当大大小小的功能模块都集中在同一项目的时候，整个项目必然会变得臃肿，让开发者难以维护。</li>
+<li>资源无法隔离<br>整个单体系统的各个功能模块都依赖于同样的数据库、内存等资源，一旦某个功能模块对资源使用不当，整个系统都会被拖垮。</li>
+<li>无法灵活扩展<br>当系统的访问量越来越大的时候，单体系统固然可以进行水平扩展，部署在多台机器上组成集群：但是这种扩展并非灵活的扩展。比如我们现在的性能瓶颈只是其中某一个模块，希望只针对该模块做水平扩展，这一点在单体系统是做不到的。<h2 id="为什么微服务架构需要SpringCloud"><a href="#为什么微服务架构需要SpringCloud" class="headerlink" title="为什么微服务架构需要SpringCloud"></a>为什么微服务架构需要SpringCloud</h2><h3 id="微服务的问题："><a href="#微服务的问题：" class="headerlink" title="微服务的问题："></a>微服务的问题：</h3></li>
+</ul>
+<hr>
+<ul>
+<li>服务端有很多，客户端应该怎么访问？<br>当使用微服务将项目模块化以后，每个模块就是一个服务，而我们正常客户端访问可不会去分别访问那个模块，比如淘宝可能有下订单、物流、支付等模块，我们访问的时候只是访问淘宝，那么客户端是如何访问某个模块的？</li>
+</ul>
+<hr>
+<ul>
+<li>这么多服务，他们如何进行通信？<br>还是拿下订单举例：<br>我们买东西的流程是下订单 -&gt; 支付 -&gt; 物流，他们是通过什么来进行通信的，能让一个流程正常的运转下去</li>
+</ul>
+<hr>
+<ul>
+<li>这么多的服务，如何治理?<br>服务越来越多，多就意味这复杂难以管理</li>
+</ul>
+<hr>
+<ul>
+<li>其中的服务挂了怎么处理？<br>当下订单的服务挂了，那么支付和物流都无法执行。</li>
+</ul>
+<hr>
+<p>下面来看，这些问题是如何解决的</p>
+<h3 id="解决问题"><a href="#解决问题" class="headerlink" title="解决问题"></a>解决问题</h3><h4 id="1、基于Dubbo实现的微服务"><a href="#1、基于Dubbo实现的微服务" class="headerlink" title="1、基于Dubbo实现的微服务"></a>1、基于Dubbo实现的微服务</h4><p>Dubbo是一款高性能、轻量级的开源Java RPC框架，它提供了三大核心能力：面向接口的远程方法调用，智能容错和负载均衡，以及服务自动注册和发现。所以它通过RPC通讯方式解决第二个通信问题、注册和发现解决第三个管理问题。但是他没有解决第一个和第四个问题<br>Dubbo基本概念：</p>
+<p><img src="%E5%88%9D%E8%AF%86SpringCloud/006tNc79ly1fqc31r2nulj30e90bsdfv.jpg"></p>
+<p>（Provider）：暴露服务的服务提供方，服务提供者在启动时，向注册中心注册自己提供的服务。<br>（Consumer）：调用远程服务的服务消费方，服务消费者在启动时，向注册中心订阅自己所需的服务，服务消费者，从提供者地址列表中，基于软负载均衡算法，选一台提供者进行调用，如果调用失败，再选另一台调用。<br>（Registry）：注册中心返回服务提供者地址列表给消费者，如果有变更，注册中心将基于长连接推送变更数据给消费者<br>（Monitor）：服务消费者和提供者，在内存中累计调用次数和调用时间，定时每分钟发送一次统计数据到监控中心<br>另外Dubbo中的注册和发现是依赖于第三方的，在Dubbo官方文档中描述可以使用<br><img src="%E5%88%9D%E8%AF%86SpringCloud/C122E319-9E31-42B4-8043-0E75F811D8F4.png"><br>这几种注册中心，其中Zookeeper是被推荐使用的。</p>
+<h4 id="2、通过SpringCloud来实现微服务"><a href="#2、通过SpringCloud来实现微服务" class="headerlink" title="2、通过SpringCloud来实现微服务"></a>2、通过SpringCloud来实现微服务</h4><p>SpringCloud下有20多个项目来实现微服务的方方面面，它是一个生态，一个实现微服务的生态<br>SpringCloud技术总览：<br><img src="%E5%88%9D%E8%AF%86SpringCloud/v2-2d78afcc4e7019b9788478345059a9a3_r.jpg"></p>
+<hr>
+<p>zuul api网关来解决访问服务端的问题<br>FeginClient- Rest风格 - Http的通信方式来解决通信问题<br>Eureka实现注册发现<br>Netfix熔断机制来处理服务出错</p>
+<hr>
+<p>Dubbo中的功能只是SpringCloud中的一部分，Dubbo只是实现了服务的治理以及服务间的通讯，而SpringCloud功能更加强大，并且他还能和Spring的其他项目完美的融合。<br>但是不是说Dubbo就不如SpringCloud而是Dubbo更加专注实现某个功能</p>
+<h4 id="3、Spring-Cloud-Alibaba（扩展）"><a href="#3、Spring-Cloud-Alibaba（扩展）" class="headerlink" title="3、Spring Cloud Alibaba（扩展）"></a>3、Spring Cloud Alibaba（扩展）</h4><p>Spring Cloud Alibaba 是阿里巴巴提供的微服务开发一站式解决方案，是阿里巴巴开源中间件与 Spring Cloud 体系的融合。作为 Spring Cloud 体系下的新实现，Spring Cloud Alibaba 跟官方的组件或其它的第三方实现如 Netflix, Consul，Zookeeper 等对比，具备了更多的功能:<br><img src="%E5%88%9D%E8%AF%86SpringCloud/v2-3a132c503bb7cde19314acc8a4866c4b_r.jpg"></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2020/06/03/%E5%88%9D%E8%AF%86SpringCloud/" data-id="ckejvvygy000dmjzxf5ii0cab" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-Spring事务学习" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/05/28/Spring%E4%BA%8B%E5%8A%A1%E5%AD%A6%E4%B9%A0/" class="article-date">
+  <time datetime="2020-05-28T09:07:42.874Z" itemprop="datePublished">2020-05-28</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="Spring事务学习"><a href="#Spring事务学习" class="headerlink" title="Spring事务学习"></a>Spring事务学习</h1><p>#java/SpringBoot</p>
+<h2 id="Spring事务的分类"><a href="#Spring事务的分类" class="headerlink" title="Spring事务的分类"></a>Spring事务的分类</h2><ul>
+<li>编码式事务 -&gt; 通过编码的方式来实现事务</li>
+<li>声明式事务 -&gt; 基于AOP，将具体的业务逻辑与事务处理进行解耦，声明式事务有两种实现方式1、在xml中进行配置2、基于@Transactional注解（现在最常用的方式），下面介绍的也主要是声明式事务<h2 id="Transactional-注解的属性"><a href="#Transactional-注解的属性" class="headerlink" title="@Transactional 注解的属性"></a>@Transactional 注解的属性</h2>name         当在配置文件中有多个 TransactionManager , 可以用该属性指定选择哪个事务管理器。<br>propagation    事务的传播行为，默认值为 REQUIRED。<br>isolation        事务的隔离度，默认值采用 DEFAULT。<br>timeout        事务的超时时间，默认值为-1。如果超过该时间限制但事务还没有完成，则自动回滚事务。<br>read-only    指定事务是否为只读事务，默认值为 false；事务的只读属性是指，对事务性资源进行只读操作或者是读写操作。所谓事务性资源就是指那些被事务管理的资源，比如数据源、 JMS 资源，以及自定义的事务性资源等等。如果确定只对事务性资源进行只读操作，那么我们可以将事务标志为只读的，以提高事务处理的性能。在 TransactionDefinition 中以 boolean 类型来表示该事务是否只读。<br>rollback-for    用于指定能够触发事务回滚的异常类型，如果有多个异常类型需要指定，各类型之间可以通过逗号分隔。<br>no-rollback-for     抛出 no-rollback-for 指定的异常类型，不回滚事务<h2 id="Transactional-使用在何处"><a href="#Transactional-使用在何处" class="headerlink" title="@Transactional 使用在何处"></a>@Transactional 使用在何处</h2>@Transactional 一般使用在方法上，也就是serviceImpl方法中，经常被用在数据的增删改上，另外@Transactional 注解也可以添加到类级别上。当把@Transactional 注解放在类级别时，表示所有该类的公共方法都配置相同的事务属性信息。当类级别配置了@Transactional，方法级别也配置了@Transactional，应用程序会以方法级别的事务属性信息来管理事务，换言之，方法级别的事务属性信息会覆盖类级别的相关配置信息。<h2 id="propagation属性详解"><a href="#propagation属性详解" class="headerlink" title="propagation属性详解"></a>propagation属性详解</h2>事务传播行为用来描述由某一个事务传播行为修饰的方法被嵌套进另一个方法的时事务如何传播。<br>1、PROPAGATION_REQUIRED – 支持当前事务，如果当前没有事务，就新建一个事务。这是最常见的选择。</li>
+</ul>
+<p>2、PROPAGATION_SUPPORTS – 支持当前事务，如果当前没有事务，就以非事务方式执行。</p>
+<p>3、PROPAGATION_MANDATORY – 支持当前事务，如果当前没有事务，就抛出异常。</p>
+<p>4、PROPAGATION_REQUIRES_NEW – 新建事务，如果当前存在事务，把当前事务挂起。</p>
+<p>5、PROPAGATION_NOT_SUPPORTED – 以非事务方式执行操作，如果当前存在事务，就把当前事务挂起。</p>
+<p>6、PROPAGATION_NEVER – 以非事务方式执行，如果当前存在事务，则抛出异常。</p>
+<p>7、PROPAGATION_NESTED – 如果当前存在事务，则在嵌套事务内执行。如果当前没有事务，则进行与PROPAGATION_REQUIRED类似的操作。</p>
+<hr>
+<p>下面给出一些结论：<br>Propagation.REQUIRED：</p>
+<ul>
+<li>外围方法未开启事务的情况下Propagation.REQUIRED修饰的内部方法会新开启自己的事务，且开启的事务相互独立，互不干扰。</li>
+<li>外围方法开启事务的情况下Propagation.REQUIRED修饰的内部方法会加入到外围方法的事务中，所有Propagation.REQUIRED修饰的内部方法和外围方法均属于同一事务，只要一个方法回滚，整个事务均回滚。<br>Propagation.REQUIRES_NEW：</li>
+<li>外围方法未开启事务的情况下Propagation.REQUIRES_NEW修饰的内部方法会新开启自己的事务，且开启的事务相互独立，互不干扰。</li>
+<li>在外围方法开启事务的情况下Propagation.REQUIRES_NEW修饰的内部方法依然会单独开启独立事务，且与外部方法事务也独立，内部方法之间、内部方法和外部方法事务均相互独立，互不干扰。<br>PROPAGATION_NESTED</li>
+<li>外围方法未开启事务的情况下Propagation.NESTED和Propagation.REQUIRED作用相同，修饰的内部方法都会新开启自己的事务，且开启的事务相互独立，互不干扰。</li>
+<li>外围方法开启事务的情况下Propagation.NESTED修饰的内部方法属于外部事务的子事务，外围主事务回滚，子事务一定回滚，而内部子事务可以单独回滚而不影响外围主事务和其他子事务</li>
+</ul>
+<p>参考自<a target="_blank" rel="noopener" href="https://juejin.im/entry/5a8fe57e5188255de201062b">Spring事务传播行为详解 - 后端 - 掘金</a></p>
+<h2 id="isolation属性详解"><a href="#isolation属性详解" class="headerlink" title="isolation属性详解"></a>isolation属性详解</h2><p>1、ISOLATION_DEFAULT 默认的事务隔离级别，使用数据库的事务隔离级别<br>2、ISOLATION_READ_UNCOMMITTED 读未提交<br>3、ISOLATION_READ_COMMITTED 读已提交<br>4、ISOLATION_REPEATABLE_READ 可重复读<br>5、SOLATION_SERIALIZABLE 串行化最高的隔离级别</p>
+<h2 id="Spring事务管理Api分析"><a href="#Spring事务管理Api分析" class="headerlink" title="Spring事务管理Api分析"></a>Spring事务管理Api分析</h2><p>主要的Api有三个：TransactionDefinition、PlatformTransactionManager、TransactionStatus。</p>
+<blockquote>
+<p>事务管理其实就是“按照给定的事务规则来执行提交或者回滚操作”。“给定的事务规则”就是用 TransactionDefinition 表示的，“按照……来执行提交或者回滚操作”便是用 PlatformTransactionManager 来表示，而 TransactionStatus 用于表示一个运行着的事务的状态。打一个不恰当的比喻，TransactionDefinition 与 TransactionStatus 的关系就像程序和进程的关系。  </p>
+</blockquote>
+<hr>
+<ul>
+<li>TransactionDefinition<br>它用于定义一个事务。它包含了事务的静态属性，比如：事务传播行为、超时时间（我们上面所有提到的注解属性）。Spring 为我们提供了一个默认的实现类：DefaultTransactionDefinition，该类适用于大多数情况。如果该类不能满足需求，可以通过实现 TransactionDefinition 接口来实现自己的事务定义。</li>
+<li>PlatformTransactionManager<br>其中主要的方法有三个：<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 获取一个事务</span></span><br><span class="line"><span class="function">TransactionStatus <span class="title">getTransaction</span><span class="params">(<span class="meta">@Nullable</span> TransactionDefinition definition)</span> <span class="keyword">throws</span> TransactionException</span>;  </span><br><span class="line"><span class="comment">// 提交事务</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">commit</span><span class="params">(TransactionStatus status)</span> <span class="keyword">throws</span> TransactionException</span>;</span><br><span class="line"><span class="comment">// 回滚事务</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">rollback</span><span class="params">(TransactionStatus status)</span> <span class="keyword">throws</span> TransactionException</span>;</span><br></pre></td></tr></table></figure></li>
+<li>TransactionStatus<br>可以注意到上面PlatformTransactionManager中的getTransaction方法就是返回一个TransactionStatus对象，该对象可能是一个新的或者已开启的对象。其中主要的方法有：<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 当前方法是否是新事务</span></span><br><span class="line"><span class="function"><span class="keyword">boolean</span> <span class="title">isNewTransaction</span><span class="params">()</span></span>;</span><br><span class="line"><span class="comment">// 在嵌套事务场景中，判断是否有保存点</span></span><br><span class="line"><span class="function"><span class="keyword">boolean</span> <span class="title">hasSavepoint</span><span class="params">()</span></span>;</span><br><span class="line"><span class="comment">// 只读属性设置和查询</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">setRollbackOnly</span><span class="params">()</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">boolean</span> <span class="title">isRollbackOnly</span><span class="params">()</span></span>;</span><br><span class="line"><span class="comment">// 刷新底层会话中的修改到数据库，一般用于刷新如Hibernate/JPA的会话，是否生效由具体事务资源实现决定</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">flush</span><span class="params">()</span></span>;</span><br><span class="line"><span class="comment">// 判断当前事务是否已经完成</span></span><br><span class="line"><span class="function"><span class="keyword">boolean</span> <span class="title">isCompleted</span><span class="params">()</span></span>;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h2 id="spring事务的具体实现"><a href="#spring事务的具体实现" class="headerlink" title="spring事务的具体实现"></a>spring事务的具体实现</h2><p>声明式事务本质上是在事务方法上加了一个Around切面，在方法前开始事务，在抛出异常后回滚事务<br>具体实现：<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/54067384">【技术干货】Spring事务原理一探 - 知乎</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2020/05/28/Spring%E4%BA%8B%E5%8A%A1%E5%AD%A6%E4%B9%A0/" data-id="ckejvvygt0009mjzx2e3w2r0q" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-Linux常用命令学习" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/05/26/Linux%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E5%AD%A6%E4%B9%A0/" class="article-date">
+  <time datetime="2020-05-26T08:44:40.398Z" itemprop="datePublished">2020-05-26</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="Linux常用命令学习"><a href="#Linux常用命令学习" class="headerlink" title="Linux常用命令学习"></a>Linux常用命令学习</h1><p>#Java/基础学习</p>
+<h2 id="常用命令"><a href="#常用命令" class="headerlink" title="常用命令"></a>常用命令</h2><p>1、cd</p>
+<p>格式：cd + &lt;路径&gt;</p>
+<ul>
+<li><p>cd Documents 表示切换到当前目录下</p>
+</li>
+<li><p>cd _Documents_index 切换到Documents下的index文件夹下</p>
+</li>
+<li><p>cd ..回到上一级</p>
+</li>
+<li><p>cd / 切换到根目录</p>
+</li>
+<li><p>cd ~ 进入home目录</p>
+</li>
+<li><p>cd - 进入上一次工作路径</p>
+</li>
+</ul>
+<p>2、ls</p>
+<p>格式：ls + &lt;参数&gt; + &lt;路径&gt;</p>
+<ul>
+<li><p>ls / 显示根目录下所有文件</p>
+</li>
+<li><p>ls 显示当前路径下的所有文件名</p>
+</li>
+<li><p>ls -l 显示当前路径下所有文件及其详细信息</p>
+</li>
+<li><p>ls -a 列出所有目录文件，包括以 . 开头的隐藏文件</p>
+</li>
+<li><p>ls -A 列出除了 . 和.. 的其他文件</p>
+</li>
+</ul>
+<p>3、cat</p>
+<p>格式：cat + &lt;参数&gt; + &lt;文件&gt;</p>
+<ul>
+<li>cat index.txt 读取当前路径下的index.txt内容并显示</li>
+<li>cat &gt; filename 从键盘创建一个文件</li>
+<li>cat file1 file2 &gt; file 几个文件合并为一个文件</li>
+</ul>
+<p>4、pwd</p>
+<p>用于查看当前的工作路径</p>
+<ul>
+<li>pwd 查看当前路径</li>
+</ul>
+<p>5、mkdir</p>
+<p>格式：mkdir + &lt;文件夹&gt; 用于创建文件夹</p>
+<ul>
+<li>mkdir  _Documents_index  在Documents里创建index文件夹</li>
+<li>mkdir -p a_b_c   -p用于创建多级文件夹，该命令表示在当前路径下，创建文件夹a，a文件夹包括b文件夹，b里包括c文件夹</li>
+</ul>
+<p>6、rm 删除目录或文件，不使用-r，可以删除目录</p>
+<p>格式：rm + &lt;参数&gt; + &lt;文件&gt;，用于删除文件或目录，删除文件要保证拥有修改权限</p>
+<ul>
+<li><p>rm -f index.txt 删除index.txt文件</p>
+</li>
+<li><p>rm -r index/index.txt  删除当前路径下的index目录或者index.txt 文件</p>
+</li>
+<li><p>rm index.txt 删除index.txt文件</p>
+</li>
+</ul>
+<p>7、cp</p>
+<p>格式：cp + &lt;文件&gt; + &lt;目标文件&gt; 或者cp -r &lt;文件夹&gt; &lt;目标文件夹&gt;</p>
+<ul>
+<li>cp index.txt file 将index.txt复制到file目录下</li>
+<li>cp -r 复制目录及目录内所有项目</li>
+</ul>
+<p>8、touch 命令用于修改文件或者目录的时间属性，包括存取时间和更改时间。若文件不存在，系统会建立一个新的文</p>
+<p>使用方法：touch + &lt;文件&gt;</p>
+<h2 id="vi-vim命令"><a href="#vi-vim命令" class="headerlink" title="vi/vim命令"></a>vi/vim命令</h2><p>vim是一个从vi发展出了的文本编辑器</p>
+<p>vi/vim分为3中模式：</p>
+<ul>
+<li>命令模式</li>
+<li>输入模式</li>
+<li>底线命令模式</li>
+</ul>
+<p>命令模式：</p>
+<p>当我们刚启动vi/vim，就会进入命令模式，现在我们在键盘上敲不会被认为是向文件中输入，而是被当做命令</p>
+<p>1、i 切换到输入模式</p>
+<p>2、：切换到底线命令模式</p>
+<p>输入模式：</p>
+<p>可以在其中正常键入数据，按ESC退回到命令模式</p>
+<p>底线命令模式：</p>
+<p>1、q退出程序</p>
+<p>2、w保存文件</p>
+<p>3、wq 存储后离开，若为:wq! 则为强制存储后离开</p>
+<p>ESC也可以随时退出底线命令模式</p>
+<p>关系转换图：</p>
+<p>image-20200424192414458</p>
+<p>下面给出在vim一般模式中常用的命令：</p>
+<ul>
+<li><p>0 移动到这一行最前面的字符处</p>
+</li>
+<li><p>$ 移动到这一行最后面字符处</p>
+</li>
+<li><p>G 移动到这个文件最后一行</p>
+</li>
+<li><p>gg 移动到这个文件第一行</p>
+</li>
+<li><p>n n是数字，光标向下移动n行</p>
+</li>
+</ul>
+<p>Git 放弃本地所有的修改：</p>
+<p>git checkout .</p>
+<p>git stash stash pophuif</p>
+<p>git clean -n</p>
+<p>git clean -f</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2020/05/26/Linux%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E5%AD%A6%E4%B9%A0/" data-id="ckejvvygp0004mjzxdyujg6bj" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-工具类是使用单例好还是静态方法好？" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/05/26/%E5%B7%A5%E5%85%B7%E7%B1%BB%E6%98%AF%E4%BD%BF%E7%94%A8%E5%8D%95%E4%BE%8B%E5%A5%BD%E8%BF%98%E6%98%AF%E9%9D%99%E6%80%81%E6%96%B9%E6%B3%95%E5%A5%BD%EF%BC%9F/" class="article-date">
+  <time datetime="2020-05-26T08:44:40.377Z" itemprop="datePublished">2020-05-26</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="工具类是使用单例好还是静态方法好？"><a href="#工具类是使用单例好还是静态方法好？" class="headerlink" title="工具类是使用单例好还是静态方法好？"></a>工具类是使用单例好还是静态方法好？</h2><p>#Java/基础学习<br>在做项目的时候之前自己写的工具类都是静态方法，但是同事说使用单例模式的spring注入使用会好些，单例模式可以实现懒加载并且在java中也只有一个实例存在，使用static则会在程序启动的时候就被加载，但是静态方法肯定也有他的好处，所以我查了各种资料。</p>
+<p>静态类好处：</p>
+<ul>
+<li>静态类不用引用就能直接调用，但是对比单例来说，这个优点可以不计。</li>
+<li>静态类使用方便可以直接用类名进行调用，不用实例化其类。</li>
+<li>静态方法中的对象会随着静态方法的执行完毕而释放掉。如果使用单例产生唯一一个实例并且不会被GC清除，因为其中静态的属性变量不会被GC清除掉，为什么？</li>
+<li>jvm中判断一个对象是否可以被回收的条件是通过根节点可以通过一系列路径可以到达java堆中的对象java中可以作为根对象的有：<br>1、虚拟机栈（栈桢中的本地变量表）中的引用的对象。<br>2、方法区中的类静态属性引用的对象。<br>3、方法区中的常量引用的对象。<br>4、本地方法栈中JNI的引用的对象。<br>方法区是用来存放类相关的信息的地方，java中的单例类被自己类中的静态属性引用（这里就是单例模式的实现方式了）符合第二条不会被jvm收集。</li>
+<li>单例对象不会被清除那么单例类长时间不用会不会被清除？因为jvm对方法区也是有垃圾收集机制的。如果单例类被收集，那么堆中的对象就会失去到根的路径，必然会被垃圾收集掉。<br>首先要了解jvm卸载类的时机<br>1、堆中不存在该类的实例对象。<br>2、加载该类的classLoader已经被回收。<br>3、该类对应的Class对象没有任何地方可以被引用，通过反射访问不到该Class对象。<br>三个条件全部满足的时候类才会被卸载，由于单例模式不满足第一个条件，所以单例类也不会被卸载</li>
+</ul>
+<p>单例的好处：</p>
+<ul>
+<li>单例可以继承类，实现接口，是面向对象的，在一些场景下方便扩展，方法可以被重写</li>
+<li>可以被延迟加载</li>
+</ul>
+<p>误区：</p>
+<p>静态方法与静态成员变量、静态代码块加载是不一样的，静态方法的加载时机和实例方法是一样的他们在性能和占用内存都是一样的。</p>
+<p>早期的结构化编程，几乎所有的方法都是“静态方法”，引入实例化方法概念是面向对象概念出现以后的事情了，区分静态方法和实例化方法不能单单从性能上去理解，创建c++,java,c#这样面向对象语言的大师引入实例化方法一定不是要解决什么性能、内存的问题，而是为了让开发更加模式化、面向对象化。这样说的话，静态方法和实例化方式的区分是为了解决模式的问题。</p>
+<p>结论：</p>
+<p>1、没有配置信息的工具类可以使用静态类比较好，方便快捷，如果是有配置信息的工具类，还是单例模式比较好。</p>
+<p>2、从面向对象的角度上来说，在抉择使用实例化方法或静态方法时，应该根据是否该方法和实例化对象具有逻辑上的相关性，如果是就应该使用实例化对象 反之使用静态方法，其实用两个方法在效率和性能上影响并不大。比如静态方法Math.abs()</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2020/05/26/%E5%B7%A5%E5%85%B7%E7%B1%BB%E6%98%AF%E4%BD%BF%E7%94%A8%E5%8D%95%E4%BE%8B%E5%A5%BD%E8%BF%98%E6%98%AF%E9%9D%99%E6%80%81%E6%96%B9%E6%B3%95%E5%A5%BD%EF%BC%9F/" data-id="ckejvvygz000emjzx1zbe7x8e" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-下载Excal学习" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/05/26/%E4%B8%8B%E8%BD%BDExcal%E5%AD%A6%E4%B9%A0/" class="article-date">
+  <time datetime="2020-05-26T08:43:13.903Z" itemprop="datePublished">2020-05-26</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="下载Excal学习"><a href="#下载Excal学习" class="headerlink" title="下载Excal学习"></a>下载Excal学习</h2><p>#java/SpringBoot</p>
+<h3 id="JXLS学习"><a href="#JXLS学习" class="headerlink" title="JXLS学习"></a>JXLS学习</h3><p>JXLS中多sheet导出：</p>
+<p>比如，现在有多个学生我想要把每个学生都导出放到一个sheet中</p>
+<p>在批注中添加对应的<br>￼<br><img src="%E4%B8%8B%E8%BD%BDExcal%E5%AD%A6%E4%B9%A0/20200428141224.jpg"></p>
+<p>我们传入一个page集合对象，每个page其中包含我们需要显示的数据page.date，还有一个sheetNames对象，保存我们的每个sheet名称</p>
+<p>第一个批注中的</p>
+<p>jx:area(lastCell=”F7”)</p>
+<p>jx:each(items=”pages”, var=”page”, lastCell=”F7” multisheet=”sheetNames”)</p>
+<p>就代表循环每个page创建一个个sheet</p>
+<p>下面的jx:each就是遍历每个page中的date</p>
+<h3 id="WorkBook学习"><a href="#WorkBook学习" class="headerlink" title="WorkBook学习"></a>WorkBook学习</h3><p>首先理解Apache POI是什么：Apache POI是<a href="(null)">Apache软件基金会</a>的开放源码函式库，POI提供API给Java程序对Microsoft Office格式档案读和写的功能</p>
+<p>POI中包括：</p>
+<p>HSSF   － 提供读写XLS格式档案的功能。</p>
+<p>XSSF   － 提供读写XLSX格式档案的功能。</p>
+<p>SXSSF － 提供读写大容量XLSX格式档案的功能。</p>
+<p>HWPF   － 提供读写Microsoft Word DOC格式档案的功能。</p>
+<p>HSLF   － 提供读写Microsoft PowerPoint格式档案的功能。</p>
+<p>HDGF   － 提供读Microsoft Visio格式档案的功能。</p>
+<p>HPBF   － 提供读Microsoft Publisher格式档案的功能。</p>
+<p>HSMF   － 提供读Microsoft Outlook格式档案的功能。</p>
+<p>主要来学习导出Excal</p>
+<p>HSSF，XSSF，SXSSF的区别：</p>
+<p>HSSF操作的2003版以前的xls文件</p>
+<blockquote>
+<p>但是此种方式的局限就是导出的行数至多为65535行，超出65536条后系统就会报错。此方式因为行数不足七万行所以一般不会发生内存不足的情况<br>XSSF操作的是2007后的xlsx文件</p>
+</blockquote>
+<blockquote>
+<p>这种形式的出现是为了突破HSSFWorkbook的65535行局限。其对应的是excel2007(1048576行，16384列)扩展名为“.xlsx”，最多可以导出104万行，不过这样就伴随着一个问题—OOM内存溢出，因为你所创建的book sheet row cell 是存在内存中的，没有被持久化<br>SXSSF操作的文件和XSSF是一样的，他是基于XSSF实现的低内存占用的SXSSF方式。使用其可以防止大型excal文件的内存溢出问题，也就是使用SXSSF可以防止上面两个的问题</p>
+</blockquote>
+<p>使用SXSSF来操作excal：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> Workbook <span class="title">getLogisticsBikeInfo</span><span class="params">(String logisticsBillId)</span> </span>&#123;</span><br><span class="line">  	<span class="comment">// 创建SXSSFWorkbook对象</span></span><br><span class="line">    Workbook wb = <span class="keyword">new</span> SXSSFWorkbook();</span><br><span class="line">  	<span class="comment">// 建立表单对象</span></span><br><span class="line">    Sheet logisticsBikeSheet = wb.createSheet(<span class="string">&quot;整车物流详情表&quot;</span>);</span><br><span class="line">    <span class="comment">// 单元格居中样式</span></span><br><span class="line">    CellStyle style = wb.createCellStyle();</span><br><span class="line">    <span class="comment">// 创建一个居中格式</span></span><br><span class="line">    style.setAlignment(HorizontalAlignment.CENTER);</span><br><span class="line">    <span class="comment">// 设置表头（方法在下面）</span></span><br><span class="line">    createrLogisticsBikeHeader(logisticsBikeSheet,style);</span><br><span class="line">    List&lt;String&gt; materialSns = orderLogisticsDetailBillDao.queryCodesByLogisticsBillId(logisticsBillId);</span><br><span class="line">    List&lt;LogisticsBikeInfoVo&gt; logisticsBikeInfoVos = materialSns.stream().map(materialSn -&gt; logisticsBikeInfoDao.getLogisticsBikeByMaterialSn(materialSn)).collect(Collectors.toList());</span><br><span class="line">    <span class="keyword">if</span>(CollectionUtils.isNotEmpty(logisticsBikeInfoVos))&#123;</span><br><span class="line">        <span class="comment">// 向表中添加数据</span></span><br><span class="line">        createLogisticsBikeExcelData(logisticsBikeSheet,style,logisticsBikeInfoVos);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> wb;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">createLogisticsBikeExcelData</span><span class="params">(Sheet sheet, CellStyle style, List&lt;LogisticsBikeInfoVo&gt; logisticsBikeInfoVos)</span> </span>&#123;</span><br><span class="line">  	<span class="comment">// 定义行号和单元格</span></span><br><span class="line">    Row row;</span><br><span class="line">    Cell cell;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;logisticsBikeInfoVos.size();i++) &#123;</span><br><span class="line">      	<span class="comment">// 获取数据</span></span><br><span class="line">        LogisticsBikeInfoVo vo = logisticsBikeInfoVos.get(i);</span><br><span class="line">      	<span class="comment">// 创建第一行</span></span><br><span class="line">        row = sheet.createRow(i + <span class="number">1</span>);</span><br><span class="line">      	<span class="comment">// 设置第一个单元格内容，我使用的是序号也就是i+1；</span></span><br><span class="line">        cell = row.createCell(<span class="number">0</span>);</span><br><span class="line">        cell.setCellValue(i + <span class="number">1</span>);</span><br><span class="line">        cell.setCellStyle(style);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 车辆唯一码</span></span><br><span class="line">        cell = row.createCell(<span class="number">1</span>);</span><br><span class="line">        cell.setCellValue(vo.getBikeSn());</span><br><span class="line">        cell.setCellStyle(style);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 车辆二维码</span></span><br><span class="line">        cell = row.createCell(<span class="number">2</span>);</span><br><span class="line">        cell.setCellValue(vo.getBikeQrCode());</span><br><span class="line">        cell.setCellStyle(style);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 车架号</span></span><br><span class="line">        cell = row.createCell(<span class="number">3</span>);</span><br><span class="line">        cell.setCellValue(vo.getBikeFrameSn());</span><br><span class="line">        cell.setCellStyle(style);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 电机号</span></span><br><span class="line">        cell = row.createCell(<span class="number">4</span>);</span><br><span class="line">        cell.setCellValue(vo.getMotorSn());</span><br><span class="line">        cell.setCellStyle(style);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">createrLogisticsBikeHeader</span><span class="params">(Sheet logisticsBikeSheet, CellStyle style)</span> </span>&#123;</span><br><span class="line">    List&lt;String&gt; titleArray=Arrays.asList(<span class="string">&quot;序号&quot;</span>,<span class="string">&quot;车辆唯一码&quot;</span>,<span class="string">&quot;车辆二维码&quot;</span>,<span class="string">&quot;车架号&quot;</span>,<span class="string">&quot;电机号&quot;</span>);</span><br><span class="line">  	<span class="comment">// 在sheet中创建第一行 参数时行号索引</span></span><br><span class="line">    Row row = logisticsBikeSheet.createRow(<span class="number">0</span>);</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;titleArray.size();i++)&#123;</span><br><span class="line">      	<span class="comment">// 根据表头循环创建单元格</span></span><br><span class="line">        Cell headNoCell = row.createCell(i);</span><br><span class="line">      	<span class="comment">// 设置列宽,256是因为因etColumnWidth这个方法宽度的单位是字符数的256分之一,这段代码的意思是根据每个表头的字符数来设置列宽,第一个参数就是序列号</span></span><br><span class="line">        logisticsBikeSheet.setColumnWidth(i,titleArray.get(i).length()*<span class="number">3</span>*<span class="number">256</span>);</span><br><span class="line">       	<span class="comment">// 设置单元格的内容</span></span><br><span class="line">        headNoCell.setCellValue(titleArray.get(i));</span><br><span class="line">      	<span class="comment">// 设置单元格的样式（这个样式可以有很多）</span></span><br><span class="line">        headNoCell.setCellStyle(style);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>使用Workbook方法可以无需在实体中定义序号属性，使用JXLS则需要在实体中添加序号，确保模板中能获取到</p>
+<h3 id="下载功能"><a href="#下载功能" class="headerlink" title="下载功能"></a>下载功能</h3><p>首先我们先来学习HttpServletResponse</p>
+<p>Web服务器收到客户端的http请求，会针对每一次请求，分别创建一个用于代表请求的request对象、和代表响应的response对象。获取网页提交过来的数据，只需要找request对象就行了。要向网页输出数据，只需要找response对象。</p>
+<ul>
+<li>getOutputStream()方法用于返回Servlet引擎创建的字节输出流对象</li>
+<li>getWriter()方法用于返回Servlet引擎创建的字符输出流对象</li>
+</ul>
+<p>这两个方法互斥，调用了其中的一个就不能再调用另一个</p>
+<ul>
+<li>httpServletResponse.setHeader()，该方法负责设置向客户端发送的响应头，响应头向客户端提供一些额外信息，比如谁在发送响应、响应者的功能，甚至与响应相关的一些特殊指令。这些头部有助于客户端处理响应，并在将来发起更好的请求。</li>
+</ul>
+<p>我们可以使用getOutputStream或getWriter来向浏览器输出数据</p>
+<p>getOutputStream：</p>
+<p>在服务端，数据是以什么码表进行输出的，就要控制客户端浏览器以对应的码表打开</p>
+<p>比如</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">byte</span>[] dataByteArr = data.getBytes(<span class="string">&quot;UTF-8&quot;</span>);</span><br><span class="line">outPutStream.write(dataByteArr)</span><br></pre></td></tr></table></figure>
+
+<p>设置其以UTF-8进行输出，那么就需要控制客户端使用UTF-8进行显示</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">response.setHeader(<span class="string">&quot;content-type&quot;</span>,<span class="string">&quot;text/html;charset=UTF-8&quot;</span>);</span><br></pre></td></tr></table></figure>
+
+<p>getWriter：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">response.setCharacterEncoding(<span class="string">&quot;UTF-8&quot;</span>);</span><br><span class="line"><span class="comment">//获取PrintWriter输出流</span></span><br><span class="line">PrintWriter out = response.getWriter();</span><br><span class="line">response.setHeader(<span class="string">&quot;content-type&quot;</span>, <span class="string">&quot;text/html;charset=UTF-8&quot;</span>);</span><br><span class="line">out.write(data)</span><br></pre></td></tr></table></figure>
+
+<p>首先设置字符集是UTF-8，再控制以UTF-8进行显示</p>
+<h4 id="1、JXLS使用的下载功能"><a href="#1、JXLS使用的下载功能" class="headerlink" title="1、JXLS使用的下载功能"></a>1、JXLS使用的下载功能</h4><p>理解了response以后我们再来细看下载的功能</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">download</span><span class="params">(File file, HttpServletResponse httpServletResponse)</span> </span>&#123;</span><br><span class="line">        BufferedInputStream bis = <span class="keyword">null</span>;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            httpServletResponse.setContentType(MediaType.APPLICATION_OCTET_STREAM_VALUE);</span><br><span class="line">            String encodeFilename = <span class="string">&quot;data&quot;</span>;</span><br><span class="line">            logger.info(<span class="string">&quot;file.getName()===&quot;</span>+file.getName());</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                encodeFilename = URLEncoder.encode(file.getName(), <span class="string">&quot;utf-8&quot;</span>);</span><br><span class="line">            &#125; <span class="keyword">catch</span> (UnsupportedEncodingException e) &#123;</span><br><span class="line">            &#125;</span><br><span class="line">            logger.info(<span class="string">&quot;encodeFilename===&quot;</span>+encodeFilename);</span><br><span class="line">            httpServletResponse.setHeader(<span class="string">&quot;Content-Disposition&quot;</span>, <span class="string">&quot;attachment;filename=&quot;</span> + encodeFilename);</span><br><span class="line">            httpServletResponse.getOutputStream().flush();</span><br><span class="line">            bis = <span class="keyword">new</span> BufferedInputStream(<span class="keyword">new</span> FileInputStream(file));</span><br><span class="line">            IOUtils.copy(bis, httpServletResponse.getOutputStream());</span><br><span class="line">        &#125; <span class="keyword">catch</span> (Exception ex) &#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(ex);</span><br><span class="line">        &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">            IOUtils.closeQuietly(bis);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>创建一个缓冲输入流</p>
+</li>
+<li><p>设置服务器发送给浏览器的数据类型</p>
+</li>
+</ul>
+<p>httpServletResponse.setContentType(MediaType.APPLICATION_OCTET_STREAM_VALUE);</p>
+<p>代表二进制流，不知道具体下载文件类型</p>
+<ul>
+<li>设置文件名编码是UTF-8</li>
+</ul>
+<p>encodeFilename = URLEncoder.encode(file.getName(), “utf-8”);</p>
+<ul>
+<li>设置Content-Disposition响应头告诉浏览器以下载的方式打开文件</li>
+</ul>
+<p>httpServletResponse.setHeader(“Content-Disposition”, “attachment;filename=” + encodeFilename);如果把attachment换做inline这是在线打开的方式</p>
+<ul>
+<li>清空输出流缓冲</li>
+</ul>
+<p>httpServletResponse.getOutputStream().flush();</p>
+<ul>
+<li>获取要下载文件的输入流</li>
+</ul>
+<p>bis = new BufferedInputStream(new FileInputStream(file));</p>
+<ul>
+<li>将输入流的数据复制到OutPutStream中输出到客户端浏览器</li>
+</ul>
+<p>IOUtils.copy(bis, httpServletResponse.getOutputStream());</p>
+<ul>
+<li>关闭流</li>
+</ul>
+<p>IOUtils.closeQuietly(bis);</p>
+<h4 id="2、WorkBook的下载功能"><a href="#2、WorkBook的下载功能" class="headerlink" title="2、WorkBook的下载功能"></a>2、WorkBook的下载功能</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">downloadFile</span><span class="params">(Workbook workbook, String fileName, HttpServletResponse response)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        response.setContentType(<span class="string">&quot;application/vnd.ms-excel&quot;</span>);</span><br><span class="line">        String encodeFilename = <span class="string">&quot;data&quot;</span>;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            encodeFilename = URLEncoder.encode(fileName, <span class="string">&quot;utf-8&quot;</span>);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (UnsupportedEncodingException e) &#123;</span><br><span class="line">        &#125;</span><br><span class="line">        response.setHeader(<span class="string">&quot;Content-Disposition&quot;</span>, <span class="string">&quot;attachment;filename=&quot;</span> + encodeFilename);</span><br><span class="line">        workbook.write(response.getOutputStream());</span><br><span class="line">        workbook.close();</span><br><span class="line">    &#125; <span class="keyword">catch</span> (Exception ex) &#123;</span><br><span class="line">        ex.printStackTrace();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>明白了JXLS使用的下载功能再来看Workbook，我只说明不同的点</p>
+<ul>
+<li>response.setContentType(“application/vnd.ms-excel”);</li>
+</ul>
+<p>设置下载类型为excal</p>
+<ul>
+<li>workbook.write(response.getOutputStream());</li>
+</ul>
+<p>直接将workbook的内容写入getOutputStream中，发送到客户端</p>
+<h3 id="Java中的getResourceAsStream"><a href="#Java中的getResourceAsStream" class="headerlink" title="Java中的getResourceAsStream"></a>Java中的<em>getResourceAsStream</em></h3><p>getResourceAsStream是动态的获取某个文件的位置，使用其就不用在修改文件位置后需要去修改代码中的绝对文件位置了</p>
+<p>1、Class.getResourceAsStream(String path) ： path 不以’<em>‘开头时默认是从此类所在的包下取资源，以’</em>‘开头则是从ClassPath根下获取。</p>
+<p>2、Class.getClassLoader.getResourceAsStream(String path) ：默认则是从ClassPath根下获取，path不能以’/‘开头，最终是由ClassLoader获取资源。</p>
+<p>3、ServletContext. getResourceAsStream(String path)：默认从WebAPP根目录下取资源，Tomcat下path是否以’/‘开头无所谓，当然这和具体的容器实现有关。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2020/05/26/%E4%B8%8B%E8%BD%BDExcal%E5%AD%A6%E4%B9%A0/" data-id="ckejvvygv000amjzx93z95si9" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-注解学习" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/05/26/%E6%B3%A8%E8%A7%A3%E5%AD%A6%E4%B9%A0/" class="article-date">
+  <time datetime="2020-05-26T03:34:44.067Z" itemprop="datePublished">2020-05-26</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="注解学习"><a href="#注解学习" class="headerlink" title="注解学习"></a>注解学习</h1><p>#java/SpringBoot</p>
+<h2 id="1、-NotBlank，非空检验"><a href="#1、-NotBlank，非空检验" class="headerlink" title="1、@NotBlank，非空检验"></a>1、@NotBlank，非空检验</h2><p>这类注解的用处是检验数据的</p>
+<p>@NotNull 是不能为null，但是可以是empty（也就是字符串的 “”），可以作用于一个对象判断其是否为空</p>
+<p>@NotEmpty 不能为null，而且长度必须大于0，常用于集合的非空判断</p>
+<p>@NotBlank 只能作用于String上，不能为null，而且被调用trim() 后长度必须大于0</p>
+<p>并且@NotBlank必须要和@Validated或@Valid一起使用才能生效</p>
+<h2 id="2、-Validated和-Valid的区别"><a href="#2、-Validated和-Valid的区别" class="headerlink" title="2、@Validated和@Valid的区别"></a>2、@Validated和@Valid的区别</h2><p>@Validated提供了一个分组的功能，可以在验证的时候根据不同分组使用不同的验证机制</p>
+<p>@Valid没有分组的功能</p>
+<ul>
+<li>何处使用</li>
+</ul>
+<p>@Validated可以使用在类型、方法、方法参数上，但是不能使用在成员字段上</p>
+<p>@Valid可以使用在方法、构造函数、方法参数和成员字段上</p>
+<ul>
+<li>嵌套验证</li>
+</ul>
+<p>什么是嵌套验证：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Identity</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Min(value = 18,message = &quot;ID最少18位&quot;)</span></span><br><span class="line">    <span class="meta">@NotBlank</span></span><br><span class="line">    <span class="keyword">private</span> String id;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Min(value = 10,message = &quot;name最少10位&quot;)</span></span><br><span class="line">    <span class="keyword">private</span> String name;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">People</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@NotBlank(message = &quot;str不能为空&quot;)</span></span><br><span class="line">    <span class="keyword">private</span> String str;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Size(min = 10,max = 50,message = &quot;长度在10和50之间&quot;)</span></span><br><span class="line">    <span class="keyword">private</span> String num;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">private</span> Identity identity;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在People中存有Identity对象，在传递值的时候，不会去验证Identity中的属性，只有使用@Vaild去修饰People中的Identity，才会去验证Identity中的属性，如果加了@Vaild修饰的Identity其中的对象每有被验证，首先你要看是否是你没有传值，并且Identity没有加@NotNull来判断空</p>
+<hr>
+<h2 id="3、-Param注解学习"><a href="#3、-Param注解学习" class="headerlink" title="3、@Param注解学习"></a>3、@Param注解学习</h2><p>在公司做测试的时候遇到了一个关于@Param注解的问题</p>
+<p>Dao:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">BikeBind <span class="title">getBikeBindByBikeQrCode</span><span class="params">(String bikeQrCode)</span></span>;</span><br></pre></td></tr></table></figure>
+
+<p>XML:</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">select</span> <span class="attr">id</span>=<span class="string">&quot;getBikeBindByBikeQrCode&quot;</span> <span class="attr">resultType</span>=<span class="string">&quot;com.ttyc.scm.material.dao.domain.BikeBind&quot;</span> &gt;</span></span><br><span class="line">    select * from t_scm_bike_bind</span><br><span class="line">    <span class="tag">&lt;<span class="name">where</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">if</span> <span class="attr">test</span>=<span class="string">&quot;bikeQrCode != null&quot;</span>&gt;</span></span><br><span class="line">            bike_qr_code = #&#123;bikeQrCode&#125;</span><br><span class="line">        <span class="tag">&lt;/<span class="name">if</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">where</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">select</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>我传入的bikeQrCode是811010009</p>
+<p>使用后报错There is no getter for property named ‘bikeQrCode’ in ‘class java.lang.String</p>
+<p>报错的原因是：</p>
+<p>​当参数表中只有一个参数的时候，mybatis中存储的是{_parameter=811010009,databaseId=null}，在if判断中取值的时候，bikeQrCode对应的匹配不到值就会报错</p>
+<p>解决办法1：在if中使用_parameter进行比较，如果我们传入的是其他基本类型也都可以使用这种方法，在传入的是实体类的时候，可以通过其属性名直接比较，我试了也可以通过  _parameter.属性名来比较</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;<span class="keyword">if</span> test=<span class="string">&quot;_parameter != null&quot;</span>&gt;</span><br></pre></td></tr></table></figure>
+
+<p>解决办法2：在传递参数的时候使用@Param进行描述，mybatis会存储为    bikeQrCode: 811010009  键值对的形式，比较时可以直接通过键来找到他的值</p>
+<p>如果我们在#{}中使用参数<br>情况1、如果是一个参数的情况下（这个参数类型可以被mybatis中的typeHandler处理），在xml中可以随意使用属性名</p>
+<p>例：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> * <span class="keyword">from</span> t_scm_bike_bind <span class="keyword">where</span> <span class="keyword">id</span> = <span class="comment">#&#123;abc&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>情况2、使用多个参数会被封装为一个map</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">BikeBind <span class="title">getBikeBindByBikeOrCodeAndId</span><span class="params">(<span class="keyword">int</span> id,String BikeOrCode)</span></span>;</span><br></pre></td></tr></table></figure>
+
+<p>在map中就会被封装为</p>
+<p>key: param1 .. paramN或者是参数的索引，索引从0开始</p>
+<p>value：传入的值</p>
+<p>我们在xml中直接使用id或BikeOrCode取值是取不到的，可通过{0}进行取值</p>
+<p>情况3、使用@Param描述参数的时候，map中的key就是@Param中的值，可以通过@Param的值来取</p>
+<hr>
+<h2 id="ExceptionHandler"><a href="#ExceptionHandler" class="headerlink" title="@ExceptionHandler"></a>@ExceptionHandler</h2><p>当一个Controller中有方法加了@ExceptionHandler之后，这个Controller其他方法中没有捕获的异常就会以参数的形式传入加了@ExceptionHandler注解的那个方法中。<br>三种使用方法：</p>
+<ol>
+<li>使用基类，创建一个基类BaseController<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 处理异常的类，需要处理异常的Controller直接继承这个类</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">BaseController</span> </span>&#123;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 处理Controller抛出的异常</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> e 异常实例</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> Controller层的返回值</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@ExceptionHandler</span></span><br><span class="line">    <span class="meta">@ResponseBody</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Object <span class="title">expHandler</span><span class="params">(Exception e)</span></span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(e <span class="keyword">instanceof</span> SystemException)&#123;</span><br><span class="line">            SystemException ex= (SystemException) e;</span><br><span class="line">            <span class="keyword">return</span> WebResult.buildResult().status(ex.getCode())</span><br><span class="line">                            .msg(ex.getMessage());</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">            <span class="keyword">return</span> WebResult.buildResult().status(Config.FAIL)</span><br><span class="line">                            .msg(<span class="string">&quot;系统错误&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+让所有的Controller都继承这个类，从而能在expHandler()方法中统一处理异常，但是这种方法极其不灵活，而且java中只能继承一个类</li>
+<li>将基类变成接口，其中的@ExceptionHandler修饰的方法变成default方法（java8以后才可以使用）<br>也不够灵活，只有添加了这个接口的Controller才能使用该方法，并且限制是java8以后</li>
+<li>使用加强的Controller进行全局异常处理<br>也就是@ControlleAdvice注解，这个注解的类中的方法的某些注解会被应用到所有Controller中，其中就包括@ ExceptionHandler注解</li>
+</ol>
+<hr>
+<h2 id="Aop切面常用"><a href="#Aop切面常用" class="headerlink" title="Aop切面常用"></a>Aop切面常用</h2><p>@Aspect：声明该类为一个注解类；<br>@Pointcut：定义一个切点，后面跟随一个表达式，表达式可以定义为某个 package 下的方法，也可以是自定义注解等；<br>切点定义好后，就是围绕这个切点做文章了；<br>@Before: 在切点之前，织入相关代码；<br>@After: 在切点之后，织入相关代码；<br>@AfterReturning: 在切点返回内容后，织入相关代码，一般用于对返回值做些加工处理的场景；<br>@AfterThrowing: 用来处理当织入的代码抛出异常后的逻辑处理;<br>@Around: 在切入点前后织入代码，并且可以自由的控制何时执行切点；</p>
+<hr>
+<h2 id="RequestBody"><a href="#RequestBody" class="headerlink" title="@RequestBody"></a>@RequestBody</h2><p>今天在测试代码的时候遇到了使用postman接收参数的问题，所以记录下@RequestBody的使用</p>
+<p>@RequestBody一般情况下处理的是Content-Type是application_json和application_xml的请求，常用的是application/json，一个方法中只能有一个@RequestBody。</p>
+<ul>
+<li>json字符串中，如果value为””的话，后端对应属性如果是String类型的，那么接受到的就是””，如果是后端属性的类型是Integer、Double等类型，那么接收到的就是null</li>
+<li>json字符串中，如果value为null的话，后端对应收到的就是null</li>
+<li>如果某个参数没有value的话，在传json字符串给后端时，可以不把该字段写到json字符串中；要么写value时对其赋予null或者””</li>
+<li>有多个相同的key的json字符串中，转换为模型时，会以相同的几个key中，排在最后的那个key的值给模型属性复制，因为setter会覆盖原来的值。</li>
+</ul>
+<p>下面是有关@ RequestBody解析json的源码<br><img src="%E6%B3%A8%E8%A7%A3%E5%AD%A6%E4%B9%A0/image2020-5-16%2018_38_32.png"></p>
+<p>这里每次token取15个值，15个值中包括key和values，比较时都从token获取key进行比较</p>
+<p>当请求传来的key与我们对象的属性不一致时，可以使用</p>
+<p>Jackson包中的@JsonAlias和@JsonProperty对属性进行描述</p>
+<p>比如：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@JsonAlias(&quot;Name&quot;)</span></span><br><span class="line"><span class="keyword">private</span> String name;</span><br><span class="line"><span class="meta">@JsonProperty(&quot;Birthday&quot;)</span></span><br><span class="line"><span class="keyword">private</span> String birthday;</span><br></pre></td></tr></table></figure>
+
+<p>他们的共同点是当传来的key是Name或Birthday时，会找到属性name和birthday</p>
+<p>不同点是当他们描述的对象转Json格式的时候，JsonAlias还是把name来当key，JsonProperty是按Birthday来当key的，@JsonAlias注解需要依赖于setter、getter，而@JsonProperty注解不需要</p>
+<p>最后是一段关于Postman请求的</p>
+<p>当参数类型是这样描述的时候，Postman发送的是一个Json请求，后端需要使用@RequestBody来接收参数<br><img src="%E6%B3%A8%E8%A7%A3%E5%AD%A6%E4%B9%A0/image2020-5-16%2018_55_13.png"></p>
+<p>当参数是以form-date来请求的时候就不需要使用@RequestBody来接收<br><img src="%E6%B3%A8%E8%A7%A3%E5%AD%A6%E4%B9%A0/image2020-5-16%2018_59_22.png"></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2020/05/26/%E6%B3%A8%E8%A7%A3%E5%AD%A6%E4%B9%A0/" data-id="ckejvvyh0000fmjzxcons2n3r" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+
+
+  <nav id="page-nav">
+    
+    <a class="extend prev" rel="prev" href="/">&amp;laquo; Prev</a><a class="page-number" href="/">1</a><span class="page-number current">2</span>
+  </nav>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/java8/">java8</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/09/">September 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/08/">August 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/07/">July 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">June 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/05/">May 2020</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2020/09/01/hello-world/">Hello World</a>
+          </li>
+        
+          <li>
+            <a href="/2020/09/01/Java8%E6%96%B0%E7%89%B9%E6%80%A7%E5%AD%A6%E4%B9%A0/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2020/08/17/java8%E4%B8%AD%E7%9A%84%E6%B5%81%E5%BC%8F%E5%86%99%E6%B3%95%E7%9A%84%E4%B8%80%E7%82%B9%E6%80%9D%E8%80%83/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2020/08/14/Java8%E4%B8%ADMap.merge%E3%80%81compute%E3%80%81computeIfAbsent%E3%80%81computeIfPre/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2020/07/30/2020-08-24/">(no title)</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2020 John Doe<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>
